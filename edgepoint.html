@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edgepoint — iGaming Growth & Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --ink:#08080e;
+  --paper:#f0efe9;
+  --lime:#c6ff00;
+  --lime-dark:#a8db00;
+  --mid:#6a6a78;
+  --border:#d8d7d0;
+  --white:#ffffff;
+  --bebas:'Bebas Neue',sans-serif;
+  --syne:'Syne',sans-serif;
+  --dm:'DM Sans',sans-serif;
+}
+
+html{scroll-behavior:smooth;}
+body{background:var(--paper);color:var(--ink);font-family:var(--dm);overflow-x:hidden;cursor:none;}
+
+/* CURSOR */
+.cursor{position:fixed;width:12px;height:12px;background:var(--lime);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s,width 0.3s,height 0.3s;mix-blend-mode:multiply;}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid var(--ink);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.15s ease,width 0.3s,height 0.3s,opacity 0.3s;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;mix-blend-mode:normal;}
+.nav-logo{font-family:var(--syne);font-size:18px;font-weight:800;letter-spacing:-0.02em;color:var(--ink);}
+.nav-logo span{color:var(--lime-dark);}
+.nav-links{display:flex;gap:32px;align-items:center;}
+.nav-links a{font-size:13px;font-weight:500;color:var(--mid);text-decoration:none;letter-spacing:0.02em;transition:color 0.2s;}
+.nav-links a:hover{color:var(--ink);}
+.nav-cta{background:var(--ink);color:var(--paper)!important;padding:10px 22px;border-radius:100px;font-size:13px!important;font-weight:500!important;transition:background 0.2s!important;}
+.nav-cta:hover{background:#333!important;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 64px;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:var(--ink);}
+.hero-grain{position:absolute;inset:0;opacity:0.04;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:200px;}
+.hero-geo{position:absolute;top:80px;right:80px;width:320px;height:320px;border:1px solid rgba(198,255,0,0.15);border-radius:50%;animation:spin 30s linear infinite;}
+.hero-geo::before{content:'';position:absolute;inset:40px;border:1px solid rgba(198,255,0,0.1);border-radius:50%;}
+.hero-geo::after{content:'';position:absolute;inset:80px;border:1px solid rgba(198,255,0,0.08);border-radius:50%;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.hero-dot{position:absolute;bottom:120px;right:48px;width:8px;height:8px;background:var(--lime);border-radius:50%;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+.hero-tag{font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:24px;position:relative;z-index:1;
+  opacity:0;animation:fadeUp 0.8s 0.2s forwards;}
+.hero-title{font-family:var(--bebas);font-size:clamp(80px,11vw,160px);line-height:0.92;color:var(--white);letter-spacing:-0.01em;position:relative;z-index:1;
+  opacity:0;animation:fadeUp 0.8s 0.4s forwards;}
+.hero-title .accent{color:var(--lime);display:block;}
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;margin-top:48px;position:relative;z-index:1;
+  opacity:0;animation:fadeUp 0.8s 0.7s forwards;}
+.hero-desc{max-width:420px;font-size:15px;line-height:1.7;color:rgba(255,255,255,0.55);font-weight:300;}
+.hero-desc strong{color:rgba(255,255,255,0.9);font-weight:500;}
+.hero-cta-group{display:flex;flex-direction:column;align-items:flex-end;gap:12px;}
+.btn-primary{background:var(--lime);color:var(--ink);padding:16px 36px;border-radius:100px;font-family:var(--syne);font-size:14px;font-weight:700;text-decoration:none;letter-spacing:0.02em;transition:transform 0.2s,background 0.2s;display:inline-block;}
+.btn-primary:hover{transform:scale(1.04);background:#d4ff1a;}
+.hero-scroll{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+.hero-scroll::before{content:'';display:block;width:24px;height:1px;background:rgba(255,255,255,0.2);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+/* MARQUEE */
+.marquee-wrap{background:var(--lime);overflow:hidden;padding:14px 0;border-top:none;}
+.marquee-track{display:flex;white-space:nowrap;animation:marquee 20s linear infinite;}
+.marquee-item{font-family:var(--bebas);font-size:20px;letter-spacing:0.06em;color:var(--ink);padding:0 32px;display:flex;align-items:center;gap:32px;}
+.marquee-sep{width:6px;height:6px;background:var(--ink);border-radius:50%;opacity:0.4;}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* SECTION */
+section{padding:120px 48px;}
+
+/* ABOUT */
+.about{background:var(--paper);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.about-left{}
+.section-label{font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--mid);margin-bottom:20px;}
+.about-title{font-family:var(--bebas);font-size:clamp(40px,5vw,72px);line-height:1;letter-spacing:-0.01em;color:var(--ink);}
+.about-title .stroke{-webkit-text-stroke:1.5px var(--ink);color:transparent;}
+.about-right{padding-top:16px;}
+.about-text{font-size:16px;line-height:1.8;color:#444;font-weight:300;margin-bottom:24px;}
+.about-text strong{color:var(--ink);font-weight:500;}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-top:40px;}
+.stat{background:var(--white);padding:28px 24px;}
+.stat-num{font-family:var(--bebas);font-size:48px;color:var(--ink);line-height:1;}
+.stat-num span{color:var(--lime-dark);}
+.stat-label{font-size:12px;color:var(--mid);margin-top:4px;line-height:1.5;}
+
+/* SERVICES */
+.services{background:var(--ink);padding:120px 48px;}
+.services-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px;}
+.services-title{font-family:var(--bebas);font-size:clamp(40px,5vw,72px);color:var(--white);line-height:1;}
+.services-title span{color:var(--lime);}
+.services-subtitle{max-width:280px;font-size:14px;color:rgba(255,255,255,0.4);line-height:1.6;text-align:right;}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+.service-card{background:#111119;padding:40px 32px;position:relative;overflow:hidden;transition:background 0.3s;border-radius:4px;}
+.service-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--lime);transform:scaleX(0);transform-origin:left;transition:transform 0.4s;}
+.service-card:hover{background:#16161f;}
+.service-card:hover::before{transform:scaleX(1);}
+.service-num{font-family:var(--bebas);font-size:64px;color:rgba(255,255,255,0.05);position:absolute;top:20px;right:24px;line-height:1;}
+.service-tag{display:inline-block;font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--lime);background:rgba(198,255,0,0.1);padding:4px 10px;border-radius:20px;margin-bottom:20px;}
+.service-name{font-family:var(--syne);font-size:22px;font-weight:800;color:var(--white);margin-bottom:12px;line-height:1.2;}
+.service-price{font-family:var(--bebas);font-size:36px;color:var(--lime);margin-bottom:16px;letter-spacing:0.02em;}
+.service-desc{font-size:13px;line-height:1.7;color:rgba(255,255,255,0.45);font-weight:300;}
+.service-list{list-style:none;margin-top:20px;}
+.service-list li{font-size:12px;color:rgba(255,255,255,0.35);padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:8px;}
+.service-list li::before{content:'→';color:var(--lime);font-size:11px;flex-shrink:0;}
+
+/* HOW */
+.how{background:var(--paper);}
+.how-title{font-family:var(--bebas);font-size:clamp(40px,5vw,72px);margin-bottom:64px;line-height:1;}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--border);}
+.step{background:var(--white);padding:40px 28px;position:relative;}
+.step-num{font-family:var(--bebas);font-size:80px;color:var(--paper);line-height:1;position:absolute;top:16px;right:20px;}
+.step-icon{width:44px;height:44px;background:var(--ink);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:20px;}
+.step-title{font-family:var(--syne);font-size:16px;font-weight:700;margin-bottom:10px;color:var(--ink);}
+.step-desc{font-size:13px;line-height:1.7;color:var(--mid);}
+.step-time{display:inline-block;margin-top:16px;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--lime-dark);}
+
+/* WHY */
+.why{background:#0d0d12;padding:120px 48px;}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.why-left{}
+.why-title{font-family:var(--bebas);font-size:clamp(40px,5vw,72px);color:var(--white);line-height:1;margin-bottom:32px;}
+.why-title span{color:var(--lime);}
+.why-text{font-size:15px;line-height:1.8;color:rgba(255,255,255,0.45);font-weight:300;margin-bottom:32px;}
+.why-text strong{color:rgba(255,255,255,0.85);font-weight:500;}
+.why-right{}
+.diff-item{padding:24px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.diff-item:first-child{border-top:1px solid rgba(255,255,255,0.06);}
+.diff-label{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;}
+.diff-label.them{color:rgba(255,255,255,0.25);}
+.diff-label.us{color:var(--lime);}
+.diff-text{font-size:13px;line-height:1.6;}
+.diff-text.them{color:rgba(255,255,255,0.25);text-decoration:line-through;text-decoration-color:rgba(255,255,255,0.15);}
+.diff-text.us{color:rgba(255,255,255,0.8);}
+
+/* MARKETS */
+.markets{background:var(--paper);}
+.markets-title{font-family:var(--bebas);font-size:clamp(40px,5vw,72px);margin-bottom:12px;line-height:1;}
+.markets-sub{font-size:15px;color:var(--mid);margin-bottom:48px;}
+.markets-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.market-card{border:1.5px solid var(--border);border-radius:14px;padding:28px;background:var(--white);transition:border-color 0.2s,transform 0.2s;}
+.market-card:hover{border-color:var(--ink);transform:translateY(-4px);}
+.market-flag{font-size:32px;margin-bottom:16px;}
+.market-name{font-family:var(--syne);font-size:18px;font-weight:700;margin-bottom:8px;}
+.market-tags{display:flex;flex-wrap:wrap;gap:6px;}
+.market-tag{font-size:11px;background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:3px 10px;color:var(--mid);}
+
+/* CTA */
+.cta-section{background:var(--lime);padding:100px 48px;}
+.cta-inner{display:flex;align-items:center;justify-content:space-between;gap:40px;}
+.cta-title{font-family:var(--bebas);font-size:clamp(40px,6vw,88px);color:var(--ink);line-height:1;max-width:700px;}
+.cta-right{flex-shrink:0;text-align:right;}
+.cta-text{font-size:14px;color:rgba(0,0,0,0.55);margin-bottom:24px;line-height:1.6;}
+.btn-dark{background:var(--ink);color:var(--lime);padding:18px 40px;border-radius:100px;font-family:var(--syne);font-size:15px;font-weight:700;text-decoration:none;display:inline-block;transition:transform 0.2s;}
+.btn-dark:hover{transform:scale(1.04);}
+.btn-outline{display:inline-block;margin-top:12px;font-size:13px;color:rgba(0,0,0,0.5);text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.2);padding-bottom:2px;}
+
+/* FOOTER */
+footer{background:var(--ink);padding:48px;display:flex;align-items:center;justify-content:space-between;}
+.footer-logo{font-family:var(--syne);font-size:20px;font-weight:800;color:var(--white);}
+.footer-logo span{color:var(--lime);}
+.footer-links{display:flex;gap:24px;}
+.footer-links a{font-size:13px;color:rgba(255,255,255,0.35);text-decoration:none;transition:color 0.2s;}
+.footer-links a:hover{color:var(--white);}
+.footer-copy{font-size:12px;color:rgba(255,255,255,0.2);}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.7s,transform 0.7s;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .nav-links{display:none;}
+  section{padding:80px 24px;}
+  .hero{padding:0 24px 48px;}
+  .about-grid,.services-header,.why-grid,.cta-inner{grid-template-columns:1fr;gap:40px;}
+  .services-grid,.how>.steps,.markets-grid{grid-template-columns:1fr;}
+  footer{flex-direction:column;gap:20px;text-align:center;}
+  .hero-cta-group{align-items:flex-start;}
+  .cta-right{text-align:left;}
+  .services-subtitle{text-align:left;max-width:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Edge<span>point</span></div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#how">Process</a>
+    <a href="#markets">Markets</a>
+    <a href="#contact" class="nav-cta">Get Started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-geo"></div>
+  <div class="hero-dot"></div>
+
+  <div class="hero-tag">iGaming Growth & Operations Consultancy</div>
+  <h1 class="hero-title">
+    Your edge<br>
+    <span class="accent">in new markets.</span>
+  </h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">
+      We help <strong>iGaming operators and affiliate networks</strong> enter new markets and scale operations — with research, strategy and execution plans that work on Monday.
+    </p>
+    <div class="hero-cta-group">
+      <a href="#contact" class="btn-primary">Start with Market Pulse →</a>
+      <span class="hero-scroll">scroll to explore</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="marquee-item">Market Entry Research <span class="marquee-sep"></span> GTM Strategy <span class="marquee-sep"></span> Operations Setup <span class="marquee-sep"></span> iGaming Growth <span class="marquee-sep"></span> Affiliate Scaling <span class="marquee-sep"></span> New Market Intelligence <span class="marquee-sep"></span></div>
+    <div class="marquee-item">Market Entry Research <span class="marquee-sep"></span> GTM Strategy <span class="marquee-sep"></span> Operations Setup <span class="marquee-sep"></span> iGaming Growth <span class="marquee-sep"></span> Affiliate Scaling <span class="marquee-sep"></span> New Market Intelligence <span class="marquee-sep"></span></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-left reveal">
+      <div class="section-label">Who we are</div>
+      <h2 class="about-title">
+        Boutique.<br>
+        <span class="stroke">Niche.</span><br>
+        Precise.
+      </h2>
+      <div class="about-stats">
+        <div class="stat">
+          <div class="stat-num">2<span>–4</span></div>
+          <div class="stat-label">weeks to first<br>actionable results</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">100<span>%</span></div>
+          <div class="stat-label">iGaming &amp;<br>affiliate focus</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">3</div>
+          <div class="stat-label">core services,<br>no bloat</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">EU<span>+</span></div>
+          <div class="stat-label">LatAm · APAC<br>market coverage</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-right reveal">
+      <p class="about-text">
+        Edgepoint is a <strong>boutique growth & operations consultancy</strong> working exclusively with iGaming operators and affiliate networks.
+      </p>
+      <p class="about-text">
+        We combine <strong>deep market research</strong> with <strong>hands-on operational expertise</strong> — so you get not just a strategy deck, but a plan your team can actually execute.
+      </p>
+      <p class="about-text">
+        Most consultants understand either growth or operations. We speak both languages — and we know iGaming from the inside, not from the outside looking in.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header reveal">
+    <h2 class="services-title">What we<br><span>deliver</span></h2>
+    <p class="services-subtitle">Three focused services. No retainers until you've seen what we can do.</p>
+  </div>
+  <div class="services-grid reveal">
+
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-tag">Entry Point</div>
+      <div class="service-name">Market Pulse</div>
+      <div class="service-price">$3,500</div>
+      <p class="service-desc">Rapid 2-week intelligence report on a target market. Know before you commit.</p>
+      <ul class="service-list">
+        <li>Regulatory landscape overview</li>
+        <li>Competitor mapping (top 5–8)</li>
+        <li>Traffic &amp; acquisition channels</li>
+        <li>Key risks &amp; entry barriers</li>
+        <li>Go / no-go recommendation</li>
+      </ul>
+    </div>
+
+    <div class="service-card" style="background:#14141c;border:1px solid rgba(198,255,0,0.2);">
+      <div class="service-num">02</div>
+      <div class="service-tag" style="background:rgba(198,255,0,0.2);">⭐ Most Popular</div>
+      <div class="service-name">Market Entry Pack</div>
+      <div class="service-price">$8,500</div>
+      <p class="service-desc">Full research + GTM strategy + ops readiness plan. Everything you need to launch right.</p>
+      <ul class="service-list">
+        <li>Full Market Pulse report</li>
+        <li>GTM strategy &amp; positioning</li>
+        <li>Channel prioritisation framework</li>
+        <li>Ops readiness assessment</li>
+        <li>90-day execution roadmap</li>
+        <li>Kick-off presentation &amp; Q&amp;A</li>
+      </ul>
+    </div>
+
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-tag">Ongoing</div>
+      <div class="service-name">Growth Partner</div>
+      <div class="service-price">$7,500<span style="font-size:20px;color:rgba(198,255,0,0.5)">/mo</span></div>
+      <p class="service-desc">Embedded growth & ops team for 3–6 months. We become part of your team.</p>
+      <ul class="service-list">
+        <li>Fractional Growth strategist</li>
+        <li>Fractional Ops director</li>
+        <li>Weekly syncs + async support</li>
+        <li>Hiring &amp; team structure guidance</li>
+        <li>Ongoing market monitoring</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="how" id="how">
+  <div class="section-label reveal">Our Process</div>
+  <h2 class="how-title reveal">How it works</h2>
+  <div class="steps reveal">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-icon">🎯</div>
+      <div class="step-title">Discovery Call</div>
+      <p class="step-desc">30-minute conversation. We map your current situation, goals and the specific market or challenge you're tackling.</p>
+      <span class="step-time">30 minutes</span>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-icon">🔍</div>
+      <div class="step-title">Deep Research</div>
+      <p class="step-desc">We go deep on the market — regulatory, competitive, operational. Primary sources, not recycled reports.</p>
+      <span class="step-time">Week 1–2</span>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-icon">⚡</div>
+      <div class="step-title">Strategy & Plan</div>
+      <p class="step-desc">Clear GTM strategy and ops roadmap tied to your specific situation. Actionable from day one.</p>
+      <span class="step-time">Week 2–3</span>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-icon">🚀</div>
+      <div class="step-title">Execution Support</div>
+      <p class="step-desc">We present findings, answer every question and stay available as you execute. Or join you as Growth Partner.</p>
+      <span class="step-time">Week 4+</span>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why">
+  <div class="why-grid">
+    <div class="why-left reveal">
+      <h2 class="why-title">Why<br><span>Edgepoint?</span></h2>
+      <p class="why-text">
+        The iGaming market is small enough that <strong>reputation is everything</strong> — and large enough that generic advice destroys launches.
+      </p>
+      <p class="why-text">
+        We've been inside the industry — not observing it from the outside. That changes how we ask questions, what we look for, and what we deliver.
+      </p>
+    </div>
+    <div class="why-right reveal">
+      <div class="diff-item">
+        <div>
+          <div class="diff-label them">Others</div>
+          <div class="diff-text them">Generic consultants learning your industry</div>
+        </div>
+        <div>
+          <div class="diff-label us">Edgepoint</div>
+          <div class="diff-text us">iGaming-only focus, deep vertical knowledge</div>
+        </div>
+      </div>
+      <div class="diff-item">
+        <div>
+          <div class="diff-label them">Others</div>
+          <div class="diff-text them">Slide decks with 90-day timelines</div>
+        </div>
+        <div>
+          <div class="diff-label us">Edgepoint</div>
+          <div class="diff-text us">Actionable plan ready in 2–4 weeks</div>
+        </div>
+      </div>
+      <div class="diff-item">
+        <div>
+          <div class="diff-label them">Others</div>
+          <div class="diff-text them">Strategy OR operations, rarely both</div>
+        </div>
+        <div>
+          <div class="diff-label us">Edgepoint</div>
+          <div class="diff-text us">Growth + Ops combined — one engagement</div>
+        </div>
+      </div>
+      <div class="diff-item">
+        <div>
+          <div class="diff-label them">Others</div>
+          <div class="diff-text them">Long retainers before proving value</div>
+        </div>
+        <div>
+          <div class="diff-label us">Edgepoint</div>
+          <div class="diff-text us">Start small. See results. Scale if it works.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKETS -->
+<section class="markets" id="markets">
+  <div class="section-label reveal">Market Coverage</div>
+  <h2 class="markets-title reveal">Where we operate</h2>
+  <p class="markets-sub reveal">Primary research in key iGaming regions — not recycled data.</p>
+  <div class="markets-grid reveal">
+    <div class="market-card">
+      <div class="market-flag">🇪🇺</div>
+      <div class="market-name">Europe</div>
+      <div class="market-tags">
+        <span class="market-tag">Malta / MGA</span>
+        <span class="market-tag">Germany</span>
+        <span class="market-tag">Netherlands</span>
+        <span class="market-tag">Sweden</span>
+        <span class="market-tag">UK / UKGC</span>
+      </div>
+    </div>
+    <div class="market-card">
+      <div class="market-flag">🌎</div>
+      <div class="market-name">Latin America</div>
+      <div class="market-tags">
+        <span class="market-tag">Brazil</span>
+        <span class="market-tag">Mexico</span>
+        <span class="market-tag">Colombia</span>
+        <span class="market-tag">Peru</span>
+        <span class="market-tag">Argentina</span>
+      </div>
+    </div>
+    <div class="market-card">
+      <div class="market-flag">🌏</div>
+      <div class="market-name">Asia Pacific</div>
+      <div class="market-tags">
+        <span class="market-tag">Philippines</span>
+        <span class="market-tag">India</span>
+        <span class="market-tag">Japan</span>
+        <span class="market-tag">Thailand</span>
+        <span class="market-tag">Vietnam</span>
+      </div>
+    </div>
+    <div class="market-card">
+      <div class="market-flag">🌍</div>
+      <div class="market-name">CIS & Eastern Europe</div>
+      <div class="market-tags">
+        <span class="market-tag">Ukraine</span>
+        <span class="market-tag">Kazakhstan</span>
+        <span class="market-tag">Georgia</span>
+        <span class="market-tag">Armenia</span>
+      </div>
+    </div>
+    <div class="market-card">
+      <div class="market-flag">🇬🇧</div>
+      <div class="market-name">Tier-1 English</div>
+      <div class="market-tags">
+        <span class="market-tag">United Kingdom</span>
+        <span class="market-tag">Ireland</span>
+        <span class="market-tag">Canada</span>
+        <span class="market-tag">Australia</span>
+      </div>
+    </div>
+    <div class="market-card" style="border-style:dashed;background:transparent;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:160px;">
+      <div style="font-size:24px;margin-bottom:8px;">+</div>
+      <div class="market-name" style="font-size:15px;">Your target market</div>
+      <div style="font-size:12px;color:var(--mid);margin-top:6px;">Don't see it? Let's talk.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-inner reveal">
+    <h2 class="cta-title">Ready to find your edge?</h2>
+    <div class="cta-right">
+      <p class="cta-text">Start with a 30-minute call.<br>No commitment. Real insights.</p>
+      <a href="mailto:hello@edgepoint.io" class="btn-dark">Book Discovery Call →</a><br>
+      <a href="mailto:hello@edgepoint.io" class="btn-outline">or email hello@edgepoint.io</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Edge<span>point</span></div>
+  <div class="footer-links">
+    <a href="#services">Services</a>
+    <a href="#how">Process</a>
+    <a href="#markets">Markets</a>
+    <a href="mailto:hello@edgepoint.io">Contact</a>
+  </div>
+  <div class="footer-copy">© 2025 Edgepoint. iGaming Growth & Operations.</div>
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('a,button,.service-card,.market-card,.step').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='20px';cursor.style.height='20px';ring.style.width='52px';ring.style.height='52px';ring.style.opacity='0.5';});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';ring.style.width='36px';ring.style.height='36px';ring.style.opacity='1';});
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// Nav background on scroll
+window.addEventListener('scroll',()=>{
+  const n=document.querySelector('nav');
+  if(window.scrollY>80){n.style.background='rgba(8,8,14,0.95)';n.style.backdropFilter='blur(12px)';}
+  else{n.style.background='transparent';n.style.backdropFilter='none';}
+});
+</script>
+</body>
+</html>
