@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2308080e'/><text y='24' x='4' font-family='sans-serif' font-weight='900' font-size='22' fill='%23c6ff00'>E</text></svg>">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Edgepoint — iGaming Growth & Operations</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2308080e'/><text y='24' x='4' font-family='Arial,sans-serif' font-weight='900' font-size='22' fill='%23c6ff00'>E</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
 <style>
@@ -21,14 +21,14 @@
   --syne:'Syne',sans-serif;
   --dm:'DM Sans',sans-serif;
 }
-
+ 
 html{scroll-behavior:smooth;}
 body{background:var(--paper);color:var(--ink);font-family:var(--dm);overflow-x:hidden;cursor:none;}
-
+ 
 /* CURSOR */
 .cursor{position:fixed;width:12px;height:12px;background:var(--lime);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s,width 0.3s,height 0.3s;mix-blend-mode:difference;}
 .cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(255,255,255,0.7);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.15s ease,width 0.3s,height 0.3s,opacity 0.3s;mix-blend-mode:difference;}
-
+ 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;mix-blend-mode:normal;}
 .nav-logo{font-family:var(--syne);font-size:18px;font-weight:800;letter-spacing:-0.02em;color:var(--white);}
@@ -41,7 +41,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .nav-scrolled .nav-logo{color:var(--white);}
 .nav-scrolled .nav-links a{color:rgba(255,255,255,0.5);}
 .nav-scrolled .nav-cta{background:var(--lime)!important;color:var(--ink)!important;border-color:transparent;}
-
+ 
 /* HERO */
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 64px;position:relative;overflow:hidden;}
 .hero-bg{position:absolute;inset:0;background:var(--ink);}
@@ -52,7 +52,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 @keyframes spin{to{transform:rotate(360deg);}}
 .hero-dot{position:absolute;bottom:120px;right:48px;width:8px;height:8px;background:var(--lime);border-radius:50%;animation:pulse 2s ease-in-out infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
-
+ 
 .hero-tag{font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:24px;position:relative;z-index:1;
   opacity:0;animation:fadeUp 0.8s 0.2s forwards;}
 .hero-title{font-family:var(--bebas);font-size:clamp(80px,11vw,160px);line-height:0.92;color:var(--white);letter-spacing:-0.01em;position:relative;z-index:1;
@@ -67,19 +67,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .btn-primary:hover{transform:scale(1.04);background:#d4ff1a;}
 .hero-scroll{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
 .hero-scroll::before{content:'';display:block;width:24px;height:1px;background:rgba(255,255,255,0.2);}
-
+ 
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
-
+ 
 /* MARQUEE */
 .marquee-wrap{background:var(--lime);overflow:hidden;padding:14px 0;border-top:none;}
 .marquee-track{display:flex;white-space:nowrap;animation:marquee 20s linear infinite;}
 .marquee-item{font-family:var(--bebas);font-size:20px;letter-spacing:0.06em;color:var(--ink);padding:0 32px;display:flex;align-items:center;gap:32px;}
 .marquee-sep{width:6px;height:6px;background:var(--ink);border-radius:50%;opacity:0.4;}
 @keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-
+ 
 /* SECTION */
 section{padding:120px 48px;}
-
+ 
 /* ABOUT */
 .about{background:var(--paper);}
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
@@ -95,7 +95,7 @@ section{padding:120px 48px;}
 .stat-num{font-family:var(--bebas);font-size:48px;color:var(--ink);line-height:1;}
 .stat-num span{color:var(--lime-dark);}
 .stat-label{font-size:14px;color:var(--mid);margin-top:6px;line-height:1.5;}
-
+ 
 /* SERVICES */
 .services{background:var(--ink);padding:120px 48px;}
 .services-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px;}
@@ -115,7 +115,7 @@ section{padding:120px 48px;}
 .service-list{list-style:none;margin-top:20px;}
 .service-list li{font-size:14px;color:rgba(255,255,255,0.45);padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:8px;}
 .service-list li::before{content:'→';color:var(--lime);font-size:12px;flex-shrink:0;}
-
+ 
 /* HOW */
 .how{background:var(--paper);}
 .how-title{font-family:var(--bebas);font-size:clamp(40px,5vw,72px);margin-bottom:64px;line-height:1;}
@@ -127,7 +127,7 @@ section{padding:120px 48px;}
 .step-title{font-family:var(--syne);font-size:16px;font-weight:700;margin-bottom:10px;color:var(--ink);}
 .step-desc{font-size:15px;line-height:1.7;color:var(--mid);}
 .step-time{display:inline-block;margin-top:16px;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--lime-dark);}
-
+ 
 /* WHY */
 .why{background:#0d0d12;padding:120px 48px;}
 .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
@@ -145,7 +145,7 @@ section{padding:120px 48px;}
 .diff-text{font-size:15px;line-height:1.6;}
 .diff-text.them{color:rgba(255,255,255,0.25);text-decoration:line-through;text-decoration-color:rgba(255,255,255,0.15);}
 .diff-text.us{color:rgba(255,255,255,0.8);}
-
+ 
 /* MARKETS */
 .markets{background:var(--paper);}
 .markets-title{font-family:var(--bebas);font-size:clamp(40px,5vw,72px);margin-bottom:12px;line-height:1;}
@@ -158,7 +158,7 @@ section{padding:120px 48px;}
 .market-name{font-family:var(--syne);font-size:18px;font-weight:700;margin-bottom:10px;}
 .market-tags{display:flex;flex-wrap:wrap;gap:6px;}
 .market-tag{font-size:13px;background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:4px 12px;color:var(--mid);}
-
+ 
 /* CTA */
 .cta-section{background:var(--lime);padding:100px 48px;}
 .cta-inner{display:flex;align-items:center;justify-content:space-between;gap:40px;}
@@ -168,7 +168,7 @@ section{padding:120px 48px;}
 .btn-dark{background:var(--ink);color:var(--lime);padding:18px 40px;border-radius:100px;font-family:var(--syne);font-size:15px;font-weight:700;text-decoration:none;display:inline-block;transition:transform 0.2s;}
 .btn-dark:hover{transform:scale(1.04);}
 .btn-outline{display:inline-block;margin-top:12px;font-size:13px;color:rgba(0,0,0,0.5);text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.2);padding-bottom:2px;}
-
+ 
 /* FOOTER */
 footer{background:var(--ink);padding:48px;display:flex;align-items:center;justify-content:space-between;}
 .footer-logo{font-family:var(--syne);font-size:20px;font-weight:800;color:var(--white);}
@@ -177,11 +177,11 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
 .footer-links a{font-size:13px;color:rgba(255,255,255,0.35);text-decoration:none;transition:color 0.2s;}
 .footer-links a:hover{color:var(--white);}
 .footer-copy{font-size:12px;color:rgba(255,255,255,0.2);}
-
+ 
 /* SCROLL REVEAL */
 .reveal{opacity:0;transform:translateY(32px);transition:opacity 0.7s,transform 0.7s;}
 .reveal.visible{opacity:1;transform:translateY(0);}
-
+ 
 /* RESPONSIVE */
 @media(max-width:900px){
   nav{padding:16px 24px;}
@@ -195,47 +195,55 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
   .cta-right{text-align:left;}
   .services-subtitle{text-align:left;max-width:none;}
 }
+/* LANG SWITCHER */
+.lang-switch{display:flex;align-items:center;gap:2px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:100px;padding:3px;margin-left:8px;}
+.lang-btn{font-size:12px;font-weight:600;letter-spacing:0.05em;color:rgba(255,255,255,0.45);background:none;border:none;cursor:pointer;padding:5px 12px;border-radius:100px;transition:all 0.2s;font-family:var(--syne);}
+.lang-btn.active{background:var(--lime);color:var(--ink);}
 </style>
 </head>
 <body>
-
+ 
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
-
+ 
 <!-- NAV -->
 <nav>
   <div class="nav-logo">Edge<span>point</span></div>
   <div class="nav-links">
-    <a href="#services">Services</a>
-    <a href="#how">Process</a>
-    <a href="#markets">Markets</a>
-    <a href="#contact" class="nav-cta">Get Started</a>
+    <a href="#services" data-i18n="nav_services">Services</a>
+    <a href="#how" data-i18n="nav_process">Process</a>
+    <a href="#markets" data-i18n="nav_markets">Markets</a>
+    <a href="#contact" class="nav-cta" data-i18n="nav_cta">Get Started</a>
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('ru')">RU</button>
+    </div>
   </div>
 </nav>
-
+ 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-grain"></div>
   <div class="hero-geo"></div>
   <div class="hero-dot"></div>
-
-  <div class="hero-tag">iGaming Growth & Operations Consultancy</div>
+ 
+  <div class="hero-tag" data-i18n="hero_tag">iGaming Growth & Operations Consultancy</div>
   <h1 class="hero-title">
-    Your edge<br>
-    <span class="accent">in new markets.</span>
+    <span data-i18n="hero_title1">Your edge</span><br>
+    <span class="accent" data-i18n="hero_title2">in new markets.</span>
   </h1>
   <div class="hero-bottom">
-    <p class="hero-desc">
+    <p class="hero-desc" data-i18n-html="hero_desc">
       We help <strong>iGaming operators and affiliate networks</strong> enter new markets and scale operations — with research, strategy and execution plans that work on Monday.
     </p>
     <div class="hero-cta-group">
-      <a href="#contact" class="btn-primary">Start with Market Pulse →</a>
-      <span class="hero-scroll">scroll to explore</span>
+      <a href="#contact" class="btn-primary" data-i18n="hero_btn">Start with Market Pulse →</a>
+      <span class="hero-scroll" data-i18n="hero_scroll">scroll to explore</span>
     </div>
   </div>
 </section>
-
+ 
 <!-- MARQUEE -->
 <div class="marquee-wrap">
   <div class="marquee-track">
@@ -243,205 +251,178 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
     <div class="marquee-item">Market Entry Research <span class="marquee-sep"></span> GTM Strategy <span class="marquee-sep"></span> Operations Setup <span class="marquee-sep"></span> iGaming Growth <span class="marquee-sep"></span> Affiliate Scaling <span class="marquee-sep"></span> New Market Intelligence <span class="marquee-sep"></span></div>
   </div>
 </div>
-
+ 
 <!-- ABOUT -->
 <section class="about" id="about">
   <div class="about-grid">
     <div class="about-left reveal">
-      <div class="section-label">Who we are</div>
+      <div class="section-label" data-i18n="about_label">Who we are</div>
       <h2 class="about-title">
-        Boutique.<br>
-        <span class="stroke">Niche.</span><br>
-        Precise.
+        <span data-i18n="about_title1">Boutique.</span><br>
+        <span class="stroke" data-i18n="about_title2">Niche.</span><br>
+        <span data-i18n="about_title3">Precise.</span>
       </h2>
       <div class="about-stats">
         <div class="stat">
           <div class="stat-num">2<span>–4</span></div>
-          <div class="stat-label">weeks to first<br>actionable results</div>
+          <div class="stat-label" data-i18n-html="stat1">weeks to first<br>actionable results</div>
         </div>
         <div class="stat">
           <div class="stat-num">100<span>%</span></div>
-          <div class="stat-label">iGaming &amp;<br>affiliate focus</div>
+          <div class="stat-label" data-i18n-html="stat2">iGaming &amp;<br>affiliate focus</div>
         </div>
         <div class="stat">
           <div class="stat-num">3</div>
-          <div class="stat-label">core services,<br>no bloat</div>
+          <div class="stat-label" data-i18n-html="stat3">core services,<br>no bloat</div>
         </div>
         <div class="stat">
           <div class="stat-num">EU<span>+</span></div>
-          <div class="stat-label">LatAm · APAC<br>market coverage</div>
+          <div class="stat-label" data-i18n-html="stat4">LatAm · APAC<br>market coverage</div>
         </div>
       </div>
     </div>
     <div class="about-right reveal">
-      <p class="about-text">
+      <p class="about-text" data-i18n-html="about_p1">
         Edgepoint is a <strong>boutique growth & operations consultancy</strong> working exclusively with iGaming operators and affiliate networks.
       </p>
-      <p class="about-text">
+      <p class="about-text" data-i18n-html="about_p2">
         We combine <strong>deep market research</strong> with <strong>hands-on operational expertise</strong> — so you get not just a strategy deck, but a plan your team can actually execute.
       </p>
-      <p class="about-text">
+      <p class="about-text" data-i18n-html="about_p3">
         Most consultants understand either growth or operations. We speak both languages — and we know iGaming from the inside, not from the outside looking in.
       </p>
     </div>
   </div>
 </section>
-
+ 
 <!-- SERVICES -->
 <section class="services" id="services">
   <div class="services-header reveal">
-    <h2 class="services-title">What we<br><span>deliver</span></h2>
-    <p class="services-subtitle">Three focused services. No retainers until you've seen what we can do.</p>
+    <h2 class="services-title" data-i18n-html="services_title">What we<br><span>deliver</span></h2>
+    <p class="services-subtitle" data-i18n="services_sub">Three focused services. No retainers until you've seen what we can do.</p>
   </div>
   <div class="services-grid reveal">
-
+ 
     <div class="service-card">
       <div class="service-num">01</div>
-      <div class="service-tag">Entry Point</div>
-      <div class="service-name">Market Pulse</div>
-      <div class="service-price">$3,500</div>
-      <p class="service-desc">Rapid 2-week intelligence report on a target market. Know before you commit.</p>
+      <div class="service-tag" data-i18n="s1_tag">Entry Point</div>
+      <div class="service-name" data-i18n="s1_name">Market Pulse</div>
+      <p class="service-desc" data-i18n="s1_desc">Rapid 2-week intelligence report on a target market. Know before you commit.</p>
       <ul class="service-list">
-        <li>Regulatory landscape overview</li>
-        <li>Competitor mapping (top 5–8)</li>
-        <li>Traffic &amp; acquisition channels</li>
-        <li>Key risks &amp; entry barriers</li>
-        <li>Go / no-go recommendation</li>
+        <li data-i18n="s1_l1">Regulatory landscape overview</li>
+        <li data-i18n="s1_l2">Competitor mapping (top 5–8)</li>
+        <li data-i18n="s1_l3">Traffic &amp; acquisition channels</li>
+        <li data-i18n="s1_l4">Key risks &amp; entry barriers</li>
+        <li data-i18n="s1_l5">Go / no-go recommendation</li>
       </ul>
     </div>
-
+ 
     <div class="service-card" style="background:#14141c;border:1px solid rgba(198,255,0,0.2);">
       <div class="service-num">02</div>
-      <div class="service-tag" style="background:rgba(198,255,0,0.2);">⭐ Most Popular</div>
-      <div class="service-name">Market Entry Pack</div>
-      <div class="service-price">$8,500</div>
-      <p class="service-desc">Full research + GTM strategy + ops readiness plan. Everything you need to launch right.</p>
+      <div class="service-tag" style="background:rgba(198,255,0,0.2);" data-i18n="s2_tag">⭐ Most Popular</div>
+      <div class="service-name" data-i18n="s2_name">Market Entry Pack</div>
+      <p class="service-desc" data-i18n="s2_desc">Full research + GTM strategy + ops readiness plan. Everything you need to launch right.</p>
       <ul class="service-list">
-        <li>Full Market Pulse report</li>
-        <li>GTM strategy &amp; positioning</li>
-        <li>Channel prioritisation framework</li>
-        <li>Ops readiness assessment</li>
-        <li>90-day execution roadmap</li>
-        <li>Kick-off presentation &amp; Q&amp;A</li>
+        <li data-i18n="s2_l1">Full Market Pulse report</li>
+        <li data-i18n="s2_l2">GTM strategy &amp; positioning</li>
+        <li data-i18n="s2_l3">Channel prioritisation framework</li>
+        <li data-i18n="s2_l4">Ops readiness assessment</li>
+        <li data-i18n="s2_l5">90-day execution roadmap</li>
+        <li data-i18n="s2_l6">Kick-off presentation &amp; Q&amp;A</li>
       </ul>
     </div>
-
+ 
     <div class="service-card">
       <div class="service-num">03</div>
-      <div class="service-tag">Ongoing</div>
-      <div class="service-name">Growth Partner</div>
-      <div class="service-price">$7,500<span style="font-size:20px;color:rgba(198,255,0,0.5)">/mo</span></div>
-      <p class="service-desc">Embedded growth & ops team for 3–6 months. We become part of your team.</p>
+      <div class="service-tag" data-i18n="s3_tag">Ongoing</div>
+      <div class="service-name" data-i18n="s3_name">Growth Partner</div>
+      <p class="service-desc" data-i18n="s3_desc">Embedded growth & ops team for 3–6 months. We become part of your team.</p>
       <ul class="service-list">
-        <li>Fractional Growth strategist</li>
-        <li>Fractional Ops director</li>
-        <li>Weekly syncs + async support</li>
-        <li>Hiring &amp; team structure guidance</li>
-        <li>Ongoing market monitoring</li>
+        <li data-i18n="s3_l1">Fractional Growth strategist</li>
+        <li data-i18n="s3_l2">Fractional Ops director</li>
+        <li data-i18n="s3_l3">Weekly syncs + async support</li>
+        <li data-i18n="s3_l4">Hiring &amp; team structure guidance</li>
+        <li data-i18n="s3_l5">Ongoing market monitoring</li>
       </ul>
     </div>
-
+ 
   </div>
 </section>
-
+ 
 <!-- HOW -->
 <section class="how" id="how">
-  <div class="section-label reveal">Our Process</div>
-  <h2 class="how-title reveal">How it works</h2>
+  <div class="section-label reveal" data-i18n="how_label">Our Process</div>
+  <h2 class="how-title reveal" data-i18n="how_title">How it works</h2>
   <div class="steps reveal">
     <div class="step">
       <div class="step-num">1</div>
       <div class="step-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="var(--lime)" stroke="var(--lime)"/></svg></div>
-      <div class="step-title">Discovery Call</div>
-      <p class="step-desc">30-minute conversation. We map your current situation, goals and the specific market or challenge you're tackling.</p>
-      <span class="step-time">30 minutes</span>
+      <div class="step-title" data-i18n="step1_title">Discovery Call</div>
+      <p class="step-desc" data-i18n="step1_desc">30-minute conversation. We map your current situation, goals and the specific market or challenge you're tackling.</p>
+      <span class="step-time" data-i18n="step1_time">30 minutes</span>
     </div>
     <div class="step">
       <div class="step-num">2</div>
       <div class="step-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
-      <div class="step-title">Deep Research</div>
-      <p class="step-desc">We go deep on the market — regulatory, competitive, operational. Primary sources, not recycled reports.</p>
-      <span class="step-time">Week 1–2</span>
+      <div class="step-title" data-i18n="step2_title">Deep Research</div>
+      <p class="step-desc" data-i18n="step2_desc">We go deep on the market — regulatory, competitive, operational. Primary sources, not recycled reports.</p>
+      <span class="step-time" data-i18n="step2_time">Week 1–2</span>
     </div>
     <div class="step">
       <div class="step-num">3</div>
       <div class="step-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="rgba(198,255,0,0.15)" stroke="var(--lime)"/></svg></div>
-      <div class="step-title">Strategy & Plan</div>
-      <p class="step-desc">Clear GTM strategy and ops roadmap tied to your specific situation. Actionable from day one.</p>
-      <span class="step-time">Week 2–3</span>
+      <div class="step-title" data-i18n="step3_title">Strategy & Plan</div>
+      <p class="step-desc" data-i18n="step3_desc">Clear GTM strategy and ops roadmap tied to your specific situation. Actionable from day one.</p>
+      <span class="step-time" data-i18n="step3_time">Week 2–3</span>
     </div>
     <div class="step">
       <div class="step-num">4</div>
       <div class="step-icon"><svg viewBox="0 0 24 24"><path d="M12 2C12 2 16 6 16 12C16 15 14.5 17.5 12 19C9.5 17.5 8 15 8 12C8 6 12 2 12 2Z"/><path d="M12 19L10 22H14L12 19Z"/><line x1="8" y1="12" x2="4" y2="14"/><line x1="16" y1="12" x2="20" y2="14"/></svg></div>
-      <div class="step-title">Execution Support</div>
-      <p class="step-desc">We present findings, answer every question and stay available as you execute. Or join you as Growth Partner.</p>
-      <span class="step-time">Week 4+</span>
+      <div class="step-title" data-i18n="step4_title">Execution Support</div>
+      <p class="step-desc" data-i18n="step4_desc">We present findings, answer every question and stay available as you execute. Or join you as Growth Partner.</p>
+      <span class="step-time" data-i18n="step4_time">Week 4+</span>
     </div>
   </div>
 </section>
-
+ 
 <!-- WHY -->
 <section class="why">
   <div class="why-grid">
     <div class="why-left reveal">
       <h2 class="why-title">Why<br><span>Edgepoint?</span></h2>
-      <p class="why-text">
+      <p class="why-text" data-i18n-html="why_p1">
         The iGaming market is small enough that <strong>reputation is everything</strong> — and large enough that generic advice destroys launches.
       </p>
-      <p class="why-text">
+      <p class="why-text" data-i18n-html="why_p2">
         We've been inside the industry — not observing it from the outside. That changes how we ask questions, what we look for, and what we deliver.
       </p>
     </div>
     <div class="why-right reveal">
       <div class="diff-item">
-        <div>
-          <div class="diff-label them">Others</div>
-          <div class="diff-text them">Generic consultants learning your industry</div>
-        </div>
-        <div>
-          <div class="diff-label us">Edgepoint</div>
-          <div class="diff-text us">iGaming-only focus, deep vertical knowledge</div>
-        </div>
+        <div><div class="diff-label them" data-i18n="others">Others</div><div class="diff-text them" data-i18n="d1_them">Generic consultants learning your industry</div></div>
+        <div><div class="diff-label us">Edgepoint</div><div class="diff-text us" data-i18n="d1_us">iGaming-only focus, deep vertical knowledge</div></div>
       </div>
       <div class="diff-item">
-        <div>
-          <div class="diff-label them">Others</div>
-          <div class="diff-text them">Slide decks with 90-day timelines</div>
-        </div>
-        <div>
-          <div class="diff-label us">Edgepoint</div>
-          <div class="diff-text us">Actionable plan ready in 2–4 weeks</div>
-        </div>
+        <div><div class="diff-label them" data-i18n="others">Others</div><div class="diff-text them" data-i18n="d2_them">Slide decks with 90-day timelines</div></div>
+        <div><div class="diff-label us">Edgepoint</div><div class="diff-text us" data-i18n="d2_us">Actionable plan ready in 2–4 weeks</div></div>
       </div>
       <div class="diff-item">
-        <div>
-          <div class="diff-label them">Others</div>
-          <div class="diff-text them">Strategy OR operations, rarely both</div>
-        </div>
-        <div>
-          <div class="diff-label us">Edgepoint</div>
-          <div class="diff-text us">Growth + Ops combined — one engagement</div>
-        </div>
+        <div><div class="diff-label them" data-i18n="others">Others</div><div class="diff-text them" data-i18n="d3_them">Strategy OR operations, rarely both</div></div>
+        <div><div class="diff-label us">Edgepoint</div><div class="diff-text us" data-i18n="d3_us">Growth + Ops combined — one engagement</div></div>
       </div>
       <div class="diff-item">
-        <div>
-          <div class="diff-label them">Others</div>
-          <div class="diff-text them">Long retainers before proving value</div>
-        </div>
-        <div>
-          <div class="diff-label us">Edgepoint</div>
-          <div class="diff-text us">Start small. See results. Scale if it works.</div>
-        </div>
+        <div><div class="diff-label them" data-i18n="others">Others</div><div class="diff-text them" data-i18n="d4_them">Long retainers before proving value</div></div>
+        <div><div class="diff-label us">Edgepoint</div><div class="diff-text us" data-i18n="d4_us">Start small. See results. Scale if it works.</div></div>
       </div>
     </div>
   </div>
 </section>
-
+ 
 <!-- MARKETS -->
 <section class="markets" id="markets">
-  <div class="section-label reveal">Market Coverage</div>
-  <h2 class="markets-title reveal">Where we operate</h2>
-  <p class="markets-sub reveal">Primary research in key iGaming regions — not recycled data.</p>
+  <div class="section-label reveal" data-i18n="markets_label">Market Coverage</div>
+  <h2 class="markets-title reveal" data-i18n="markets_title">Where we operate</h2>
+  <p class="markets-sub reveal" data-i18n="markets_sub">Primary research in key iGaming regions — not recycled data.</p>
   <div class="markets-grid reveal">
     <div class="market-card">
       <div class="market-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3C12 3 9 7 9 12C9 17 12 21 12 21"/><path d="M12 3C12 3 15 7 15 12C15 17 12 21 12 21"/><line x1="3.5" y1="9" x2="20.5" y2="9"/><line x1="3.5" y1="15" x2="20.5" y2="15"/></svg></div>
@@ -502,33 +483,150 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
     </div>
   </div>
 </section>
-
+ 
 <!-- CTA -->
 <section class="cta-section" id="contact">
   <div class="cta-inner reveal">
-    <h2 class="cta-title">Ready to find your edge?</h2>
+    <h2 class="cta-title" data-i18n="cta_title">Ready to find your edge?</h2>
     <div class="cta-right">
-      <p class="cta-text">Start with a 30-minute call.<br>No commitment. Real insights.</p>
-      <a href="mailto:hello@edgepoint.io" class="btn-dark">Book Discovery Call →</a><br>
-      <a href="mailto:hello@edgepoint.io" class="btn-outline">or email hello@edgepoint.io</a>
+      <p class="cta-text" data-i18n-html="cta_text">Start with a 30-minute call.<br>No commitment. Real insights.</p>
+      <a href="mailto:hello@edgepoint.io" class="btn-dark" data-i18n="cta_btn">Book Discovery Call →</a><br>
+      <a href="mailto:hello@edgepoint.io" class="btn-outline">hello@edgepoint.io</a>
     </div>
   </div>
 </section>
-
+ 
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">Edge<span>point</span></div>
   <div class="footer-links">
-    <a href="#services">Services</a>
-    <a href="#how">Process</a>
-    <a href="#markets">Markets</a>
-    <a href="mailto:hello@edgepoint.io">Contact</a>
+    <a href="#services" data-i18n="nav_services">Services</a>
+    <a href="#how" data-i18n="nav_process">Process</a>
+    <a href="#markets" data-i18n="nav_markets">Markets</a>
+    <a href="mailto:hello@edgepoint.io" data-i18n="footer_contact">Contact</a>
   </div>
-  <div class="footer-copy">© 2025 Edgepoint. iGaming Growth & Operations.</div>
+  <div class="footer-copy" data-i18n="footer_copy">© 2025 Edgepoint. iGaming Growth & Operations.</div>
 </footer>
-
+ 
 <script>
-// Custom cursor
+// ── TRANSLATIONS ──
+const T = {
+  en: {
+    nav_services:'Services', nav_process:'Process', nav_markets:'Markets', nav_cta:'Get Started',
+    hero_tag:'iGaming Growth & Operations Consultancy',
+    hero_title1:'Your edge', hero_title2:'in new markets.',
+    hero_desc:'We help <strong>iGaming operators and affiliate networks</strong> enter new markets and scale operations — with research, strategy and execution plans that work on Monday.',
+    hero_btn:'Start with Market Pulse →', hero_scroll:'scroll to explore',
+    about_label:'Who we are',
+    about_title1:'Boutique.', about_title2:'Niche.', about_title3:'Precise.',
+    stat1:'weeks to first<br>actionable results', stat2:'iGaming &amp;<br>affiliate focus',
+    stat3:'core services,<br>no bloat', stat4:'LatAm · APAC<br>market coverage',
+    about_p1:'Edgepoint is a <strong>boutique growth & operations consultancy</strong> working exclusively with iGaming operators and affiliate networks.',
+    about_p2:'We combine <strong>deep market research</strong> with <strong>hands-on operational expertise</strong> — so you get not just a strategy deck, but a plan your team can actually execute.',
+    about_p3:'Most consultants understand either growth or operations. We speak both languages — and we know iGaming from the inside, not from the outside looking in.',
+    services_title:'What we<br><span>deliver</span>',
+    services_sub:'Three focused services. No retainers until you\'ve seen what we can do.',
+    s1_tag:'Entry Point', s1_name:'Market Pulse',
+    s1_desc:'Rapid 2-week intelligence report on a target market. Know before you commit.',
+    s1_l1:'Regulatory landscape overview', s1_l2:'Competitor mapping (top 5–8)',
+    s1_l3:'Traffic & acquisition channels', s1_l4:'Key risks & entry barriers', s1_l5:'Go / no-go recommendation',
+    s2_tag:'⭐ Most Popular', s2_name:'Market Entry Pack',
+    s2_desc:'Full research + GTM strategy + ops readiness plan. Everything you need to launch right.',
+    s2_l1:'Full Market Pulse report', s2_l2:'GTM strategy & positioning',
+    s2_l3:'Channel prioritisation framework', s2_l4:'Ops readiness assessment',
+    s2_l5:'90-day execution roadmap', s2_l6:'Kick-off presentation & Q&A',
+    s3_tag:'Ongoing', s3_name:'Growth Partner',
+    s3_desc:'Embedded growth & ops team for 3–6 months. We become part of your team.',
+    s3_l1:'Fractional Growth strategist', s3_l2:'Fractional Ops director',
+    s3_l3:'Weekly syncs + async support', s3_l4:'Hiring & team structure guidance', s3_l5:'Ongoing market monitoring',
+    how_label:'Our Process', how_title:'How it works',
+    step1_title:'Discovery Call', step1_desc:'30-minute conversation. We map your current situation, goals and the specific market or challenge you\'re tackling.', step1_time:'30 minutes',
+    step2_title:'Deep Research', step2_desc:'We go deep on the market — regulatory, competitive, operational. Primary sources, not recycled reports.', step2_time:'Week 1–2',
+    step3_title:'Strategy & Plan', step3_desc:'Clear GTM strategy and ops roadmap tied to your specific situation. Actionable from day one.', step3_time:'Week 2–3',
+    step4_title:'Execution Support', step4_desc:'We present findings, answer every question and stay available as you execute. Or join you as Growth Partner.', step4_time:'Week 4+',
+    others:'Others',
+    why_p1:'The iGaming market is small enough that <strong>reputation is everything</strong> — and large enough that generic advice destroys launches.',
+    why_p2:'We\'ve been inside the industry — not observing it from the outside. That changes how we ask questions, what we look for, and what we deliver.',
+    d1_them:'Generic consultants learning your industry', d1_us:'iGaming-only focus, deep vertical knowledge',
+    d2_them:'Slide decks with 90-day timelines', d2_us:'Actionable plan ready in 2–4 weeks',
+    d3_them:'Strategy OR operations, rarely both', d3_us:'Growth + Ops combined — one engagement',
+    d4_them:'Long retainers before proving value', d4_us:'Start small. See results. Scale if it works.',
+    markets_label:'Market Coverage', markets_title:'Where we operate',
+    markets_sub:'Primary research in key iGaming regions — not recycled data.',
+    cta_title:'Ready to find your edge?',
+    cta_text:'Start with a 30-minute call.<br>No commitment. Real insights.',
+    cta_btn:'Book Discovery Call →',
+    footer_contact:'Contact', footer_copy:'© 2025 Edgepoint. iGaming Growth & Operations.'
+  },
+  ru: {
+    nav_services:'Услуги', nav_process:'Процесс', nav_markets:'Рынки', nav_cta:'Начать',
+    hero_tag:'iGaming Growth & Operations Консалтинг',
+    hero_title1:'Ваше преимущество', hero_title2:'на новых рынках.',
+    hero_desc:'Помогаем <strong>iGaming операторам и affiliate сетям</strong> выходить на новые рынки и масштабировать операционку — с исследованием, стратегией и планом который работает в понедельник.',
+    hero_btn:'Начать с Market Pulse →', hero_scroll:'листать вниз',
+    about_label:'Кто мы',
+    about_title1:'Boutique.', about_title2:'Niche.', about_title3:'Precise.',
+    stat1:'недели до первых<br>actionable данных', stat2:'iGaming &amp;<br>affiliate фокус',
+    stat3:'продукта,<br>без лишнего', stat4:'LatAm · APAC<br>покрытие рынков',
+    about_p1:'Edgepoint — <strong>бутик агентство Growth & Operations</strong>, работающее с iGaming операторами и affiliate сетями.',
+    about_p2:'Мы совмещаем <strong>глубокий анализ</strong> и <strong>операционную экспертизу</strong> — вы получаете не просто презентацию, а план который ваша команда может запустить.',
+    about_p3:'Большинство консультантов делают акцент либо на росте, либо на операционке. Мы говорим на обоих языках — и знаем iGaming изнутри, а не как наблюдатели снаружи.',
+    services_title:'Что мы<br><span>делаем</span>',
+    services_sub:'Three focused services. No retainers until you\'ve seen what we can do.',
+    s1_tag:'Entry Point', s1_name:'Market Pulse',
+    s1_desc:'Быстрый 2-недельный intelligence отчёт по целевому рынку. Знай прежде чем вложишь.',
+    s1_l1:'Обзор регуляторного ландшафта', s1_l2:'Маппинг конкурентов (топ 5–8)',
+    s1_l3:'Трафик и каналы привлечения', s1_l4:'Ключевые риски и барьеры входа', s1_l5:'Рекомендация go / no-go',
+    s2_tag:'⭐ Рекомендуем', s2_name:'Market Entry Pack',
+    s2_desc:'Полный ресёрч + GTM стратегия + ops plan. Всё что нужно для правильного запуска.',
+    s2_l1:'Полный Market Pulse отчёт', s2_l2:'GTM стратегия и позиционирование',
+    s2_l3:'Приоритизация каналов', s2_l4:'Оценка ops readiness',
+    s2_l5:'90-дневный roadmap исполнения', s2_l6:'Презентация и Q&A сессия',
+    s3_tag:'Ретейнер', s3_name:'Growth Partner',
+    s3_desc:'Встроенная Growth+Ops команда на 3–6 месяцев. Мы становимся частью вашей команды.',
+    s3_l1:'Fractional Growth стратег', s3_l2:'Fractional Ops директор',
+    s3_l3:'Еженедельные синки + async поддержка', s3_l4:'Найм и структура команды', s3_l5:'Мониторинг рынков',
+    how_label:'Как мы работаем', how_title:'Процесс в 4 шага',
+    step1_title:'Discovery Call', step1_desc:'30 минут. Карта текущей ситуации, цели и конкретный рынок или задача.', step1_time:'30 минут',
+    step2_title:'Deep Research', step2_desc:'Идём глубоко по рынку — regulatory, competitive, operational. Первичные источники, не переработанные отчёты.', step2_time:'Неделя 1–2',
+    step3_title:'Strategy & Plan', step3_desc:'Чёткая GTM стратегия и ops roadmap под вашу конкретную ситуацию. Actionable с первого дня.', step3_time:'Неделя 2–3',
+    step4_title:'Execution Support', step4_desc:'Презентуем результаты, отвечаем на каждый вопрос и остаёмся доступными при исполнении. Или входим как Growth Partner.', step4_time:'Неделя 4+',
+    others:'Другие',
+    why_p1:'iGaming рынок достаточно мал чтобы <strong>репутация решала всё</strong> — и достаточно велик чтобы общие советы убивали запуски.',
+    why_p2:'Мы были внутри индустрии — не наблюдали снаружи. Это меняет как мы задаём вопросы, что ищем и что доставляем.',
+    d1_them:'Общие консультанты учат вашу индустрию за ваш счёт', d1_us:'Только iGaming — знаем рынок изнутри',
+    d2_them:'Слайды через 90 дней', d2_us:'Actionable план за 2–4 недели',
+    d3_them:'Стратегия ИЛИ операционка, редко вместе', d3_us:'Growth + Ops в одном вовлечении',
+    d4_them:'Долгий ретейнер до доказательства ценности', d4_us:'Начни с малого. Убедись. Масштабируй.',
+    markets_label:'Покрытие рынков', markets_title:'Где мы работаем',
+    markets_sub:'Первичный ресёрч в ключевых iGaming регионах — не переработанные данные.',
+    cta_title:'Ready to find your edge?',
+    cta_text:'Начните с 30-минутного звонка.<br>Без обязательств. Реальные инсайты.',
+    cta_btn:'Записаться на Discovery Call →',
+    footer_contact:'Контакт', footer_copy:'© 2025 Edgepoint. iGaming Growth & Operations.'
+  }
+};
+ 
+let currentLang = 'en';
+ 
+function setLang(lang) {
+  currentLang = lang;
+  const t = T[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key] !== undefined) el.textContent = t[key];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    if (t[key] !== undefined) el.innerHTML = t[key];
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
+  });
+  document.documentElement.lang = lang;
+}
+ 
+// ── CURSOR ──
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
 let mx=0,my=0,rx=0,ry=0;
@@ -539,14 +637,14 @@ document.querySelectorAll('a,button,.service-card,.market-card,.step').forEach(e
   el.addEventListener('mouseenter',()=>{cursor.style.width='20px';cursor.style.height='20px';ring.style.width='52px';ring.style.height='52px';ring.style.opacity='0.5';});
   el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';ring.style.width='36px';ring.style.height='36px';ring.style.opacity='1';});
 });
-
-// Scroll reveal
+ 
+// ── SCROLL REVEAL ──
 const observer = new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});
 },{threshold:0.12});
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
-
-// Nav background on scroll
+ 
+// ── NAV SCROLL ──
 window.addEventListener('scroll',()=>{
   const n=document.querySelector('nav');
   if(window.scrollY>80){
@@ -562,3 +660,4 @@ window.addEventListener('scroll',()=>{
 </script>
 </body>
 </html>
+ 
