@@ -762,5 +762,101 @@ window.addEventListener('scroll',()=>{
   }
 });
 </script>
+<script>
+// ── JOBS MAP ──
+const MAP_JOBS = [
+  {name:"Malta",lat:35.9,lon:14.5,count:75,region:"europe",companies:"Betsson · Entain · Evolution · LeoVegas · Kaizen",roles:["CRM Manager / Executive","Product Owner (Web3, AI)","Commercial & BI Analyst","Affiliate Manager","UX/UI Designer"]},
+  {name:"USA",lat:37,lon:-97,count:45,region:"americas",companies:"DraftKings · bet365 · Evolution · PointsBet",roles:["Performance Marketing Manager","VIP Account Manager","Data Scientist (Marketing)","Product Manager","CRM Operations Lead"]},
+  {name:"United Kingdom",lat:51.5,lon:-1.5,count:40,region:"europe",companies:"Entain · bet365 · Flutter · Kaizen Gaming",roles:["Senior Strategy Manager","Brand Insight Manager","CRM Operations Lead","Data Engineer (Marketing)","Performance Marketing Manager"]},
+  {name:"Poland",lat:52,lon:20,count:25,region:"europe",companies:"Evolution · Betsson Group · Entain",roles:["Senior UX/UI Designer","Product Business Analyst","Frontend Developer (React)","Data Scientist"]},
+  {name:"Others EU",lat:47.5,lon:14,count:25,region:"europe",companies:"Austria · Gibraltar · Czech Republic",roles:["BI Analyst","Senior CRM Executive","Product Owner","Commercial Partnerships"]},
+  {name:"Brazil",lat:-10,lon:-53,count:20,region:"americas",companies:"Kaizen Gaming · Betsson · Entain · Evolution",roles:["Affiliate Team Manager","Key Account Executive","Responsible Gaming Manager","Product Specialist"]},
+  {name:"Canada",lat:56,lon:-96,count:15,region:"americas",companies:"bet365 · DraftKings",roles:["Senior Strategy Manager","Senior ML Engineer","Integrated Marketing Manager"]},
+  {name:"Spain",lat:40,lon:-4,count:12,region:"europe",companies:"Various operators",roles:["Site Reliability Engineer","Senior Product Designer","Marketing Manager","CRM Manager (LATAM)"]},
+  {name:"Germany",lat:51.2,lon:10.5,count:10,region:"europe",companies:"Entain (bwin)",roles:["Affiliate Executive","Graphic Designer","Gaming Manager"]},
+  {name:"Bulgaria",lat:43,lon:25,count:10,region:"europe",companies:"Various operators",roles:["Business Analyst","Key Account Manager","Game Producer"]},
+  {name:"Romania",lat:46,lon:26,count:8,region:"europe",companies:"Various operators",roles:["Data Product Owner","Senior Data Engineer","Security Governance"]},
+  {name:"Australia",lat:-25,lon:133,count:8,region:"apac",companies:"Various operators",roles:["Full Stack Software Engineer","Sportsbook Operations","Finance Business Partner"]},
+  {name:"Georgia",lat:42,lon:44,count:8,region:"europe",companies:"Various operators",roles:["Content Creator","Business Account Manager","Flutter Developer"]},
+  {name:"Argentina",lat:-34,lon:-64,count:6,region:"americas",companies:"Various operators",roles:["Digital Marketing Manager","Senior SEO Specialist","Key Account Manager"]},
+  {name:"India",lat:20,lon:78,count:6,region:"apac",companies:"Various operators",roles:["Senior SDET","Remote Helpdesk","Tech Support"]},
+  {name:"Philippines",lat:13,lon:122,count:5,region:"apac",companies:"Various operators",roles:["QA Analyst (marketing ops)","Operational Insights Analyst"]}
+];
+ 
+(function initMap(){
+  if(typeof d3==='undefined') return;
+  const svg=d3.select("#map-svg");
+  const W=960,H=500;
+  const proj=d3.geoNaturalEarth1().scale(155).translate([W/2,H/2]);
+  const geoPath=d3.geoPath().projection(proj);
+  const rScale=d3.scaleSqrt().domain([0,75]).range([4,22]);
+ 
+  svg.append("path").datum({type:"Sphere"}).attr("class","sphere").attr("d",geoPath);
+  svg.append("path").datum(d3.geoGraticule()()).attr("class","graticule").attr("d",geoPath);
+ 
+  function drawDots(){
+    const tt=document.getElementById("mapTooltip");
+    MAP_JOBS.forEach((d,i)=>{
+      const [x,y]=proj([d.lon,d.lat]);
+      if(!x||!y) return;
+      const r=rScale(d.count);
+      const g=svg.append("g").attr("class","map-dot-g region-"+d.region).attr("transform","translate("+x+","+y+")");
+      // pulse ring
+      g.append("circle").attr("r",r).attr("fill","none").attr("stroke","#c6ff00").attr("stroke-width","1.5")
+        .style("animation","dot-pulse 2.8s ease-out "+(i*0.18)+"s infinite");
+      // core
+      g.append("circle").attr("r",r).attr("fill","#c6ff00").attr("opacity","0.75").attr("cursor","pointer")
+        .on("mouseenter",function(event){
+          d3.select(this).attr("opacity","1");
+          tt.innerHTML='<div class="tt-country">'+d.name+'</div><div class="tt-count">'+d.count+'<span> vacancies</span></div><div class="tt-companies">'+d.companies+'</div><div class="tt-divider"></div><div class="tt-roles-label">Top roles</div>'+d.roles.map(function(r){return '<div class="tt-role">'+r+'</div>';}).join("");
+          tt.classList.add("visible");
+          moveTooltip(event);
+        })
+        .on("mousemove",moveTooltip)
+        .on("mouseleave",function(){d3.select(this).attr("opacity","0.75");tt.classList.remove("visible");});
+      if(d.count>=20){
+        g.append("text").attr("y",r+12).attr("text-anchor","middle")
+          .attr("font-family","'DM Mono',monospace").attr("font-size","9")
+          .attr("fill","rgba(255,255,255,0.4)").text(d.name);
+      }
+    });
+    // region filter
+    document.querySelectorAll(".map-chip").forEach(function(chip){
+      chip.addEventListener("click",function(){
+        document.querySelectorAll(".map-chip").forEach(function(c){c.classList.remove("active");});
+        this.classList.add("active");
+        const region=this.dataset.region;
+        svg.selectAll(".map-dot-g").each(function(){
+          d3.select(this).transition().duration(300)
+            .attr("opacity",(region==="all"||this.classList.contains("region-"+region))?1:0.12);
+        });
+      });
+    });
+  }
+ 
+  function moveTooltip(event){
+    const tt=document.getElementById("mapTooltip");
+    const m=16; let x=event.clientX+m,y=event.clientY+m;
+    if(x+270>window.innerWidth) x=event.clientX-270-m;
+    if(y+tt.offsetHeight>window.innerHeight) y=event.clientY-tt.offsetHeight-m;
+    tt.style.left=x+"px"; tt.style.top=y+"px";
+  }
+ 
+  fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
+    .then(function(r){return r.json();})
+    .then(function(world){
+      svg.insert("g","g").selectAll("path")
+        .data(topojson.feature(world,world.objects.countries).features)
+        .join("path").attr("class","country").attr("d",geoPath);
+      svg.insert("path","g")
+        .datum(topojson.mesh(world,world.objects.countries,function(a,b){return a!==b;}))
+        .attr("fill","none").attr("stroke","rgba(255,255,255,0.07)")
+        .attr("stroke-width","0.5").attr("d",geoPath);
+      drawDots();
+    })
+    .catch(function(){drawDots();});
+})();
+</script>
 </body>
 </html>
+ 
