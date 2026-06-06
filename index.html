@@ -23,14 +23,14 @@
   --syne:'Syne',sans-serif;
   --dm:'DM Sans',sans-serif;
 }
- 
+
 html{scroll-behavior:smooth;}
 body{background:var(--paper);color:var(--ink);font-family:var(--dm);overflow-x:hidden;cursor:none;}
- 
+
 /* CURSOR */
 .cursor{position:fixed;width:12px;height:12px;background:var(--lime);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s,width 0.3s,height 0.3s;mix-blend-mode:difference;}
 .cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(255,255,255,0.7);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.15s ease,width 0.3s,height 0.3s,opacity 0.3s;mix-blend-mode:difference;}
- 
+
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;mix-blend-mode:normal;}
 .nav-logo{font-family:var(--syne);font-size:18px;font-weight:800;letter-spacing:-0.02em;color:var(--white);}
@@ -43,7 +43,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .nav-scrolled .nav-logo{color:var(--white);}
 .nav-scrolled .nav-links a{color:rgba(255,255,255,0.5);}
 .nav-scrolled .nav-cta{background:var(--lime)!important;color:var(--ink)!important;border-color:transparent;}
- 
+
 /* HERO */
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 64px;position:relative;overflow:hidden;}
 .hero-bg{position:absolute;inset:0;background:var(--ink);}
@@ -54,7 +54,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 @keyframes spin{to{transform:rotate(360deg);}}
 .hero-dot{position:absolute;bottom:120px;right:48px;width:8px;height:8px;background:var(--lime);border-radius:50%;animation:pulse 2s ease-in-out infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
- 
+
 .hero-tag{font-size:11px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:24px;position:relative;z-index:1;
   opacity:0;animation:fadeUp 0.8s 0.2s forwards;}
 .hero-title{font-family:var(--bebas);font-size:clamp(80px,11vw,160px);line-height:0.92;color:var(--white);letter-spacing:-0.01em;position:relative;z-index:1;
@@ -69,19 +69,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .btn-primary:hover{transform:scale(1.04);background:#d4ff1a;}
 .hero-scroll{font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;display:flex;align-items:center;gap:8px;}
 .hero-scroll::before{content:'';display:block;width:24px;height:1px;background:rgba(255,255,255,0.2);}
- 
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
- 
+
 /* MARQUEE */
 .marquee-wrap{background:var(--lime);overflow:hidden;padding:14px 0;border-top:none;}
 .marquee-track{display:flex;white-space:nowrap;animation:marquee 20s linear infinite;}
 .marquee-item{font-family:var(--bebas);font-size:20px;letter-spacing:0.06em;color:var(--ink);padding:0 32px;display:flex;align-items:center;gap:32px;}
 .marquee-sep{width:6px;height:6px;background:var(--ink);border-radius:50%;opacity:0.4;}
 @keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
- 
+
 /* SECTION */
 section{padding:120px 48px;}
- 
+
 /* ABOUT */
 .about{background:var(--paper);}
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
@@ -97,7 +97,7 @@ section{padding:120px 48px;}
 .stat-num{font-family:var(--bebas);font-size:48px;color:var(--ink);line-height:1;}
 .stat-num span{color:var(--lime-dark);}
 .stat-label{font-size:14px;color:var(--mid);margin-top:6px;line-height:1.5;}
- 
+
 /* SERVICES */
 .services{background:var(--ink);padding:120px 48px;}
 .services-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:64px;}
@@ -117,7 +117,7 @@ section{padding:120px 48px;}
 .service-list{list-style:none;margin-top:20px;}
 .service-list li{font-size:14px;color:rgba(255,255,255,0.45);padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:8px;}
 .service-list li::before{content:'→';color:var(--lime);font-size:12px;flex-shrink:0;}
- 
+
 /* HOW */
 .how{background:var(--paper);}
 .how-title{font-family:var(--bebas);font-size:clamp(40px,5vw,72px);margin-bottom:64px;line-height:1;}
@@ -129,7 +129,7 @@ section{padding:120px 48px;}
 .step-title{font-family:var(--syne);font-size:16px;font-weight:700;margin-bottom:10px;color:var(--ink);}
 .step-desc{font-size:15px;line-height:1.7;color:var(--mid);}
 .step-time{display:inline-block;margin-top:16px;font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--lime-dark);}
- 
+
 /* WHY */
 .why{background:#0d0d12;padding:120px 48px;}
 .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
@@ -147,7 +147,7 @@ section{padding:120px 48px;}
 .diff-text{font-size:15px;line-height:1.6;}
 .diff-text.them{color:rgba(255,255,255,0.25);text-decoration:line-through;text-decoration-color:rgba(255,255,255,0.15);}
 .diff-text.us{color:rgba(255,255,255,0.8);}
- 
+
 /* MARKETS */
 .markets{background:var(--paper);}
 .markets-title{font-family:var(--bebas);font-size:clamp(40px,5vw,72px);margin-bottom:12px;line-height:1;}
@@ -160,7 +160,7 @@ section{padding:120px 48px;}
 .market-name{font-family:var(--syne);font-size:18px;font-weight:700;margin-bottom:10px;}
 .market-tags{display:flex;flex-wrap:wrap;gap:6px;}
 .market-tag{font-size:13px;background:var(--paper);border:1px solid var(--border);border-radius:20px;padding:4px 12px;color:var(--mid);}
- 
+
 /* CTA */
 .cta-section{background:var(--lime);padding:100px 48px;}
 .cta-inner{display:flex;align-items:center;justify-content:space-between;gap:40px;}
@@ -170,7 +170,7 @@ section{padding:120px 48px;}
 .btn-dark{background:var(--ink);color:var(--lime);padding:18px 40px;border-radius:100px;font-family:var(--syne);font-size:15px;font-weight:700;text-decoration:none;display:inline-block;transition:transform 0.2s;}
 .btn-dark:hover{transform:scale(1.04);}
 .btn-outline{display:inline-block;margin-top:12px;font-size:13px;color:rgba(0,0,0,0.5);text-decoration:none;border-bottom:1px solid rgba(0,0,0,0.2);padding-bottom:2px;}
- 
+
 /* FOOTER */
 footer{background:var(--ink);padding:48px;display:flex;align-items:center;justify-content:space-between;}
 .footer-logo{font-family:var(--syne);font-size:20px;font-weight:800;color:var(--white);}
@@ -179,11 +179,11 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
 .footer-links a{font-size:13px;color:rgba(255,255,255,0.35);text-decoration:none;transition:color 0.2s;}
 .footer-links a:hover{color:var(--white);}
 .footer-copy{font-size:12px;color:rgba(255,255,255,0.2);}
- 
+
 /* SCROLL REVEAL */
 .reveal{opacity:0;transform:translateY(32px);transition:opacity 0.7s,transform 0.7s;}
 .reveal.visible{opacity:1;transform:translateY(0);}
- 
+
 /* RESPONSIVE */
 @media(max-width:900px){
   nav{padding:16px 24px;}
@@ -202,14 +202,14 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
 .lang-switch{display:flex;align-items:center;gap:2px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:100px;padding:3px;margin-left:8px;}
 .lang-btn{font-size:12px;font-weight:600;letter-spacing:0.05em;color:rgba(255,255,255,0.45);background:none;border:none;cursor:pointer;padding:5px 12px;border-radius:100px;transition:all 0.2s;font-family:var(--syne);}
 .lang-btn.active{background:var(--lime);color:var(--ink);}
- 
+
 /* HAMBURGER */
 .burger{display:none;flex-direction:column;justify-content:center;gap:5px;width:40px;height:40px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:10px;cursor:pointer;padding:10px;}
 .burger span{display:block;height:1.5px;background:var(--white);border-radius:2px;transition:all 0.3s;}
 .burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
 .burger.open span:nth-child(2){opacity:0;}
 .burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
- 
+
 /* MOBILE MENU */
 .mobile-menu{display:none;position:fixed;inset:0;background:rgba(8,8,14,0.98);z-index:99;flex-direction:column;justify-content:center;align-items:center;gap:8px;backdrop-filter:blur(20px);}
 .mobile-menu.open{display:flex;}
@@ -272,13 +272,49 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
 .mtt-role::before{content:'';width:4px;height:4px;background:var(--lime);border-radius:50%;flex-shrink:0;}
 .mtt-note{margin-top:10px;font-size:11px;color:rgba(255,255,255,.3);line-height:1.5;font-style:italic;}
 @media(max-width:900px){.map-section{padding:60px 20px;}.map-kpis{gap:8px;}.map-kpi{min-width:72px;padding:10px 12px;}}
+/* HIRING */
+.hiring{background:var(--paper);padding:80px 48px;}
+.hiring-header{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:48px;}
+.hiring-title{font-family:var(--bebas);font-size:clamp(40px,5vw,72px);line-height:.95;color:var(--ink);}
+.hiring-title span{-webkit-text-stroke:1.5px var(--ink);color:transparent;}
+.hiring-badge{display:inline-flex;align-items:center;gap:8px;background:var(--ink);border-radius:100px;padding:8px 18px;margin-bottom:8px;}
+.hiring-badge-dot{width:7px;height:7px;background:var(--lime);border-radius:50%;animation:blink2 2s ease-in-out infinite;}
+@keyframes blink2{0%,100%{opacity:1;}50%{opacity:.2;}}
+.hiring-badge-txt{font-size:12px;font-weight:600;color:rgba(255,255,255,.7);font-family:var(--mono);}
+.hiring-sub{font-size:15px;color:var(--mid);margin-top:4px;}
+.jobs-list{display:flex;flex-direction:column;gap:3px;}
+.job-card{background:var(--white);border-radius:4px;overflow:hidden;border:1.5px solid transparent;transition:border-color .2s;}
+.job-card.open{border-color:var(--ink);}
+.job-head{display:flex;align-items:center;gap:20px;padding:26px 32px;cursor:pointer;transition:background .15s;}
+.job-head:hover{background:#f8f8f4;}
+.job-tag{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--lime-dark);background:rgba(158,203,0,.12);border-radius:100px;padding:4px 12px;font-family:var(--mono);white-space:nowrap;flex-shrink:0;}
+.job-title{font-family:var(--syne);font-size:20px;font-weight:800;color:var(--ink);flex:1;}
+.job-pills{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto;}
+.job-pill{font-size:11px;color:var(--mid);background:var(--paper);border:1px solid var(--border);border-radius:100px;padding:4px 11px;font-family:var(--mono);}
+.job-chevron{font-size:18px;color:var(--mid);margin-left:16px;transition:transform .25s;flex-shrink:0;}
+.job-card.open .job-chevron{transform:rotate(180deg);}
+.job-body{display:none;padding:0 32px 32px;}
+.job-card.open .job-body{display:block;}
+.job-body-inner{border-top:1px solid var(--border);padding-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:28px 40px;}
+.job-section-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);font-family:var(--mono);margin-bottom:10px;}
+.job-intro{font-size:14px;line-height:1.75;color:#444;grid-column:span 2;}
+.job-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.job-list li{font-size:13px;color:#444;line-height:1.6;display:flex;gap:8px;align-items:flex-start;}
+.job-list li::before{content:'→';color:var(--lime-dark);font-size:11px;margin-top:3px;flex-shrink:0;}
+.job-footer{grid-column:span 2;background:var(--ink);border-radius:12px;padding:22px 26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-top:8px;}
+.job-comp-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);font-family:var(--mono);margin-bottom:6px;}
+.job-comp-val{font-size:14px;color:rgba(255,255,255,.75);line-height:1.65;}
+.job-comp-val strong{color:var(--lime);}
+.apply-btn{display:inline-flex;align-items:center;gap:8px;background:var(--lime);color:var(--ink);padding:14px 28px;border-radius:100px;font-family:var(--syne);font-size:14px;font-weight:700;text-decoration:none;transition:transform .2s,box-shadow .2s;white-space:nowrap;flex-shrink:0;}
+.apply-btn:hover{transform:scale(1.04);box-shadow:0 8px 24px rgba(198,255,0,.3);}
+@media(max-width:900px){.hiring{padding:60px 20px;}.job-body-inner{grid-template-columns:1fr;}.job-intro,.job-footer{grid-column:span 1;}.job-head{padding:18px 20px;gap:12px;}.job-pills{display:none;}}
 </style>
 </head>
 <body>
- 
+
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
- 
+
 <!-- NAV -->
 <nav>
   <div class="nav-logo">Edge<span>point</span></div>
@@ -296,7 +332,7 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
     <span></span><span></span><span></span>
   </button>
 </nav>
- 
+
 <!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
   <a href="#services" data-i18n="nav_services" onclick="toggleMenu()">Services</a>
@@ -308,14 +344,14 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
     <button class="lang-btn" onclick="setLang('ru')">RU</button>
   </div>
 </div>
- 
+
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-grain"></div>
   <div class="hero-geo"></div>
   <div class="hero-dot"></div>
- 
+
   <div class="hero-tag" data-i18n="hero_tag">iGaming Growth & Operations Consultancy</div>
   <h1 class="hero-title">
     <span data-i18n="hero_title1">Your edge</span><br>
@@ -331,7 +367,7 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
     </div>
   </div>
 </section>
- 
+
 <!-- MARQUEE -->
 <div class="marquee-wrap">
   <div class="marquee-track">
@@ -339,7 +375,7 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
     <div class="marquee-item">Market Entry Research <span class="marquee-sep"></span> GTM Strategy <span class="marquee-sep"></span> Operations Setup <span class="marquee-sep"></span> iGaming Growth <span class="marquee-sep"></span> Affiliate Scaling <span class="marquee-sep"></span> New Market Intelligence <span class="marquee-sep"></span></div>
   </div>
 </div>
- 
+
 <!-- ABOUT -->
 <section class="about" id="about">
   <div class="about-grid">
@@ -382,7 +418,7 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
     </div>
   </div>
 </section>
- 
+
 <!-- SERVICES -->
 <section class="services" id="services">
   <div class="services-header reveal">
@@ -390,7 +426,7 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
     <p class="services-subtitle" data-i18n="services_sub">Three focused services. No retainers until you've seen what we can do.</p>
   </div>
   <div class="services-grid reveal">
- 
+
     <div class="service-card">
       <div class="service-num">01</div>
       <div class="service-tag" data-i18n="s1_tag">Entry Point</div>
@@ -404,7 +440,7 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
         <li data-i18n="s1_l5">Go / no-go recommendation</li>
       </ul>
     </div>
- 
+
     <div class="service-card" style="background:#14141c;border:1px solid rgba(198,255,0,0.2);">
       <div class="service-num">02</div>
       <div class="service-tag" style="background:rgba(198,255,0,0.2);" data-i18n="s2_tag">⭐ Most Popular</div>
@@ -419,7 +455,7 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
         <li data-i18n="s2_l6">Kick-off presentation &amp; Q&amp;A</li>
       </ul>
     </div>
- 
+
     <div class="service-card">
       <div class="service-num">03</div>
       <div class="service-tag" data-i18n="s3_tag">Ongoing</div>
@@ -433,10 +469,10 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
         <li data-i18n="s3_l5">Ongoing market monitoring</li>
       </ul>
     </div>
- 
+
   </div>
 </section>
- 
+
 <!-- HOW -->
 <section class="how" id="how">
   <div class="section-label reveal" data-i18n="how_label">Our Process</div>
@@ -472,7 +508,7 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
     </div>
   </div>
 </section>
- 
+
 <!-- WHY -->
 <section class="why">
   <div class="why-grid">
@@ -505,7 +541,7 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
     </div>
   </div>
 </section>
- 
+
 <!-- MARKETS -->
 <section class="markets" id="markets">
   <div class="section-label reveal" data-i18n="markets_label">Market Coverage</div>
@@ -571,7 +607,7 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
     </div>
   </div>
 </section>
- 
+
 <!-- JOBS MAP -->
 <section class="map-section reveal" id="jobsmap">
   <div class="map-hdr">
@@ -605,19 +641,161 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
   </div>
 </section>
 <div class="map-tt" id="mapTT"></div>
- 
+
+<!-- HIRING -->
+<section class="hiring reveal" id="hiring">
+  <div class="hiring-header">
+    <div>
+      <div class="section-label">Join the team</div>
+      <h2 class="hiring-title">Build the edge<br><span>with us</span></h2>
+    </div>
+    <div style="text-align:right">
+      <div class="hiring-badge"><div class="hiring-badge-dot"></div><span class="hiring-badge-txt">2 open positions</span></div>
+    </div>
+  </div>
+
+  <div class="jobs-list">
+
+    <!-- JOB 1: Media Buyer -->
+    <div class="job-card" id="job1">
+      <div class="job-head" onclick="toggleJob('job1')">
+        <span class="job-tag">Performance</span>
+        <span class="job-title">Media Buyer</span>
+        <div class="job-pills">
+          <span class="job-pill">Junior / Middle</span>
+          <span class="job-pill">FB + Ad Networks</span>
+          <span class="job-pill">Remote</span>
+          <span class="job-pill">Rev Share</span>
+        </div>
+        <span class="job-chevron">↓</span>
+      </div>
+      <div class="job-body">
+        <div class="job-body-inner">
+          <p class="job-intro">We're looking for a Media Buyer with 6+ months of hands-on traffic buying experience — Facebook or ad networks (in-page, push, pop). Prefer candidates who have already launched and optimized campaigns with proven results.</p>
+
+          <div>
+            <div class="job-section-title">Verticals</div>
+            <ul class="job-list">
+              <li>Nutra, Dating, Gambling, Crypto</li>
+              <li>Utilities, In-page, Push, Pop</li>
+            </ul>
+            <div class="job-section-title" style="margin-top:20px">What you'll do</div>
+            <ul class="job-list">
+              <li>Create promos and ad creatives</li>
+              <li>Launch, optimize, analyze and scale campaigns (FB / ad networks)</li>
+              <li>Test hypotheses, offers and funnels — find profitable flows</li>
+              <li>Work with pre-landers, trackers, anti-detect browsers</li>
+              <li>Track metrics, run reports, scale winning campaigns</li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="job-section-title">What we expect</div>
+            <ul class="job-list">
+              <li>6+ months actual traffic buying experience with proven results (cases)</li>
+              <li>Laptop and readiness to work ~8–10 hours/day</li>
+              <li>Proactive, responsible, passionate about marketing</li>
+              <li>Strong desire to earn and grow fast</li>
+            </ul>
+            <div class="job-section-title" style="margin-top:20px">Conditions</div>
+            <ul class="job-list">
+              <li>Full infrastructure: tracker, anti-detect, spy tools, agency accounts</li>
+              <li>Top offers, unlimited budgets for profitable campaigns</li>
+              <li>100% remote, flexible daily start</li>
+              <li>20 vacation days per year</li>
+              <li>Career growth, higher commission rates, team lead opportunity</li>
+            </ul>
+          </div>
+
+          <div class="job-footer">
+            <div>
+              <div class="job-comp-label">Compensation</div>
+              <div class="job-comp-val"><strong>Revenue share (% of profit) — no cap.</strong><br>Your income scales directly with your campaign results.</div>
+            </div>
+            <a href="mailto:talent@edgepnt.com?subject=Application: Media Buyer" class="apply-btn">Apply now →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JOB 2: Affiliate Manager -->
+    <div class="job-card" id="job2">
+      <div class="job-head" onclick="toggleJob('job2')">
+        <span class="job-tag">iGaming</span>
+        <span class="job-title">Affiliate Manager</span>
+        <div class="job-pills">
+          <span class="job-pill">1+ year exp</span>
+          <span class="job-pill">LATAM · MENA</span>
+          <span class="job-pill">Remote</span>
+          <span class="job-pill">Fixed + %</span>
+        </div>
+        <span class="job-chevron">↓</span>
+      </div>
+      <div class="job-body">
+        <div class="job-body-inner">
+          <p class="job-intro">We're looking for an experienced Affiliate Manager to develop and scale our iGaming affiliate network across LATAM, MENA, Portugal and Tier 2–3 markets. You'll own partnerships end-to-end — from sourcing to scaling.</p>
+
+          <div>
+            <div class="job-section-title">Geos</div>
+            <ul class="job-list">
+              <li>LATAM, MENA, Portugal, Tier 2–3</li>
+            </ul>
+            <div class="job-section-title" style="margin-top:20px">What you'll do</div>
+            <ul class="job-list">
+              <li>Find and onboard new affiliates — active, systematic approach</li>
+              <li>Manage and grow existing partners, build long-term relationships</li>
+              <li>Scale top-performing partners and expand into new GEOs</li>
+              <li>Negotiate terms (RevShare, Hybrid, CPA) and improve margins</li>
+              <li>Monitor traffic quality and performance metrics</li>
+              <li>Attend international conferences (after probation)</li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="job-section-title">What we expect</div>
+            <ul class="job-list">
+              <li>1+ year as Affiliate Manager in iGaming (advertiser side preferred)</li>
+              <li>Proven track record in LATAM, MENA, Portugal or Tier 2–3 markets</li>
+              <li>Own base of affiliates with valid traffic — strong plus</li>
+              <li>Understanding of FTD, CR, LTV, RevShare and traffic economics</li>
+              <li>English B2+ (Spanish, Portuguese, Russian — a plus)</li>
+              <li>Experience with betB2B platform — nice to have</li>
+            </ul>
+            <div class="job-section-title" style="margin-top:20px">Conditions</div>
+            <ul class="job-list">
+              <li>100% remote, flexible start 8:00–11:00 your timezone</li>
+              <li>Full-time 5/2, fast onboarding, minimal bureaucracy</li>
+              <li>Paid vacation and sick leave</li>
+              <li>Career growth and conference attendance</li>
+            </ul>
+          </div>
+
+          <div class="job-footer">
+            <div>
+              <div class="job-comp-label">Compensation</div>
+              <div class="job-comp-val"><strong>Fixed salary + % (revenue share / bonus)</strong> — discussed individually.<br>Real impact on product from day one.</div>
+            </div>
+            <a href="mailto:talent@edgepnt.com?subject=Application: Affiliate Manager" class="apply-btn">Apply now →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- CTA -->
 <section class="cta-section" id="contact">
   <div class="cta-inner reveal">
     <h2 class="cta-title" data-i18n="cta_title">Ready to find your edge?</h2>
     <div class="cta-right">
       <p class="cta-text" data-i18n-html="cta_text">Start with a 30-minute call.<br>No commitment. Real insights.</p>
-      <a href="mailto:talent@edgepnt.com" class="btn-dark" data-i18n="cta_btn">Book Discovery Call →</a><br>
-      <a href="mailto:talent@edgepnt.com" class="btn-outline">talent@edgepnt.com</a>
+      <a href="mailto:hello@edgepoint.io" class="btn-dark" data-i18n="cta_btn">Book Discovery Call →</a><br>
+      <a href="mailto:hello@edgepoint.io" class="btn-outline">hello@edgepoint.io</a>
     </div>
   </div>
 </section>
- 
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">Edge<span>point</span></div>
@@ -625,11 +803,11 @@ footer{background:var(--ink);padding:48px;display:flex;align-items:center;justif
     <a href="#services" data-i18n="nav_services">Services</a>
     <a href="#how" data-i18n="nav_process">Process</a>
     <a href="#markets" data-i18n="nav_markets">Markets</a>
-    <a href="mailto:talent@edgepnt.com" data-i18n="footer_contact">Contact</a>
+    <a href="mailto:hello@edgepoint.io" data-i18n="footer_contact">Contact</a>
   </div>
   <div class="footer-copy" data-i18n="footer_copy">© 2025 Edgepoint. iGaming Growth & Operations.</div>
 </footer>
- 
+
 <script>
 // ── TRANSLATIONS ──
 const T = {
@@ -728,9 +906,9 @@ const T = {
     footer_contact:'Контакт', footer_copy:'© 2025 Edgepoint. iGaming Growth & Operations.'
   }
 };
- 
+
 let currentLang = 'en';
- 
+
 function setLang(lang) {
   currentLang = lang;
   const t = T[lang];
@@ -747,7 +925,7 @@ function setLang(lang) {
   });
   document.documentElement.lang = lang;
 }
- 
+
 function toggleMenu() {
   const menu = document.getElementById('mobileMenu');
   const burger = document.getElementById('burger');
@@ -755,7 +933,14 @@ function toggleMenu() {
   burger.classList.toggle('open');
   document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
 }
- 
+
+function toggleJob(id) {
+  const card = document.getElementById(id);
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.job-card').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+
 // ── CURSOR ──
 const cursor = document.getElementById('cursor');
 const ring = document.getElementById('cursorRing');
@@ -767,13 +952,13 @@ document.querySelectorAll('a,button,.service-card,.market-card,.step').forEach(e
   el.addEventListener('mouseenter',()=>{cursor.style.width='20px';cursor.style.height='20px';ring.style.width='52px';ring.style.height='52px';ring.style.opacity='0.5';});
   el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';ring.style.width='36px';ring.style.height='36px';ring.style.opacity='1';});
 });
- 
+
 // ── SCROLL REVEAL ──
 const observer = new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});
 },{threshold:0.12});
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
- 
+
 // ── NAV SCROLL ──
 window.addEventListener('scroll',()=>{
   const n=document.querySelector('nav');
@@ -815,12 +1000,12 @@ const LOCATIONS=[
   {id:'manila',city:'Manila / Philippines',country:'PH',lat:14.6,lon:121.0,vacancies:18,fn:'engineering',owner:'multi',companies:'Jili Games · PG Soft · CQ9 Gaming · FA CHAI · Vivo Gaming',roles:['Game Developer','QA Analyst','Operational Insights Analyst','HR Administrator'],note:'Asian game provider cluster — zero international job board visibility but hundreds of millions of players.',latam:false},
   {id:'cyp',city:'Limassol / Cyprus',country:'CY',lat:34.7,lon:33.0,vacancies:59,fn:'commercial',owner:'multi',companies:'Parimatch HQ (59 vacancies — hiring CEO, CMO & CPO simultaneously)',roles:['Chief Executive Officer','Chief Marketing Officer','Chief Product Officer','Senior Growth Manager','Asia Market Lead'],note:'Parimatch in crisis mode — entire leadership being replaced. Pivoting to Asia.',latam:false}
 ];
- 
+
 const FN_COLORS={commercial:'#c6ff00',engineering:'#60a5fa',livecasino:'#f59e0b',latam:'#34d399',us:'#a78bfa',gamedev:'#fb923c',b2b:'#94a3b8'};
 const FN_LABELS={commercial:'Commercial & Compliance',engineering:'Engineering Hub',livecasino:'Live Casino Production',latam:'LatAm Growth',us:'US Online Market',gamedev:'Game Dev Studio',b2b:'B2B Platform'};
 const OWN_COLORS={evolution:'#facc15',entain:'#f472b6',flutter:'#818cf8',playtech:'#38bdf8',ballys:'#fb923c',indie:'#c6ff00',multi:'#6b7280'};
 const OWN_LABELS={evolution:'Evolution Group',entain:'Entain Group',flutter:'Flutter / FanDuel',playtech:'Playtech Group',ballys:"Bally's Corp",indie:'Independent Studio',multi:'Multi / Independent'};
- 
+
 (function initMapV2(){
   if(typeof d3==='undefined') return;
   const svg=d3.select("#map-svg");
@@ -829,10 +1014,10 @@ const OWN_LABELS={evolution:'Evolution Group',entain:'Entain Group',flutter:'Flu
   const geoPath=d3.geoPath().projection(proj);
   const rScale=d3.scaleSqrt().domain([0,350]).range([4,26]);
   let dotsG, currentLayer='hubs';
- 
+
   svg.append("path").datum({type:"Sphere"}).attr("class","sphere").attr("d",geoPath);
   svg.append("path").datum(d3.geoGraticule()()).attr("class","graticule-path").attr("d",geoPath);
- 
+
   function getColor(d,layer){
     if(layer==='ownership') return OWN_COLORS[d.owner]||'#6b7280';
     if(layer==='latam') return d.latam?'#34d399':'rgba(255,255,255,0.12)';
@@ -847,7 +1032,7 @@ const OWN_LABELS={evolution:'Evolution Group',entain:'Entain Group',flutter:'Flu
     if(layer==='latam') return d.latam?0.85:0.18;
     return 0.75;
   }
- 
+
   function renderLegend(layer){
     const bar=document.getElementById('mapLegendBar');
     if(layer==='hubs'||layer==='volume'){
@@ -861,7 +1046,7 @@ const OWN_LABELS={evolution:'Evolution Group',entain:'Entain Group',flutter:'Flu
       bar.innerHTML=`<div><div class="map-legend-block-title">LatAm focus</div><div class="map-legend-items"><div class="map-legend-item"><div class="map-legend-swatch" style="background:#34d399"></div><span class="map-legend-lbl">Active LatAm hiring</span></div><div class="map-legend-item"><div class="map-legend-swatch" style="background:rgba(255,255,255,0.2)"></div><span class="map-legend-lbl">Other markets</span></div></div></div><div style="margin-left:auto;max-width:380px"><div class="map-legend-block-title">Why LatAm now</div><div style="font-size:12px;color:rgba(255,255,255,0.35);line-height:1.6">FIFA 2026 · Brazil legalized · Evolution & Pragmatic $15M Bogotá studios · IGT expanding to 100+ retail sportsbooks</div></div>`;
     }
   }
- 
+
   function renderDots(layer){
     if(dotsG) dotsG.remove();
     dotsG=svg.append("g");
@@ -892,7 +1077,7 @@ const OWN_LABELS={evolution:'Evolution Group',entain:'Entain Group',flutter:'Flu
       }
     });
   }
- 
+
   function moveTT(event){
     const tt=document.getElementById('mapTT');
     const m=16; let x=event.clientX+m,y=event.clientY+m;
@@ -900,7 +1085,7 @@ const OWN_LABELS={evolution:'Evolution Group',entain:'Entain Group',flutter:'Flu
     if(y+tt.offsetHeight>window.innerHeight) y=event.clientY-tt.offsetHeight-m;
     tt.style.left=x+'px'; tt.style.top=y+'px';
   }
- 
+
   document.querySelectorAll('.map-layer-btn').forEach(function(btn){
     btn.addEventListener('click',function(){
       document.querySelectorAll('.map-layer-btn').forEach(function(b){b.classList.remove('active');});
@@ -910,7 +1095,7 @@ const OWN_LABELS={evolution:'Evolution Group',entain:'Entain Group',flutter:'Flu
       renderLegend(currentLayer);
     });
   });
- 
+
   fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")
     .then(function(r){return r.json();})
     .then(function(world){
@@ -924,4 +1109,3 @@ const OWN_LABELS={evolution:'Evolution Group',entain:'Entain Group',flutter:'Flu
 </script>
 </body>
 </html>
- 
