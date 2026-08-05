@@ -32,9 +32,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .nav-logo{font-family:var(--syne);font-size:17px;font-weight:800;letter-spacing:-.02em;color:var(--white);}
 .nav-logo span{color:var(--lime);}
 .nav-links{display:flex;gap:36px;align-items:center;}
-.nav-links a{font-size:13px;font-weight:500;color:rgba(255,255,255,0.45);text-decoration:none;letter-spacing:.02em;transition:color .2s;}
+.nav-links a{font-size:15px;font-weight:500;color:rgba(255,255,255,0.7);text-decoration:none;letter-spacing:.02em;transition:color .2s;}
 .nav-links a:hover{color:var(--white);}
-.nav-cta{background:rgba(255,255,255,0.1)!important;color:var(--white)!important;padding:9px 22px;border-radius:100px;border:1px solid rgba(255,255,255,0.15)!important;transition:background .2s!important;}
+.nav-cta{background:rgba(255,255,255,0.1)!important;color:var(--white)!important;padding:9px 22px;border-radius:100px;border:1px solid rgba(255,255,255,0.15)!important;transition:background .2s!important;font-size:15px!important;}
 .nav-cta:hover{background:var(--lime)!important;color:var(--ink)!important;border-color:transparent!important;}
 .nav-platform{color:var(--lime)!important;}
 .burger{display:none;flex-direction:column;gap:5px;width:40px;height:40px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:10px;cursor:pointer;padding:10px;justify-content:center;}
@@ -56,7 +56,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .hero-title{font-family:var(--bebas);font-size:clamp(64px,9vw,130px);line-height:.9;letter-spacing:-.01em;max-width:800px;}
 .hero-title em{color:var(--lime);font-style:normal;}
 .hero-tagline{font-family:var(--cormorant);font-style:italic;font-size:clamp(22px,2.5vw,30px);color:rgba(198,255,0,0.7);margin:28px 0 32px;font-weight:400;}
-.hero-desc{font-size:16px;line-height:1.75;color:var(--mist);max-width:500px;font-weight:300;margin-bottom:44px;}
+.hero-desc{font-size:16px;line-height:1.75;color:rgba(255,255,255,0.62);max-width:500px;font-weight:300;margin-bottom:44px;}
 .hero-desc strong{color:rgba(255,255,255,.8);font-weight:500;}
 .hero-ctas{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
 .btn-lime{display:inline-flex;align-items:center;gap:8px;background:var(--lime);color:var(--ink);padding:14px 30px;border-radius:100px;font-family:var(--syne);font-size:14px;font-weight:700;text-decoration:none;transition:transform .2s,box-shadow .2s;}
@@ -136,7 +136,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .why-title{font-family:var(--bebas);font-size:clamp(44px,5.5vw,80px);line-height:.92;color:var(--white);margin-bottom:24px;}
 .why-title span{color:var(--lime);}
 .why-pull{font-family:var(--cormorant);font-style:italic;font-size:20px;color:rgba(198,255,0,.6);line-height:1.55;margin-bottom:28px;}
-.why-text{font-size:15px;line-height:1.8;color:var(--mist);font-weight:300;margin-bottom:20px;}
+.why-text{font-size:15px;line-height:1.8;color:rgba(255,255,255,0.62);font-weight:300;margin-bottom:20px;}
 .why-text strong{color:rgba(255,255,255,.85);font-weight:500;}
 .diff-table{}
 .diff-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.06);}
@@ -170,7 +170,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .pt-title{font-family:var(--bebas);font-size:clamp(44px,5vw,72px);line-height:.92;color:var(--white);margin-bottom:20px;}
 .pt-title span{color:var(--lime);}
 .pt-pull{font-family:var(--cormorant);font-style:italic;font-size:20px;color:rgba(198,255,0,.55);margin-bottom:24px;line-height:1.5;}
-.pt-desc{font-size:15px;line-height:1.8;color:var(--mist);font-weight:300;margin-bottom:32px;}
+.pt-desc{font-size:15px;line-height:1.8;color:rgba(255,255,255,0.62);font-weight:300;margin-bottom:32px;}
 .pt-card{background:#111119;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:28px;}
 .pt-plans{display:flex;flex-direction:column;gap:2px;}
 .pt-plan{background:#0c0c16;border-radius:8px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;transition:background .2s;}
@@ -230,8 +230,8 @@ footer{background:var(--ink);padding:40px 52px;display:flex;align-items:center;j
 <nav id="nav">
   <div class="nav-logo">Edge<span>point</span></div>
   <div class="nav-links">
-    <a href="#services">Services</a>
     <a href="platform.html" class="nav-platform">Platform ↗</a>
+    <a href="#services">Services</a>
     <a href="#how">Process</a>
     <a href="#markets">Markets</a>
     <a href="#contact" class="nav-cta">Get Started</a>
@@ -240,8 +240,8 @@ footer{background:var(--ink);padding:40px 52px;display:flex;align-items:center;j
 </nav>
  
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#services" onclick="toggleMenu()">Services</a>
   <a href="platform.html">Platform ↗</a>
+  <a href="#services" onclick="toggleMenu()">Services</a>
   <a href="#how" onclick="toggleMenu()">Process</a>
   <a href="#markets" onclick="toggleMenu()">Markets</a>
   <a href="#contact" class="m-cta" onclick="toggleMenu()">Get Started</a>
