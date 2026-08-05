@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edgepoint Platform — Market Intelligence</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2309090f'/><text y='24' x='4' font-family='Arial,sans-serif' font-weight='900' font-size='22' fill='%23c6ff00'>E</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js" style="display:none"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --ink:#09090f;--white:#fff;--lime:#c6ff00;--lime-d:#9ecb00;
+  --dark2:#0d0d16;--mist:rgba(255,255,255,.42);
+  --bebas:'Bebas Neue',sans-serif;
+  --syne:'Syne',sans-serif;
+  --cormorant:'Cormorant Garamond',serif;
+  --dm:'DM Sans',sans-serif;
+  --mono:'DM Mono',monospace;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--ink);color:var(--white);font-family:var(--dm);overflow-x:hidden;}
+.cursor{position:fixed;width:10px;height:10px;background:var(--lime);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference;}
+.cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(255,255,255,.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);mix-blend-mode:difference;}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:20px 52px;background:rgba(9,9,15,.96);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.05);}
+.nav-logo{font-family:var(--syne);font-size:17px;font-weight:800;color:var(--white);}
+.nav-logo span{color:var(--lime);}
+.nav-label{font-size:11px;color:rgba(255,255,255,.22);font-family:var(--mono);font-weight:400;margin-left:6px;}
+.nav-back{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none;font-family:var(--mono);transition:color .2s;}
+.nav-back:hover{color:var(--white);}
+.nav-join{font-size:13px;font-weight:700;color:var(--ink);background:var(--lime);padding:9px 22px;border-radius:100px;text-decoration:none;font-family:var(--syne);border:none;cursor:pointer;transition:transform .2s;}
+.nav-join:hover{transform:scale(1.04);}
+.p-hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:120px 24px 60px;}
+.p-intro{text-align:center;margin:0 auto 28px;max-width:600px;}
+.p-eyebrow{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);font-family:var(--mono);margin-bottom:12px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.p-eyebrow::before{content:'';width:6px;height:6px;background:var(--lime);border-radius:50%;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+.p-headline{font-family:var(--bebas);font-size:clamp(26px,3vw,42px);color:rgba(255,255,255,.22);line-height:1;letter-spacing:.01em;margin-bottom:9px;}
+.p-headline span{color:rgba(198,255,0,.35);}
+.p-tagline{font-family:var(--cormorant);font-style:italic;font-size:16px;color:rgba(255,255,255,.25);line-height:1.5;}
+ 
+/* FORM */
+.form-card{background:#111119;border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:36px;width:100%;max-width:540px;margin:0 auto;}
+.form-card-head{margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:16px;}
+.form-head-ring{flex-shrink:0;}
+.form-head-text{}
+.form-card-title{font-family:var(--syne);font-size:15px;font-weight:800;color:var(--white);margin-bottom:5px;}
+.form-card-sub{font-size:12px;color:rgba(255,255,255,.28);line-height:1.6;}
+.req-form{display:flex;flex-direction:column;gap:16px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-label{font-size:11px;font-weight:600;letter-spacing:.06em;color:rgba(255,255,255,.32);font-family:var(--mono);}
+.req-star{color:var(--lime);}
+.form-input{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:11px 13px;font-size:13px;color:var(--white);font-family:var(--dm);outline:none;transition:border-color .2s;width:100%;}
+.form-input::placeholder{color:rgba(255,255,255,.16);}
+.form-input:focus{border-color:rgba(198,255,0,.32);}
+.form-textarea{resize:vertical;min-height:64px;}
+.form-hint{font-size:10px;color:rgba(255,255,255,.15);font-family:var(--mono);}
+.task-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.task-option{cursor:pointer;}
+.task-option input[type=checkbox]{display:none;}
+.task-box{border:1.5px solid rgba(255,255,255,.09);border-radius:10px;padding:12px 14px;transition:all .2s;background:rgba(255,255,255,.02);display:flex;align-items:center;gap:10px;height:100%;}
+.task-option input:checked + .task-box{border-color:rgba(198,255,0,.35);background:rgba(198,255,0,.04);}
+.task-box:hover{border-color:rgba(255,255,255,.17);}
+.task-check{width:16px;height:16px;border:1.5px solid rgba(255,255,255,.17);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.task-option input:checked + .task-box .task-check{background:var(--lime);border-color:var(--lime);}
+.task-check-svg{display:none;}
+.task-option input:checked + .task-box .task-check-svg{display:block;}
+.task-title{font-family:var(--syne);font-size:12px;font-weight:700;color:var(--white);line-height:1.35;}
+.task-desc{display:none;}
+.form-notice{display:flex;align-items:flex-start;gap:9px;background:rgba(198,255,0,.03);border:1px solid rgba(198,255,0,.09);border-radius:9px;padding:11px 13px;font-size:11px;color:rgba(255,255,255,.28);line-height:1.65;font-family:var(--mono);}
+.form-notice svg{flex-shrink:0;margin-top:2px;}
+.form-submit{background:var(--lime);color:var(--ink);border:none;border-radius:100px;padding:13px 32px;font-family:var(--syne);font-size:14px;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s;align-self:flex-start;}
+.form-submit:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(198,255,0,.18);}
+.form-submit:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.form-success{text-align:center;padding:28px 12px;display:none;}
+.form-success-icon{font-size:30px;color:var(--lime);margin-bottom:11px;}
+.form-success-title{font-family:var(--syne);font-size:16px;font-weight:700;color:var(--white);margin-bottom:6px;}
+.form-success-text{font-size:12px;color:rgba(255,255,255,.32);line-height:1.7;}
+ 
+/* ACCORDION */
+.acc-wrap{width:100%;max-width:680px;margin:28px auto 0;display:flex;flex-direction:column;gap:2px;}
+.acc-item{background:#0e0e1a;border:1px solid rgba(255,255,255,.06);border-radius:4px;overflow:hidden;}
+.acc-head{display:flex;align-items:center;justify-content:space-between;padding:16px 22px;cursor:pointer;transition:background .15s;user-select:none;}
+.acc-head:hover{background:rgba(255,255,255,.025);}
+.acc-head-l{display:flex;align-items:center;gap:12px;}
+.acc-eyebrow{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.18);font-family:var(--mono);}
+.acc-title{font-family:var(--syne);font-size:13px;font-weight:700;color:rgba(255,255,255,.45);}
+.acc-chevron{font-size:15px;color:rgba(255,255,255,.18);transition:transform .25s;flex-shrink:0;}
+.acc-item.open .acc-chevron{transform:rotate(180deg);}
+.acc-body{display:none;padding:0 22px 22px;}
+.acc-item.open .acc-body{display:block;}
+.acc-inner{border-top:1px solid rgba(255,255,255,.05);padding-top:18px;}
+.hw-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.04);}
+.hw-step{background:#0e0e1a;padding:18px 14px;}
+.hw-n{font-family:var(--bebas);font-size:26px;color:rgba(255,255,255,.06);line-height:1;margin-bottom:7px;}
+.hw-step-title{font-size:11px;font-weight:600;color:rgba(255,255,255,.3);margin-bottom:4px;font-family:var(--syne);}
+.hw-step-desc{font-size:11px;color:rgba(255,255,255,.18);line-height:1.6;}
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.04);}
+.plan-card{background:#0e0e1a;padding:20px 16px;}
+.plan-name{font-family:var(--bebas);font-size:22px;color:rgba(255,255,255,.28);margin-bottom:3px;}
+.plan-name.hi{color:rgba(198,255,0,.42);}
+.plan-tag{font-size:10px;color:rgba(255,255,255,.16);font-family:var(--mono);margin-bottom:10px;}
+.plan-div{height:1px;background:rgba(255,255,255,.05);margin-bottom:11px;}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.plan-features li{font-size:11px;color:rgba(255,255,255,.2);display:flex;gap:5px;line-height:1.5;}
+.plan-features li::before{content:'—';color:rgba(198,255,0,.22);flex-shrink:0;}
+.plan-features li.hi{color:rgba(255,255,255,.38);}
+.plan-link{display:inline-block;margin-top:13px;font-size:10px;color:rgba(198,255,0,.32);font-family:var(--mono);text-decoration:none;border-bottom:1px solid rgba(198,255,0,.15);padding-bottom:1px;transition:color .2s;}
+.plan-link:hover{color:var(--lime);}
+.faq-list{display:flex;flex-direction:column;gap:1px;}
+.faq-item{background:#0e0e1a;overflow:hidden;}
+.faq-head{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;transition:background .15s;}
+.faq-head:hover{background:rgba(255,255,255,.02);}
+.faq-q{font-size:12px;font-weight:600;color:rgba(255,255,255,.28);font-family:var(--syne);}
+.faq-chev{font-size:12px;color:rgba(255,255,255,.16);transition:transform .2s;}
+.faq-item.fopen .faq-chev{transform:rotate(180deg);}
+.faq-body{display:none;padding:0 16px 13px;}
+.faq-item.fopen .faq-body{display:block;}
+.faq-a{font-size:12px;color:rgba(255,255,255,.2);line-height:1.65;border-top:1px solid rgba(255,255,255,.04);padding-top:11px;}
+ 
+/* AGENTS UNIFIED */
+.agents-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.04);}
+.agent-block{background:#0e0e1a;padding:16px 18px;}
+.agent-block-name{font-family:var(--syne);font-size:12px;font-weight:700;color:rgba(255,255,255,.45);margin-bottom:6px;}
+.agent-block-desc{font-size:11px;color:rgba(255,255,255,.2);line-height:1.6;}
+ 
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(8px);}
+.modal-overlay.open{display:flex;}
+.modal{background:#14141f;border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:34px;width:100%;max-width:420px;position:relative;box-shadow:0 28px 72px rgba(0,0,0,.6);}
+.modal-close{position:absolute;top:13px;right:15px;background:none;border:none;color:rgba(255,255,255,.22);font-size:21px;cursor:pointer;line-height:1;transition:color .2s;}
+.modal-close:hover{color:var(--white);}
+.modal-eyebrow{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--lime);font-family:var(--mono);margin-bottom:8px;}
+.modal-title{font-family:var(--syne);font-size:18px;font-weight:800;color:var(--white);margin-bottom:5px;}
+.modal-sub{font-size:12px;color:rgba(255,255,255,.26);line-height:1.6;margin-bottom:20px;}
+.modal-form{display:flex;flex-direction:column;gap:12px;}
+.modal-group{display:flex;flex-direction:column;gap:5px;}
+.modal-label{font-size:10px;font-weight:600;letter-spacing:.06em;color:rgba(255,255,255,.28);font-family:var(--mono);}
+.modal-input{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:10px 13px;font-size:13px;color:var(--white);font-family:var(--dm);outline:none;transition:border-color .2s;width:100%;}
+.modal-input::placeholder{color:rgba(255,255,255,.15);}
+.modal-input:focus{border-color:rgba(198,255,0,.3);}
+.phone-row{display:grid;grid-template-columns:120px 1fr;gap:7px;}
+.modal-select{background:#1c1c2a;border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:10px 9px;font-size:12px;color:rgba(255,255,255,.6);font-family:var(--mono);outline:none;cursor:pointer;width:100%;}
+.modal-select:focus{border-color:rgba(198,255,0,.3);}
+.consent-row{display:flex;align-items:flex-start;gap:9px;margin-top:2px;}
+.consent-box{width:16px;height:16px;min-width:16px;border:1.5px solid rgba(255,255,255,.17);border-radius:4px;cursor:pointer;appearance:none;margin-top:2px;transition:all .2s;background:transparent;}
+.consent-box:checked{background:var(--lime);border-color:var(--lime);}
+.consent-text{font-size:11px;color:rgba(255,255,255,.24);line-height:1.6;}
+.modal-submit{background:var(--lime);color:var(--ink);border:none;border-radius:100px;padding:12px;font-family:var(--syne);font-size:13px;font-weight:700;cursor:pointer;width:100%;transition:transform .2s,box-shadow .2s;margin-top:2px;}
+.modal-submit:hover{transform:translateY(-1px);box-shadow:0 7px 20px rgba(198,255,0,.17);}
+.modal-submit:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.modal-success{text-align:center;padding:20px 0;display:none;}
+.modal-success-title{font-family:var(--syne);font-size:16px;font-weight:700;color:var(--white);margin-bottom:7px;}
+.modal-success-text{font-size:12px;color:rgba(255,255,255,.32);line-height:1.7;}
+footer{background:var(--ink);padding:30px 52px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;border-top:1px solid rgba(255,255,255,.05);}
+.footer-logo{font-family:var(--syne);font-size:14px;font-weight:800;color:var(--white);}
+.footer-logo span{color:var(--lime);}
+.footer-links{display:flex;gap:20px;}
+.footer-links a{font-size:11px;color:rgba(255,255,255,.2);text-decoration:none;font-family:var(--mono);transition:color .2s;}
+.footer-links a:hover{color:rgba(255,255,255,.5);}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.11);font-family:var(--mono);}
+@media(max-width:768px){
+  nav{padding:14px 18px;}
+  .p-hero{padding:100px 14px 48px;}
+  .form-card{padding:20px 15px;}
+  .form-row{grid-template-columns:1fr;}
+  .anim-strip{flex-direction:column;height:auto;}
+  .ring-side{border-right:none;border-bottom:1px solid rgba(255,255,255,.05);width:100%;justify-content:center;padding:18px;}
+  .map-side{width:100%;height:150px;}
+  .hw-flow{grid-template-columns:1fr 1fr;}
+  .plans-grid{grid-template-columns:1fr;}
+  .phone-row{grid-template-columns:1fr;}
+  footer{flex-direction:column;text-align:center;}
+  .footer-links{justify-content:center;}
+  .acc-wrap{padding:0 14px;}
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<nav>
+  <div class="nav-logo">Edge<span>point</span><span class="nav-label">/ Platform</span></div>
+  <a href="index.html" class="nav-back">← Main site</a>
+  <button class="nav-join" onclick="openModal()">Join</button>
+</nav>
+ 
+<section class="p-hero">
+  <div class="p-intro">
+    <div class="p-eyebrow">Edgepoint Platform · Early Access</div>
+    <h1 class="p-headline">Market intelligence. <span>At scale.</span></h1>
+    <p class="p-tagline">A research platform built for companies that move into new markets.</p>
+  </div>
+ 
+  <!-- FORM -->
+  <div class="form-card">
+    <div class="form-card-head">
+      <div class="form-head-ring">
+        <svg width="40" height="40" viewBox="0 0 40 40">
+          <circle cx="20" cy="20" r="14" fill="none" stroke="rgba(198,255,0,.62)" stroke-width="5" stroke-dasharray="22 66" stroke-dashoffset="0" style="transform:rotate(-90deg);transform-origin:20px 20px;animation:s1 .8s .2s both ease-out;"/>
+          <circle cx="20" cy="20" r="14" fill="none" stroke="rgba(198,255,0,.38)" stroke-width="5" stroke-dasharray="22 66" stroke-dashoffset="-22" style="transform:rotate(-90deg);transform-origin:20px 20px;animation:s2 .8s .5s both ease-out;"/>
+          <circle cx="20" cy="20" r="14" fill="none" stroke="rgba(198,255,0,.2)" stroke-width="5" stroke-dasharray="22 66" stroke-dashoffset="-44" style="transform:rotate(-90deg);transform-origin:20px 20px;animation:s3 .8s .8s both ease-out;"/>
+          <circle cx="20" cy="20" r="14" fill="none" stroke="rgba(198,255,0,.08)" stroke-width="5" stroke-dasharray="22 66" stroke-dashoffset="-66" style="transform:rotate(-90deg);transform-origin:20px 20px;animation:s4 .8s 1.1s both ease-out;"/>
+        </svg>
+      </div>
+      <div class="form-head-text">
+        <div class="form-card-title">Start your market analysis</div>
+        <div class="form-card-sub">Fill in the details — our agents will build a comprehensive research brief. Results may take from a few minutes up to 30 minutes, please wait.</div>
+      </div>
+    </div>
+    <form class="req-form" id="mainForm" onsubmit="handleFormSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Company name <span class="req-star">*</span></label>
+          <input type="text" class="form-input" id="companyNameInput" placeholder="e.g. Maison Dupont SA" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Industry / Sector <span class="req-star">*</span></label>
+          <input type="text" class="form-input" placeholder="e.g. Retail, SaaS, Food & Beverage" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Nearest competitors</label>
+        <input type="text" class="form-input" placeholder="e.g. Company A, Company B, Company C">
+        <div class="form-hint">List companies you consider direct competition in your current or target markets.</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">What would you like to achieve? <span class="req-star">*</span></label>
+        <div class="task-options">
+          <label class="task-option">
+            <input type="checkbox" name="task" value="new_markets">
+            <div class="task-box">
+              <div class="task-check"><svg class="task-check-svg" viewBox="0 0 10 10" width="10" height="10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="#09090f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div><div class="task-title">Enter new markets</div><div class="task-desc">Understand a market I'm not yet in — regulations, competition, opportunity size, entry strategy</div></div>
+            </div>
+          </label>
+          <label class="task-option">
+            <input type="checkbox" name="task" value="strengthen">
+            <div class="task-box">
+              <div class="task-check"><svg class="task-check-svg" viewBox="0 0 10 10" width="10" height="10" fill="none"><polyline points="1.5,5 4,7.5 8.5,2.5" stroke="#09090f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div><div class="task-title">Strengthen existing market positions</div><div class="task-desc">Improve competitive standing and find growth opportunities in markets where I already operate</div></div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Additional context <span style="color:rgba(255,255,255,.16);font-weight:400">(optional)</span></label>
+        <textarea class="form-input form-textarea" placeholder="Target geographies, specific questions, timeframe, budget constraints…"></textarea>
+      </div>
+      <div class="form-notice">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" style="stroke:var(--lime);stroke-width:1.8;stroke-linecap:round;flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>Research may take from a few minutes up to 30 minutes. Our agents run in parallel to deliver a complete picture.</span>
+      </div>
+      <button type="submit" class="form-submit" id="mainSubmitBtn">Run analysis →</button>
+    </form>
+    <div class="form-success" id="formSuccess">
+      <div class="form-success-icon">✓</div>
+      <div class="form-success-title">Analysis launched</div>
+      <p class="form-success-text">Our agents are now running your research. Results may take up to 30 minutes.<br><br><span style="font-family:var(--mono);font-size:11px;color:rgba(255,255,255,.18)">Questions? <a href="mailto:talent@edgepnt.com" style="color:var(--lime);text-decoration:none">talent@edgepnt.com</a></span></p>
+    </div>
+  </div>
+ 
+  <!-- ACCORDIONS -->
+  <div class="acc-wrap">
+    <div class="acc-item" id="acc1">
+      <div class="acc-head" onclick="toggleAcc('acc1')">
+        <div class="acc-head-l"><span class="acc-eyebrow">Process</span><span class="acc-title">How it works</span></div>
+        <span class="acc-chevron">↓</span>
+      </div>
+      <div class="acc-body"><div class="acc-inner"><div class="hw-flow">
+        <div class="hw-step"><div class="hw-n">01</div><div class="hw-step-title">Brief your market</div><p class="hw-step-desc">Define target market, sector, and objectives in minutes.</p></div>
+        <div class="hw-step"><div class="hw-n">02</div><div class="hw-step-title">Agents deploy</div><p class="hw-step-desc">Agents run across primary and secondary sources — competitors, regulations, pricing.</p></div>
+        <div class="hw-step"><div class="hw-n">03</div><div class="hw-step-title">Report generated</div><p class="hw-step-desc">Structured intelligence delivered to your dashboard.</p></div>
+        <div class="hw-step"><div class="hw-n">04</div><div class="hw-step-title">Continuous monitoring</div><p class="hw-step-desc">Agents keep watching. Alerts on significant changes.</p></div>
+      </div></div></div>
+    </div>
+    <div class="acc-item" id="acc2">
+      <div class="acc-head" onclick="toggleAcc('acc2')">
+        <div class="acc-head-l"><span class="acc-eyebrow">Pricing</span><span class="acc-title">Intelligence levels</span></div>
+        <span class="acc-chevron">↓</span>
+      </div>
+      <div class="acc-body"><div class="acc-inner"><div class="plans-grid">
+        <div class="plan-card">
+          <div class="plan-name">Standard</div><div class="plan-tag">First new market</div><div class="plan-div"></div>
+          <ul class="plan-features"><li class="hi">2–3 reports / month</li><li>Core analytics dashboard</li><li class="hi">5 agents active</li><li>Competitor tracker · Reg monitor · Market pulse</li></ul>
+          <a href="#" class="plan-link" onclick="openModal();return false;">Get started →</a>
+        </div>
+        <div class="plan-card">
+          <div class="plan-name hi">Plus</div><div class="plan-tag">Multiple markets</div><div class="plan-div"></div>
+          <ul class="plan-features"><li class="hi">Up to 5 reports / month</li><li>Advanced analytics + trend signals</li><li class="hi">Up to 10 agents</li><li>+ Risk scanner · Pricing intel · Channel discovery</li></ul>
+          <a href="#" class="plan-link" onclick="openModal();return false;">Get started →</a>
+        </div>
+        <div class="plan-card">
+          <div class="plan-name">Corporate</div><div class="plan-tag">Complex multi-market expansion</div><div class="plan-div"></div>
+          <ul class="plan-features"><li class="hi">Up to 10 reports / month</li><li>Full analytics + BI integrations</li><li class="hi">20+ agents in parallel</li><li>Custom agents · M&A tracker · Dedicated manager</li></ul>
+          <a href="#" class="plan-link" onclick="openModal();return false;">Talk to us →</a>
+        </div>
+      </div></div></div>
+    </div>
+    <div class="acc-item" id="acc3">
+      <div class="acc-head" onclick="toggleAcc('acc3')">
+        <div class="acc-head-l"><span class="acc-eyebrow">Agents</span><span class="acc-title">Your always-on research team</span></div>
+        <span class="acc-chevron">↓</span>
+      </div>
+      <div class="acc-body"><div class="acc-inner"><div class="agents-grid">
+        <div class="agent-block"><div class="agent-block-name">Market Pulse Agent</div><div class="agent-block-desc">Continuously tracks market sizing, growth signals, and demand indicators. Surfaces changes in consumer behaviour, search trends, and category growth before they become obvious.</div></div>
+        <div class="agent-block"><div class="agent-block-name">Competitor Tracker</div><div class="agent-block-desc">Monitors pricing, product launches, partnerships, job postings, and positioning shifts across your competitor set. Weekly digests and real-time alerts on significant moves.</div></div>
+        <div class="agent-block"><div class="agent-block-name">Regulatory Monitor</div><div class="agent-block-desc">Tracks legislative changes, compliance requirements, and licensing updates. Flags developments that could affect your operations or create new entry windows.</div></div>
+        <div class="agent-block"><div class="agent-block-name">Risk & Opportunity Scanner</div><div class="agent-block-desc">Early-warning signals for market shifts, geopolitical risks, and white spaces. Helps you act before risk materialises and spot opportunities ahead of competitors.</div></div>
+        <div class="agent-block"><div class="agent-block-name">Pricing Intelligence Agent</div><div class="agent-block-desc">Real-time pricing benchmarks across competitors and channels. Identifies pricing gaps, premium positioning opportunities, and discount patterns affecting your GTM strategy.</div></div>
+        <div class="agent-block"><div class="agent-block-name">Channel Discovery Agent</div><div class="agent-block-desc">Maps acquisition channels, distribution partners, media platforms, and influencer networks. Prioritises by reach, cost efficiency, and audience fit for your category.</div></div>
+      </div></div></div>
+    </div>
+  </div>
+</section>
+ 
+<footer>
+  <div class="footer-logo">Edge<span>point</span></div>
+  <div class="footer-links">
+    <a href="index.html">Main site</a>
+    <a href="index.html#services">Services</a>
+    <a href="mailto:talent@edgepnt.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 Edgepoint. Market Intelligence & Entry Strategy.</div>
+</footer>
+ 
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-eyebrow">Activate access</div>
+    <div class="modal-title">Subscribe to platform</div>
+    <p class="modal-sub">All fields are required. We'll reach out to set up your account.</p>
+    <form class="modal-form" id="modalForm" onsubmit="handleModalSubmit(event)">
+      <div class="modal-group"><label class="modal-label">Company name *</label><input type="text" class="modal-input" id="modalCompany" placeholder="Your company name" required></div>
+      <div class="modal-group"><label class="modal-label">Your name *</label><input type="text" class="modal-input" placeholder="First and last name" required></div>
+      <div class="modal-group">
+        <label class="modal-label">Phone *</label>
+        <div class="phone-row">
+          <select class="modal-select">
+            <option>🇫🇷 +33</option><option>🇩🇪 +49</option><option>🇬🇧 +44</option>
+            <option>🇪🇸 +34</option><option>🇮🇹 +39</option><option>🇳🇱 +31</option>
+            <option>🇧🇪 +32</option><option>🇨🇭 +41</option><option>🇦🇹 +43</option>
+            <option>🇵🇱 +48</option><option>🇸🇪 +46</option><option>🇳🇴 +47</option>
+            <option>🇩🇰 +45</option><option>🇵🇹 +351</option><option>🇬🇷 +30</option>
+            <option>🇨🇿 +420</option><option>🇭🇺 +36</option><option>🇷🇴 +40</option>
+            <option>🇺🇸 +1</option><option>🇨🇦 +1</option><option>🇧🇷 +55</option>
+            <option>🇲🇽 +52</option><option>🇦🇷 +54</option><option>🇨🇴 +57</option>
+            <option>🇦🇪 +971</option><option>🇸🇦 +966</option><option>🇹🇷 +90</option>
+            <option>🇮🇳 +91</option><option>🇯🇵 +81</option><option>🇸🇬 +65</option>
+            <option>🇦🇺 +61</option><option>🇺🇦 +380</option>
+          </select>
+          <input type="tel" class="modal-input" placeholder="Phone number" required>
+        </div>
+      </div>
+      <div class="modal-group"><label class="modal-label">Email *</label><input type="email" class="modal-input" placeholder="you@company.com" required></div>
+      <div class="consent-row">
+        <input type="checkbox" class="consent-box" id="consentBox" required>
+        <label for="consentBox" class="consent-text">I agree to the processing of my personal data in accordance with Edgepoint's privacy policy, solely for platform setup and communications.</label>
+      </div>
+      <button type="submit" class="modal-submit" id="modalSubmitBtn">Submit</button>
+    </form>
+    <div class="modal-success" id="modalSuccess">
+      <div style="font-size:24px;color:var(--lime);margin-bottom:10px;">✓</div>
+      <div class="modal-success-title">You're on the list</div>
+      <p class="modal-success-text">We'll be in touch shortly.<br><a href="mailto:talent@edgepnt.com" style="color:var(--lime);text-decoration:none;font-family:var(--mono);font-size:11px;">talent@edgepnt.com</a></p>
+    </div>
+  </div>
+</div>
+ 
+<script>
+// Ring CSS keyframes
+document.head.insertAdjacentHTML('beforeend','<style>@keyframes s1{from{stroke-dasharray:0 88}to{stroke-dasharray:22 66}}@keyframes s2{from{stroke-dasharray:0 88}to{stroke-dasharray:22 66}}@keyframes s3{from{stroke-dasharray:0 88}to{stroke-dasharray:22 66}}@keyframes s4{from{stroke-dasharray:0 88}to{stroke-dasharray:22 66}}</style>');
+ 
+// Accordion
+function toggleAcc(id){
+  const el=document.getElementById(id);
+  const wasOpen=el.classList.contains('open');
+  document.querySelectorAll('.acc-item').forEach(a=>a.classList.remove('open'));
+  if(!wasOpen) el.classList.add('open');
+}
+ 
+// Modal
+function openModal(){
+  const co=document.getElementById('companyNameInput').value;
+  if(co) document.getElementById('modalCompany').value=co;
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+function handleOverlayClick(e){if(e.target===document.getElementById('modalOverlay'))closeModal();}
+function handleModalSubmit(e){
+  e.preventDefault();
+  const btn=document.getElementById('modalSubmitBtn');
+  btn.disabled=true; btn.textContent='Sending…';
+  setTimeout(()=>{
+    document.getElementById('modalForm').style.display='none';
+    document.getElementById('modalSuccess').style.display='block';
+  },1300);
+}
+ 
+// Main form
+function handleFormSubmit(e){
+  e.preventDefault();
+  const btn=document.getElementById('mainSubmitBtn');
+  btn.disabled=true; btn.textContent='Running analysis…';
+  setTimeout(()=>{openModal(); btn.disabled=false; btn.textContent='Run analysis →';},1100);
+}
+ 
+// Cursor
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function ar(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(ar);})();
+</script>
+</body>
+</html>
+ 
