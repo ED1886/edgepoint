@@ -220,32 +220,13 @@ footer{background:var(--ink);padding:40px 52px;display:flex;align-items:center;j
   .services-note,.markets-sub{text-align:left;max-width:none;}
   .about-chart-embed,.why-donut-embed{display:none;}
 }
-/* ── HERO DASHBOARD PREVIEW ── */
-.hero-preview{background:#111119;border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:20px;min-width:0;animation:previewFadeIn 1s .4s both;}
+/* ── HERO PREVIEW ── */
+.hero-preview{background:#0d0d18;border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;min-width:0;animation:previewFadeIn 1s .4s both;padding:28px 28px;position:relative;display:flex;flex-direction:column;justify-content:center;gap:12px;}
 @keyframes previewFadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
-.hp-topbar{display:flex;align-items:center;gap:8px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.06);}
-.hp-live{display:flex;align-items:center;gap:5px;font-size:9px;font-family:var(--mono);letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);}
-.hp-live::before{content:'';width:5px;height:5px;background:var(--lime);border-radius:50%;animation:liveblink 2s infinite;}
-@keyframes liveblink{0%,100%{opacity:1;}50%{opacity:.2;}}
-.hp-market{margin-left:auto;font-size:10px;font-family:var(--mono);color:rgba(255,255,255,.3);background:rgba(255,255,255,.05);padding:3px 9px;border-radius:100px;}
-.hp-section-label{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.25);font-family:var(--mono);margin-bottom:10px;}
-/* Mini bar chart in preview */
-.hp-bars{display:flex;flex-direction:column;gap:7px;margin-bottom:16px;}
-.hp-bar-row{display:flex;align-items:center;gap:8px;}
-.hp-bar-label{font-size:10px;color:rgba(255,255,255,.4);font-family:var(--mono);width:86px;flex-shrink:0;}
-.hp-bar-track{flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;}
-.hp-bar-fill{height:100%;border-radius:100px;animation:hpBarIn .8s ease-out both;}
-@keyframes hpBarIn{from{width:0!important;}to{}}
-.hp-bar-val{font-size:10px;color:rgba(255,255,255,.35);font-family:var(--mono);width:24px;text-align:right;flex-shrink:0;}
-/* KPI row */
-.hp-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.05);border-radius:8px;overflow:hidden;margin-bottom:14px;}
-.hp-kpi{background:#0e0e1a;padding:10px 8px;text-align:center;}
-.hp-kpi-num{font-family:var(--bebas);font-size:22px;color:var(--lime);line-height:1;}
-.hp-kpi-label{font-size:9px;color:rgba(255,255,255,.3);font-family:var(--mono);margin-top:2px;line-height:1.3;}
-/* Recommendation callout */
-.hp-rec{background:rgba(198,255,0,.06);border:1px solid rgba(198,255,0,.15);border-radius:8px;padding:11px 12px;}
-.hp-rec-label{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);font-family:var(--mono);margin-bottom:5px;}
-.hp-rec-text{font-size:11px;color:rgba(255,255,255,.55);line-height:1.6;}
+.hero-preview::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 0% 50%,rgba(198,255,0,.05) 0%,transparent 70%);pointer-events:none;}
+.hbar-track{height:14px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden;cursor:pointer;position:relative;}
+.hbar-fill{height:100%;border-radius:4px;transform-origin:left;transform:scaleX(0);transition:filter .25s, transform .8s cubic-bezier(.34,1.1,.64,1);}
+.hbar-track:hover .hbar-fill{filter:brightness(1.4);}
  
 /* About chart embed */
 .about-chart-embed{background:#0e0e18;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:18px 20px;margin-top:28px;}
@@ -362,36 +343,13 @@ footer{background:var(--ink);padding:40px 52px;display:flex;align-items:center;j
     <div class="hero-scroll">Scroll to explore</div>
   </div>
  
-  <!-- RIGHT: dashboard preview -->
-  <div class="hero-preview">
-    <div class="hp-topbar">
-      <div class="hp-live">Live report</div>
-      <div class="hp-market">FR → DE · Consumer goods · Q1 2026</div>
-    </div>
- 
-    <div class="hp-section-label">Competitor landscape — Germany</div>
-    <div class="hp-bars">
-      <div class="hp-bar-row">
-        <div class="hp-bar-label">Market leader A</div>
-        <div class="hp-bar-track"><div class="hp-bar-fill" style="width:78%;background:rgba(198,255,0,.7);animation-delay:.3s"></div></div>
-        <div class="hp-bar-val">78%</div>
-      </div>
-      <div class="hp-bar-row">
-        <div class="hp-bar-label">Market leader B</div>
-        <div class="hp-bar-track"><div class="hp-bar-fill" style="width:54%;background:rgba(198,255,0,.5);animation-delay:.45s"></div></div>
-        <div class="hp-bar-val">54%</div>
-      </div>
-      <div class="hp-bar-row">
-        <div class="hp-bar-label">Your segment gap</div>
-        <div class="hp-bar-track"><div class="hp-bar-fill" style="width:31%;background:rgba(198,255,0,.85);animation-delay:.6s"></div></div>
-        <div class="hp-bar-val" style="color:var(--lime)">31%</div>
-      </div>
-      <div class="hp-bar-row">
-        <div class="hp-bar-label">Indirect competitors</div>
-        <div class="hp-bar-track"><div class="hp-bar-fill" style="width:22%;background:rgba(255,255,255,.15);animation-delay:.75s"></div></div>
-        <div class="hp-bar-val">22%</div>
-      </div>
-    </div>
+  <!-- RIGHT: compact horizontal bars, no text -->
+  <div class="hero-preview" id="heroPreview">
+    <div class="hbar-track"><div class="hbar-fill" data-w="78" style="background:linear-gradient(90deg,rgba(198,255,0,.85),rgba(198,255,0,.3));box-shadow:4px 0 20px rgba(198,255,0,.2);"></div></div>
+    <div class="hbar-track"><div class="hbar-fill" data-w="55" style="background:linear-gradient(90deg,rgba(198,255,0,.65),rgba(198,255,0,.2));box-shadow:4px 0 14px rgba(198,255,0,.14);"></div></div>
+    <div class="hbar-track"><div class="hbar-fill" data-w="90" style="background:linear-gradient(90deg,rgba(198,255,0,.95),rgba(198,255,0,.4));box-shadow:4px 0 28px rgba(198,255,0,.28);"></div></div>
+    <div class="hbar-track"><div class="hbar-fill" data-w="38" style="background:linear-gradient(90deg,rgba(198,255,0,.5),rgba(198,255,0,.14));box-shadow:4px 0 10px rgba(198,255,0,.1);"></div></div>
+    <div class="hbar-track"><div class="hbar-fill" data-w="67" style="background:linear-gradient(90deg,rgba(198,255,0,.72),rgba(198,255,0,.25));box-shadow:4px 0 18px rgba(198,255,0,.16);"></div></div>
   </div>
 </section>
  
@@ -929,6 +887,18 @@ document.querySelectorAll('#bvBarsPanel').forEach(el => bvObs.observe(el));
         .attr('stroke-width','0.7');
  
     }).catch(()=>{});
+})();
+ 
+// ── HERO BARS ANIMATION ──
+(function(){
+  const fills = document.querySelectorAll('.hbar-fill');
+  fills.forEach((fill, i) => {
+    const w = fill.dataset.w || 50;
+    setTimeout(() => {
+      fill.style.width = w + '%';
+      fill.style.transform = 'scaleX(1)';
+    }, 200 + i * 120);
+  });
 })();
 </script>
 </body>
