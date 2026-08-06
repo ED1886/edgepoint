@@ -3,547 +3,310 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Edgepoint — Market Intelligence & Entry Strategy</title>
+<title>Edgepoint — Market Research & Entry Strategy</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2309090f'/><text y='24' x='4' font-family='Arial,sans-serif' font-weight='900' font-size='22' fill='%23c6ff00'>E</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital@1&family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --ink:#09090f;--paper:#f1f0ea;--white:#fff;
-  --lime:#c6ff00;--lime-d:#9ecb00;
-  --warm:#141420;--mid:#6b6b7a;--mist:rgba(255,255,255,0.45);
-  --border-d:rgba(255,255,255,0.07);--border-l:rgba(0,0,0,0.08);
+  --ink:#09090f; --paper:#f2f1eb; --white:#fff;
+  --lime:#c6ff00; --lime-d:#9ecb00;
+  --mid:#6b6b7a; --dim:rgba(255,255,255,.45);
+  --bd:rgba(255,255,255,.07);
   --bebas:'Bebas Neue',sans-serif;
   --syne:'Syne',sans-serif;
-  --cormorant:'Cormorant Garamond',serif;
   --dm:'DM Sans',sans-serif;
   --mono:'DM Mono',monospace;
+  --serif:'Cormorant Garamond',serif;
 }
 html{scroll-behavior:smooth;}
 body{background:var(--ink);color:var(--white);font-family:var(--dm);overflow-x:hidden;}
  
-/* ── CURSOR ── */
-.cursor{position:fixed;width:10px;height:10px;background:var(--lime);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference;}
-.cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(255,255,255,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .3s,height .3s,opacity .3s;mix-blend-mode:difference;}
- 
-/* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:22px 52px;transition:background .3s;}
-.nav-logo{font-family:var(--syne);font-size:17px;font-weight:800;letter-spacing:-.02em;color:var(--white);}
-.nav-logo span{color:var(--lime);}
-.nav-links{display:flex;gap:36px;align-items:center;}
-.nav-links a{font-size:15px;font-weight:500;color:rgba(255,255,255,0.7);text-decoration:none;letter-spacing:.02em;transition:color .2s;}
-.nav-links a:hover{color:var(--white);}
-.nav-cta{background:rgba(255,255,255,0.1)!important;color:var(--white)!important;padding:9px 22px;border-radius:100px;border:1px solid rgba(255,255,255,0.15)!important;transition:background .2s!important;font-size:15px!important;}
-.nav-cta:hover{background:var(--lime)!important;color:var(--ink)!important;border-color:transparent!important;}
-.nav-platform{color:var(--lime)!important;}
-.burger{display:none;flex-direction:column;gap:5px;width:40px;height:40px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:10px;cursor:pointer;padding:10px;justify-content:center;}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 52px;background:rgba(9,9,15,.95);backdrop-filter:blur(14px);border-bottom:1px solid var(--bd);}
+.logo{font-family:var(--syne);font-size:17px;font-weight:800;color:var(--white);text-decoration:none;}
+.logo span{color:var(--lime);}
+.nav-r{display:flex;align-items:center;gap:28px;}
+.nav-r a{font-size:14px;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s;}
+.nav-r a:hover{color:var(--white);}
+.nav-cta{background:var(--lime)!important;color:var(--ink)!important;padding:9px 22px;border-radius:100px;font-weight:700;font-family:var(--syne);font-size:13px;}
+.burger{display:none;flex-direction:column;gap:5px;width:38px;height:38px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:9px;cursor:pointer;padding:9px;justify-content:center;}
 .burger span{display:block;height:1.5px;background:var(--white);border-radius:2px;transition:all .3s;}
+.mobile-menu{display:none;position:fixed;inset:0;background:rgba(9,9,15,.98);z-index:99;flex-direction:column;justify-content:center;align-items:center;gap:8px;}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{font-family:var(--syne);font-size:26px;font-weight:800;color:rgba(255,255,255,.5);text-decoration:none;padding:10px 28px;border-radius:10px;transition:color .2s;}
+.mobile-menu a:hover{color:var(--white);}
+.mobile-menu .m-cta{background:var(--lime);color:var(--ink)!important;margin-top:12px;padding:14px 36px;}
 .burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg);}
 .burger.open span:nth-child(2){opacity:0;}
 .burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg);}
-.mobile-menu{display:none;position:fixed;inset:0;background:rgba(9,9,15,.98);z-index:99;flex-direction:column;justify-content:center;align-items:center;gap:6px;backdrop-filter:blur(20px);}
-.mobile-menu.open{display:flex;}
-.mobile-menu a{font-family:var(--syne);font-size:26px;font-weight:800;color:rgba(255,255,255,.55);text-decoration:none;padding:10px 28px;border-radius:10px;transition:all .2s;}
-.mobile-menu a:hover{color:var(--white);}
-.mobile-menu .m-cta{background:var(--lime);color:var(--ink)!important;margin-top:12px;padding:14px 36px;}
  
-/* ── HERO ── */
-.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:120px 52px 80px;position:relative;overflow:hidden;}
+/* HERO */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr auto;gap:48px;align-items:center;padding:120px 52px 80px;}
 .hero-left{}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 30% 50%,rgba(198,255,0,.035) 0%,transparent 70%);pointer-events:none;}
-.hero-rule{width:40px;height:1px;background:var(--lime);margin-bottom:28px;}
-.hero-eyebrow{font-size:11px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);font-family:var(--mono);margin-bottom:24px;}
-.hero-title{font-family:var(--bebas);font-size:clamp(64px,9vw,130px);line-height:.9;letter-spacing:-.01em;max-width:800px;}
+.hero-tag{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);font-family:var(--mono);margin-bottom:24px;}
+.hero-title{font-family:var(--bebas);font-size:clamp(58px,8vw,110px);line-height:.92;color:var(--white);margin-bottom:28px;}
 .hero-title em{color:var(--lime);font-style:normal;}
-.hero-tagline{font-family:var(--cormorant);font-style:italic;font-size:clamp(22px,2.5vw,30px);color:rgba(198,255,0,0.7);margin:28px 0 32px;font-weight:400;}
-.hero-desc{font-size:16px;line-height:1.75;color:rgba(255,255,255,0.62);max-width:500px;font-weight:300;margin-bottom:44px;}
-.hero-desc strong{color:rgba(255,255,255,.8);font-weight:500;}
-.hero-ctas{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
-.btn-lime{display:inline-flex;align-items:center;gap:8px;background:var(--lime);color:var(--ink);padding:14px 30px;border-radius:100px;font-family:var(--syne);font-size:14px;font-weight:700;text-decoration:none;transition:transform .2s,box-shadow .2s;}
-.btn-lime:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(198,255,0,.25);}
-.btn-ghost{display:inline-flex;align-items:center;gap:8px;color:rgba(255,255,255,.55);font-size:13px;font-weight:500;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:2px;transition:color .2s,border-color .2s;}
-.btn-ghost:hover{color:var(--white);border-color:rgba(255,255,255,.5);}
-.hero-scroll{margin-top:20px;font-size:11px;color:rgba(255,255,255,.28);letter-spacing:.15em;text-transform:uppercase;font-family:var(--mono);display:flex;align-items:center;gap:12px;}
-.hero-scroll::before{content:'';width:32px;height:1px;background:rgba(255,255,255,.2);}
+.hero-body{font-size:17px;line-height:1.8;color:var(--dim);font-weight:300;max-width:520px;margin-bottom:40px;}
+.hero-body strong{color:rgba(255,255,255,.8);font-weight:500;}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+/* Mini diagram right */
+.hero-diagram{width:200px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:22px 18px;}
+.hd-label{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.2);font-family:var(--mono);margin-bottom:4px;}
+.hd-track{height:10px;background:rgba(255,255,255,.05);border-radius:100px;overflow:hidden;}
+.hd-fill{height:100%;border-radius:100px;transform:scaleX(0);transform-origin:left;transition:transform .85s cubic-bezier(.34,1.1,.64,1);}
+.hd-row{display:flex;align-items:center;gap:8px;}
+.hd-row-label{font-size:10px;color:rgba(255,255,255,.3);font-family:var(--mono);width:60px;flex-shrink:0;line-height:1.3;}
+.hd-divider{height:1px;background:rgba(255,255,255,.05);margin:4px 0;}
+.hd-stat{text-align:center;}
+.hd-stat-num{font-family:var(--bebas);font-size:28px;color:var(--lime);line-height:1;}
+.hd-stat-lbl{font-size:9px;color:rgba(255,255,255,.25);font-family:var(--mono);margin-top:2px;}
+.btn-lime{display:inline-flex;align-items:center;background:var(--lime);color:var(--ink);padding:14px 32px;border-radius:100px;font-family:var(--syne);font-size:14px;font-weight:700;text-decoration:none;transition:transform .2s,box-shadow .2s;}
+.btn-lime:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(198,255,0,.22);}
+.btn-ghost{display:inline-flex;align-items:center;color:rgba(255,255,255,.5);font-size:14px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.2);padding-bottom:2px;transition:color .2s;}
+.btn-ghost:hover{color:var(--white);}
  
-/* ── MARQUEE ── */
-.marquee-wrap{overflow:hidden;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);padding:16px 0;background:rgba(255,255,255,.02);}
-.marquee-track{display:flex;gap:60px;animation:marquee 28s linear infinite;width:max-content;}
-.marquee-item{font-family:var(--mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.2);white-space:nowrap;display:flex;align-items:center;gap:60px;}
-.marquee-item::after{content:'·';color:var(--lime);}
-@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%)}}
+/* SECTION COMMON */
+section{padding:88px 52px;}
+.eyebrow{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);font-family:var(--mono);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.eyebrow::before{content:'';width:20px;height:1px;background:var(--lime-d);}
+h2.sec-title{font-family:var(--bebas);font-size:clamp(38px,5vw,64px);line-height:.93;color:var(--white);margin-bottom:20px;}
+h2.sec-title.dark{color:var(--ink);}
  
-/* ── ABOUT ── */
-.about{background:var(--paper);padding:100px 52px;}
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
-.about-left{}
-.section-eyebrow{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);font-family:var(--mono);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
-.section-eyebrow::before{content:'';width:24px;height:1px;background:var(--lime-d);}
-.about-title{font-family:var(--bebas);font-size:clamp(44px,5.5vw,80px);line-height:.92;color:var(--ink);margin-bottom:20px;}
-.about-title .stroke{-webkit-text-stroke:1.5px var(--ink);color:transparent;}
-.about-pull{font-family:var(--cormorant);font-style:italic;font-size:22px;color:var(--lime-d);line-height:1.5;margin-bottom:32px;font-weight:500;}
-.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px;}
-.stat-box{border-top:1px solid var(--border-l);padding-top:16px;}
-.stat-num{font-family:var(--bebas);font-size:44px;color:var(--ink);line-height:1;}
-.stat-num span{font-size:24px;color:var(--lime-d);}
-.stat-label{font-size:13px;color:var(--mid);margin-top:4px;line-height:1.5;}
-.about-right{}
-.about-text{font-size:15px;line-height:1.8;color:#444;font-weight:300;margin-bottom:22px;}
-.about-text strong{color:var(--ink);font-weight:600;}
-.about-cta-inline{display:inline-flex;align-items:center;gap:8px;font-family:var(--syne);font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;border-bottom:2px solid var(--lime);padding-bottom:2px;margin-top:8px;transition:color .2s;}
-.about-cta-inline:hover{color:var(--lime-d);}
+/* QUESTIONS */
+.questions{background:#0e0e18;}
+.q-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-top:8px;}
+.q-lead{font-size:16px;line-height:1.8;color:var(--dim);font-weight:300;}
+.q-lead strong{color:rgba(255,255,255,.8);font-weight:500;}
+.q-list{list-style:none;display:flex;flex-direction:column;gap:0;}
+.q-list li{font-size:15px;color:rgba(255,255,255,.65);padding:14px 0;border-bottom:1px solid rgba(255,255,255,.06);display:flex;gap:12px;align-items:flex-start;line-height:1.5;}
+.q-list li::before{content:'?';font-family:var(--bebas);font-size:20px;color:var(--lime);flex-shrink:0;line-height:1.2;}
+.q-answer{margin-top:28px;font-style:italic;font-family:var(--serif);font-size:18px;color:rgba(198,255,0,.6);line-height:1.6;}
  
-/* ── SERVICES ── */
-.services{background:var(--ink);padding:100px 52px;}
-.services-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:56px;gap:20px;}
-.services-title{font-family:var(--bebas);font-size:clamp(44px,5.5vw,80px);line-height:.92;color:var(--white);}
-.services-title span{color:var(--lime);}
-.services-note{font-family:var(--cormorant);font-style:italic;font-size:18px;color:rgba(255,255,255,.35);max-width:280px;text-align:right;line-height:1.6;}
-.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
-.svc{background:#111119;padding:40px 32px;border-radius:3px;position:relative;overflow:hidden;transition:background .3s;}
-.svc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--lime);transform:scaleX(0);transform-origin:left;transition:transform .4s;}
-.svc:hover{background:#16161f;}
-.svc:hover::after{transform:scaleX(1);}
-.svc-num{font-family:var(--bebas);font-size:56px;color:rgba(255,255,255,.04);position:absolute;top:16px;right:24px;line-height:1;}
-.svc-tag{display:inline-block;font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--lime);background:rgba(198,255,0,.08);padding:4px 12px;border-radius:100px;margin-bottom:20px;font-family:var(--mono);}
-.svc-name{font-family:var(--syne);font-size:22px;font-weight:800;color:var(--white);margin-bottom:14px;line-height:1.2;}
-.svc-desc{font-size:14px;line-height:1.75;color:rgba(255,255,255,.45);font-weight:300;margin-bottom:20px;}
-.svc-list{list-style:none;}
-.svc-list li{font-size:13px;color:rgba(255,255,255,.35);padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;gap:8px;align-items:flex-start;}
-.svc-list li::before{content:'→';color:var(--lime);font-size:11px;flex-shrink:0;margin-top:2px;}
-.svc-featured{background:#13131c;border:1px solid rgba(198,255,0,.15);}
+/* SERVICES */
+.services{background:var(--paper);}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:40px;}
+.svc-card{background:var(--white);padding:36px 28px;border-radius:2px;position:relative;}
+.svc-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--lime);transform:scaleX(0);transform-origin:left;transition:transform .35s;}
+.svc-card:hover::after{transform:scaleX(1);}
+.svc-num{font-family:var(--bebas);font-size:52px;color:rgba(0,0,0,.06);position:absolute;top:14px;right:20px;line-height:1;}
+.svc-icon{width:36px;height:36px;margin-bottom:18px;position:relative;}
+.svc-name{font-family:var(--syne);font-size:20px;font-weight:800;color:var(--ink);margin-bottom:10px;}
+.svc-desc{font-size:14px;color:#555;line-height:1.75;margin-bottom:18px;font-weight:300;}
+.svc-items{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.svc-items li{font-size:13px;color:#666;display:flex;gap:7px;align-items:flex-start;}
+.svc-items li::before{content:'→';color:var(--lime-d);flex-shrink:0;margin-top:1px;}
  
-/* ── HOW ── */
-.how{background:var(--paper);padding:100px 52px;}
-.how-head{margin-bottom:60px;}
-.how-title{font-family:var(--bebas);font-size:clamp(44px,5.5vw,80px);line-height:.92;color:var(--ink);}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border-l);}
-.step{background:var(--paper);padding:36px 28px;}
-.step-n{font-family:var(--bebas);font-size:72px;color:rgba(0,0,0,.06);line-height:1;margin-bottom:4px;}
-.step-icon{width:40px;height:40px;background:var(--ink);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
-.step-icon svg{width:20px;height:20px;stroke:var(--lime);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
-.step-title{font-family:var(--syne);font-size:16px;font-weight:700;color:var(--ink);margin-bottom:10px;}
-.step-desc{font-size:13px;line-height:1.7;color:var(--mid);}
-.step-time{display:inline-block;margin-top:14px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--lime-d);font-family:var(--mono);}
+/* HOW */
+.how{background:var(--ink);}
+.steps-row{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:40px;background:rgba(255,255,255,.05);}
+.step{background:var(--ink);padding:32px 24px;}
+.step-n{font-family:var(--bebas);font-size:48px;color:var(--lime);line-height:1;margin-bottom:12px;}
+.step-name{font-family:var(--syne);font-size:16px;font-weight:700;color:var(--white);margin-bottom:10px;}
+.step-desc{font-size:13px;color:rgba(255,255,255,.5);line-height:1.7;}
+/* Mini progress bar under each step */
+.step-bar{height:2px;background:rgba(255,255,255,.08);margin-top:20px;border-radius:100px;overflow:hidden;}
+.step-bar-fill{height:100%;background:var(--lime);transform:scaleX(0);transform-origin:left;transition:transform 1s ease-out;}
+.step-bar-fill.anim{transform:scaleX(1);}
  
-/* ── WHY ── */
-.why{background:#0e0e18;padding:100px 52px;}
-.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
-.why-title{font-family:var(--bebas);font-size:clamp(44px,5.5vw,80px);line-height:.92;color:var(--white);margin-bottom:24px;}
-.why-title span{color:var(--lime);}
-.why-pull{font-family:var(--cormorant);font-style:italic;font-size:20px;color:rgba(198,255,0,.6);line-height:1.55;margin-bottom:28px;}
-.why-text{font-size:15px;line-height:1.8;color:rgba(255,255,255,0.62);font-weight:300;margin-bottom:20px;}
-.why-text strong{color:rgba(255,255,255,.85);font-weight:500;}
-.diff-table{}
-.diff-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:20px 0;border-bottom:1px solid rgba(255,255,255,.06);}
-.diff-row:first-child{border-top:1px solid rgba(255,255,255,.06);}
-.diff-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-family:var(--mono);margin-bottom:6px;}
-.diff-label.them{color:rgba(255,255,255,.2);}
-.diff-label.us{color:var(--lime);}
-.diff-val{font-size:13px;line-height:1.55;}
-.diff-val.them{color:rgba(255,255,255,.2);text-decoration:line-through;text-decoration-color:rgba(255,255,255,.1);}
-.diff-val.us{color:rgba(255,255,255,.8);}
+/* WHY */
+.why{background:#0e0e18;}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+.why-points{list-style:none;display:flex;flex-direction:column;gap:16px;margin-top:8px;}
+.why-points li{font-size:15px;color:rgba(255,255,255,.7);display:flex;gap:12px;align-items:flex-start;line-height:1.6;}
+.why-points li::before{content:'';width:6px;height:6px;background:var(--lime);border-radius:50%;flex-shrink:0;margin-top:7px;}
+/* Mini donut rings visual */
+.why-visual{display:flex;flex-direction:column;gap:20px;}
+.ring-row{display:flex;align-items:center;gap:14px;}
+.ring-label{font-size:12px;color:rgba(255,255,255,.4);font-family:var(--mono);flex:1;}
+.mini-ring{flex-shrink:0;}
  
-/* ── MARKETS MAP ── */
-.markets{background:var(--paper);padding:100px 52px;}
-.markets-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;gap:24px;}
-.markets-title{font-family:var(--bebas);font-size:clamp(44px,5.5vw,80px);line-height:.92;color:var(--ink);}
-.markets-sub{font-family:var(--cormorant);font-style:italic;font-size:18px;color:var(--mid);text-align:right;max-width:260px;line-height:1.6;}
-.markets-map-wrap{position:relative;}
-#marketsMap{width:100%;height:460px;border-radius:14px;display:block;background:#0b0b16;}
-.map-tooltip{position:absolute;background:rgba(9,9,15,.96);border:1px solid rgba(198,255,0,.25);border-radius:10px;padding:12px 16px;pointer-events:none;opacity:0;transition:opacity .15s;font-family:var(--mono);z-index:10;max-width:220px;}
-.map-tooltip.on{opacity:1;}
-.mtt-region{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--lime);margin-bottom:4px;}
-.mtt-text{font-size:12px;color:rgba(255,255,255,.6);line-height:1.55;}
-.coverage-chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
-.coverage-chip{font-size:12px;color:var(--mid);background:var(--white);border:1px solid var(--border-l);border-radius:100px;padding:5px 14px;font-family:var(--mono);}
+/* MARKETS */
+.markets{background:var(--paper);}
+.markets-body{margin-top:28px;}
+.markets-map-wrap{position:relative;margin-bottom:24px;}
+#mmap{width:100%;height:400px;border-radius:14px;display:block;background:#0b0b16;}
+.markets-chips{display:flex;gap:10px;flex-wrap:wrap;}
+.markets-chip{font-size:13px;color:#555;background:var(--white);border:1px solid rgba(0,0,0,.08);border-radius:100px;padding:6px 16px;font-family:var(--mono);}
  
-/* ── PLATFORM TEASER ── */
-.platform-teaser{background:var(--ink);padding:100px 52px;}
-.pt-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
-.pt-eyebrow{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);font-family:var(--mono);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
-.pt-eyebrow::before{content:'';width:6px;height:6px;background:var(--lime);border-radius:50%;animation:blink 2s infinite;}
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
-.pt-title{font-family:var(--bebas);font-size:clamp(44px,5vw,72px);line-height:.92;color:var(--white);margin-bottom:20px;}
-.pt-title span{color:var(--lime);}
-.pt-pull{font-family:var(--cormorant);font-style:italic;font-size:20px;color:rgba(198,255,0,.55);margin-bottom:24px;line-height:1.5;}
-.pt-desc{font-size:15px;line-height:1.8;color:rgba(255,255,255,0.62);font-weight:300;margin-bottom:32px;}
-.pt-card{background:#111119;border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:28px;}
-.pt-plans{display:flex;flex-direction:column;gap:2px;}
-.pt-plan{background:#0c0c16;border-radius:8px;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;transition:background .2s;}
-.pt-plan:hover{background:#14141f;}
-.pt-plan-name{font-family:var(--syne);font-size:15px;font-weight:700;color:var(--white);}
-.pt-plan-detail{font-size:12px;color:rgba(255,255,255,.3);margin-top:3px;font-family:var(--mono);}
-.pt-plan-badge{font-size:11px;font-weight:600;color:var(--lime);background:rgba(198,255,0,.08);border-radius:100px;padding:4px 12px;font-family:var(--mono);white-space:nowrap;}
-.pt-cta{margin-top:24px;display:flex;gap:12px;align-items:center;}
+/* AI PLATFORM TEASER */
+.ai-teaser{background:var(--ink);padding:72px 52px;}
+.ai-inner{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+.ai-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(198,255,0,.07);border:1px solid rgba(198,255,0,.18);border-radius:100px;padding:5px 14px;margin-bottom:16px;font-size:10px;color:var(--lime);font-family:var(--mono);letter-spacing:.08em;}
+.ai-badge::before{content:'';width:5px;height:5px;background:var(--lime);border-radius:50%;animation:blink 2s infinite;}
+.ai-text{font-size:15px;color:var(--dim);line-height:1.8;font-weight:300;margin-bottom:24px;}
+.ai-link{font-size:14px;color:var(--lime);text-decoration:none;font-weight:600;border-bottom:1px solid rgba(198,255,0,.3);padding-bottom:2px;transition:border-color .2s;}
+.ai-link:hover{border-color:var(--lime);}
+/* Node network visual */
+.ai-visual{position:relative;height:200px;}
+.ai-visual svg{width:100%;height:100%;}
  
-/* ── CTA ── */
-.cta-section{background:var(--paper);padding:100px 52px;}
-.cta-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
-.cta-title{font-family:var(--bebas);font-size:clamp(44px,5.5vw,80px);line-height:.92;color:var(--ink);}
+/* CTA */
+.cta-section{background:var(--paper);padding:88px 52px;}
+.cta-inner{max-width:640px;}
+.cta-title{font-family:var(--bebas);font-size:clamp(44px,6vw,80px);line-height:.92;color:var(--ink);margin-bottom:16px;}
 .cta-title span{color:var(--lime-d);}
-.cta-pull{font-family:var(--cormorant);font-style:italic;font-size:20px;color:var(--lime-d);margin-top:16px;line-height:1.5;}
-.cta-right{}
-.cta-desc{font-size:15px;line-height:1.8;color:#555;margin-bottom:32px;font-weight:300;}
-.cta-contact{font-size:13px;color:var(--mid);margin-top:20px;font-family:var(--mono);}
+.cta-body{font-size:16px;color:#555;line-height:1.8;font-weight:300;margin-bottom:32px;}
+.cta-contact{margin-top:18px;font-size:13px;color:#888;font-family:var(--mono);}
 .cta-contact a{color:var(--ink);font-weight:600;text-decoration:none;border-bottom:1px solid var(--lime-d);}
  
-/* ── FOOTER ── */
-footer{background:var(--ink);padding:40px 52px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;border-top:1px solid rgba(255,255,255,.06);}
-.footer-logo{font-family:var(--syne);font-size:15px;font-weight:800;color:var(--white);}
-.footer-logo span{color:var(--lime);}
-.footer-links{display:flex;gap:28px;}
-.footer-links a{font-size:12px;color:rgba(255,255,255,.3);text-decoration:none;font-family:var(--mono);transition:color .2s;}
-.footer-links a:hover{color:rgba(255,255,255,.7);}
-.footer-copy{font-size:11px;color:rgba(255,255,255,.18);font-family:var(--mono);}
+/* FOOTER */
+footer{background:var(--ink);padding:32px 52px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;border-top:1px solid var(--bd);}
+.footer-links{display:flex;gap:24px;}
+.footer-links a{font-size:11px;color:rgba(255,255,255,.25);text-decoration:none;font-family:var(--mono);transition:color .2s;}
+.footer-links a:hover{color:rgba(255,255,255,.6);}
+.footer-copy{font-size:11px;color:rgba(255,255,255,.15);font-family:var(--mono);}
  
-/* ── REVEAL ── */
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s;}
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .65s,transform .65s;}
 .reveal.visible{opacity:1;transform:none;}
  
-/* ── RESPONSIVE ── */
+/* RESPONSIVE */
 @media(max-width:900px){
-  nav{padding:16px 20px;}
-  .nav-links{display:none;}
+  nav{padding:14px 20px;}
+  .nav-r{display:none;}
   .burger{display:flex;}
   .hero{grid-template-columns:1fr;padding:100px 20px 60px;}
-  .hero-preview{display:none;}
-  .about,.services,.how,.why,.markets,.platform-teaser,.cta-section{padding-left:20px;padding-right:20px;}
-  .about-grid,.services-head,.why-grid,.pt-inner,.cta-inner{grid-template-columns:1fr;gap:40px;}
-  .steps{grid-template-columns:1fr 1fr;}
-  .services-grid{grid-template-columns:1fr;}
-  footer{flex-direction:column;gap:16px;text-align:center;}
+  .hero-diagram{display:none;}
+  .questions,.services,.how,.why,.markets,.ai-teaser,.cta-section{padding:60px 20px;}
+  .q-grid,.why-grid,.ai-inner{grid-template-columns:1fr;}
+  .svc-grid,.steps-row{grid-template-columns:1fr;}
+  footer{flex-direction:column;text-align:center;}
   .footer-links{justify-content:center;}
-  .services-note,.markets-sub{text-align:left;max-width:none;}
-  .about-chart-embed,.why-donut-embed{display:none;}
-}
-/* ── HERO PREVIEW ── */
-.hero-preview{background:#0d0d18;border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;min-width:0;animation:previewFadeIn 1s .4s both;padding:28px 28px;position:relative;display:flex;flex-direction:column;justify-content:center;gap:12px;}
-@keyframes previewFadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
-.hero-preview::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 0% 50%,rgba(198,255,0,.05) 0%,transparent 70%);pointer-events:none;}
-.hbar-track{height:14px;background:rgba(255,255,255,.04);border-radius:4px;overflow:hidden;cursor:pointer;position:relative;}
-.hbar-fill{height:100%;border-radius:4px;transform-origin:left;transform:scaleX(0);transition:filter .25s, transform .8s cubic-bezier(.34,1.1,.64,1);}
-.hbar-track:hover .hbar-fill{filter:brightness(1.4);}
- 
-/* About chart embed */
-.about-chart-embed{background:#0e0e18;border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:18px 20px;margin-top:28px;}
-.ace-label{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--lime);font-family:var(--mono);margin-bottom:12px;}
-.ace-bars{display:flex;flex-direction:column;gap:8px;}
-.ace-row{display:flex;align-items:center;gap:10px;}
-.ace-name{font-size:11px;color:rgba(255,255,255,.5);font-family:var(--mono);width:130px;flex-shrink:0;line-height:1.3;}
-.ace-track{flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;}
-.ace-fill{height:100%;border-radius:100px;background:var(--lime);transform-origin:left;transition:transform .9s ease-out;}
-.ace-fill.anim{transform:scaleX(1)!important;}
-.ace-fill{transform:scaleX(0);}
-.ace-val{font-size:10px;color:rgba(255,255,255,.35);font-family:var(--mono);width:28px;text-align:right;flex-shrink:0;}
-.ace-note{font-size:10px;color:rgba(255,255,255,.28);font-family:var(--mono);margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.05);line-height:1.55;}
- 
-/* Why section donut embed */
-.why-donut-embed{margin-top:28px;display:flex;align-items:center;gap:18px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:16px 18px;}
-.wde-legend{flex:1;display:flex;flex-direction:column;gap:7px;}
-.wde-row{display:flex;align-items:center;gap:7px;}
-.wde-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-.wde-label{font-size:11px;color:rgba(255,255,255,.5);font-family:var(--mono);flex:1;}
-.wde-pct{font-size:11px;color:var(--lime);font-family:var(--mono);}
-.wde-caption{font-size:10px;color:rgba(255,255,255,.25);font-family:var(--mono);margin-top:10px;line-height:1.5;}
- 
-@media(max-width:900px){
-  .hero-preview{display:none;}
-  .about-chart-embed{display:none;}
-  .why-donut-embed{display:none;}
-}
-/* ── BIG VISUALS SECTION ── */
-.bigviz{background:var(--ink);padding:80px 52px 100px;border-top:1px solid rgba(255,255,255,.05);}
-.bv-intro{text-align:center;margin-bottom:60px;}
-.bv-eyebrow{font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--lime);font-family:var(--mono);margin-bottom:12px;}
-.bv-title{font-family:var(--bebas);font-size:clamp(36px,5vw,62px);color:var(--white);line-height:.95;}
-.bv-title span{color:var(--lime);}
-.bv-sub{font-size:15px;color:rgba(255,255,255,.45);margin-top:12px;}
-.bv-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
-.bv-panel{background:#111119;padding:36px 30px;border-radius:3px;display:flex;flex-direction:column;}
-.bv-panel-q{font-family:var(--syne);font-size:18px;font-weight:800;color:var(--white);margin-bottom:4px;line-height:1.2;}
-.bv-panel-meta{font-size:11px;color:rgba(255,255,255,.35);font-family:var(--mono);margin-bottom:28px;}
-/* ---- Donut ---- */
-.bv-donut-wrap{display:flex;flex-direction:column;align-items:center;gap:24px;flex:1;}
-.bv-donut-legend{width:100%;display:flex;flex-direction:column;gap:10px;}
-.bvl-row{display:flex;align-items:center;gap:10px;}
-.bvl-swatch{width:12px;height:12px;border-radius:3px;flex-shrink:0;}
-.bvl-text{flex:1;font-size:13px;color:rgba(255,255,255,.65);}
-.bvl-pct{font-family:var(--bebas);font-size:22px;color:var(--lime);line-height:1;}
-/* ---- Bar chart ---- */
-.bv-bars{display:flex;flex-direction:column;gap:16px;flex:1;}
-.bvbar-row{}
-.bvbar-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
-.bvbar-label{font-size:13px;color:rgba(255,255,255,.65);}
-.bvbar-val{font-family:var(--bebas);font-size:26px;color:var(--lime);}
-.bvbar-track{height:14px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;}
-.bvbar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--lime),rgba(198,255,0,.6));transform:scaleX(0);transform-origin:left;transition:transform .9s ease-out;}
-.bvbar-fill.anim{transform:scaleX(1);}
-/* ---- Scatter ---- */
-.bv-scatter{flex:1;position:relative;min-height:220px;}
-.scatter-hint{text-align:center;font-size:11px;color:rgba(255,255,255,.25);font-family:var(--mono);margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:6px;}
-.scatter-hint::before{content:'↑';color:var(--lime);}
-.scatter-canvas{position:relative;width:100%;height:210px;cursor:crosshair;}
-.sdot{position:absolute;width:10px;height:10px;border-radius:50%;transition:transform .35s cubic-bezier(.34,1.56,.64,1);}
-.scatter-labels{display:flex;justify-content:space-between;margin-top:10px;}
-.scatter-label{font-size:11px;font-family:var(--mono);color:rgba(255,255,255,.35);text-align:center;}
-.scatter-label span{display:block;font-family:var(--bebas);font-size:20px;margin-bottom:2px;}
-.scatter-label.good span{color:var(--lime);}
-.scatter-label.bad span{color:rgba(255,255,255,.4);}
-@media(max-width:900px){
-  .bigviz{padding:60px 20px;}
-  .bv-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
 <body>
  
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
- 
 <!-- NAV -->
-<nav id="nav">
-  <div class="nav-logo">Edge<span>point</span></div>
-  <div class="nav-links">
-    <a href="platform.html" class="nav-platform">Platform ↗</a>
+<nav>
+  <a href="/" class="logo">Edge<span>point</span></a>
+  <div class="nav-r">
+    <a href="platform.html" style="color:var(--lime);font-weight:600;">Platform ↗</a>
     <a href="#services">Services</a>
     <a href="#how">Process</a>
     <a href="#markets">Markets</a>
-    <a href="#contact" class="nav-cta">Get Started</a>
+    <a href="#contact" class="nav-cta">Book a call</a>
   </div>
   <button class="burger" id="burger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
  
 <div class="mobile-menu" id="mobileMenu">
-  <a href="platform.html">Platform ↗</a>
   <a href="#services" onclick="toggleMenu()">Services</a>
+  <a href="platform.html">Platform</a>
   <a href="#how" onclick="toggleMenu()">Process</a>
   <a href="#markets" onclick="toggleMenu()">Markets</a>
-  <a href="#contact" class="m-cta" onclick="toggleMenu()">Get Started</a>
+  <a href="#contact" class="m-cta" onclick="toggleMenu()">Book a call</a>
 </div>
  
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
- 
-  <!-- LEFT: text -->
   <div class="hero-left">
-    <div class="hero-rule"></div>
-    <div class="hero-eyebrow">Market Intelligence · Entry Strategy · Growth</div>
-    <h1 class="hero-title">Enter new<br>markets<br><em>With clarity</em></h1>
-    <p class="hero-tagline">Intelligence before investment.</p>
-    <p class="hero-desc">Edgepoint helps <strong>European SMEs</strong> reduce the cost and risk of international expansion — through precise market research, go-to-market strategy, and hands-on execution support.</p>
+    <div class="hero-tag">Market Research · Entry Strategy · Growth</div>
+    <h1 class="hero-title">Your edge<br><em>in new markets</em></h1>
+    <p class="hero-body">Entering a new market is expensive. Making the wrong decisions can cost <strong>months of time, thousands of euros,</strong> and missed opportunities. Edgepoint helps European SMEs understand new markets before they invest.</p>
     <div class="hero-ctas">
-      <a href="#services" class="btn-lime">Explore our services →</a>
-      <a href="#contact" class="btn-ghost">Book a discovery call</a>
+      <a href="#contact" class="btn-lime">Book a free discovery call →</a>
+      <a href="#services" class="btn-ghost">See what we do</a>
     </div>
-    <div class="hero-scroll">Scroll to explore</div>
   </div>
- 
-  <!-- RIGHT: compact horizontal bars, no text -->
-  <div class="hero-preview" id="heroPreview">
-    <div class="hbar-track"><div class="hbar-fill" data-w="78" style="background:linear-gradient(90deg,rgba(198,255,0,.85),rgba(198,255,0,.3));box-shadow:4px 0 20px rgba(198,255,0,.2);"></div></div>
-    <div class="hbar-track"><div class="hbar-fill" data-w="55" style="background:linear-gradient(90deg,rgba(198,255,0,.65),rgba(198,255,0,.2));box-shadow:4px 0 14px rgba(198,255,0,.14);"></div></div>
-    <div class="hbar-track"><div class="hbar-fill" data-w="90" style="background:linear-gradient(90deg,rgba(198,255,0,.95),rgba(198,255,0,.4));box-shadow:4px 0 28px rgba(198,255,0,.28);"></div></div>
-    <div class="hbar-track"><div class="hbar-fill" data-w="38" style="background:linear-gradient(90deg,rgba(198,255,0,.5),rgba(198,255,0,.14));box-shadow:4px 0 10px rgba(198,255,0,.1);"></div></div>
-    <div class="hbar-track"><div class="hbar-fill" data-w="67" style="background:linear-gradient(90deg,rgba(198,255,0,.72),rgba(198,255,0,.25));box-shadow:4px 0 18px rgba(198,255,0,.16);"></div></div>
-  </div>
-</section>
- 
-<!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-track">
-    <span class="marquee-item">Market Intelligence</span>
-    <span class="marquee-item">Cross-Border Strategy</span>
-    <span class="marquee-item">Regulatory Mapping</span>
-    <span class="marquee-item">Competitive Analysis</span>
-    <span class="marquee-item">GTM Planning</span>
-    <span class="marquee-item">European Expansion</span>
-    <span class="marquee-item">LATAM Entry</span>
-    <span class="marquee-item">APAC Research</span>
-    <span class="marquee-item">Risk Assessment</span>
-    <span class="marquee-item">Ops Readiness</span>
-    <span class="marquee-item">Market Intelligence</span>
-    <span class="marquee-item">Cross-Border Strategy</span>
-    <span class="marquee-item">Regulatory Mapping</span>
-    <span class="marquee-item">Competitive Analysis</span>
-    <span class="marquee-item">GTM Planning</span>
-    <span class="marquee-item">European Expansion</span>
-    <span class="marquee-item">LATAM Entry</span>
-    <span class="marquee-item">APAC Research</span>
-    <span class="marquee-item">Risk Assessment</span>
-    <span class="marquee-item">Ops Readiness</span>
-  </div>
-</div>
- 
-<!-- BIG VISUALS -->
-<section class="bigviz reveal">
-  <div class="bv-intro">
-    <div class="bv-eyebrow">Market intelligence · simplified</div>
-    <h2 class="bv-title">Three things every company<br>needs to know <span>before expanding</span></h2>
-    <p class="bv-sub">Hover the last chart →</p>
-  </div>
- 
-  <div class="bv-grid">
- 
-    <!-- 1: DONUT — why entries fail -->
-    <div class="bv-panel">
-      <div class="bv-panel-q">Why do companies fail<br>in a new market?</div>
-      <div class="bv-donut-wrap">
-        <svg width="190" height="190" viewBox="0 0 190 190" id="bigDonut">
-          <circle cx="95" cy="95" r="70" fill="none" stroke="rgba(198,255,0,.85)" stroke-width="22" stroke-dasharray="139 301" stroke-dashoffset="0" style="transform:rotate(-90deg);transform-origin:95px 95px"/>
-          <circle cx="95" cy="95" r="70" fill="none" stroke="rgba(198,255,0,.52)" stroke-width="22" stroke-dasharray="113 327" stroke-dashoffset="-142" style="transform:rotate(-90deg);transform-origin:95px 95px"/>
-          <circle cx="95" cy="95" r="70" fill="none" stroke="rgba(198,255,0,.28)" stroke-width="22" stroke-dasharray="95 345" stroke-dashoffset="-258" style="transform:rotate(-90deg);transform-origin:95px 95px"/>
-          <circle cx="95" cy="95" r="70" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="22" stroke-dasharray="86 354" stroke-dashoffset="-356" style="transform:rotate(-90deg);transform-origin:95px 95px"/>
-          <text x="95" y="104" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="42" fill="rgba(198,255,0,.9)">32%</text>
-        </svg>
-        <div class="bv-donut-legend">
-          <div class="bvl-row"><div class="bvl-swatch" style="background:rgba(198,255,0,.85)"></div><div class="bvl-text">Competition</div><div class="bvl-pct">32%</div></div>
-          <div class="bvl-row"><div class="bvl-swatch" style="background:rgba(198,255,0,.52)"></div><div class="bvl-text">Regulation</div><div class="bvl-pct">26%</div></div>
-          <div class="bvl-row"><div class="bvl-swatch" style="background:rgba(198,255,0,.28)"></div><div class="bvl-text">Wrong channels</div><div class="bvl-pct">22%</div></div>
-          <div class="bvl-row"><div class="bvl-swatch" style="background:rgba(255,255,255,.15)"></div><div class="bvl-text">Pricing + other</div><div class="bvl-pct">20%</div></div>
-        </div>
-      </div>
+  <!-- Mini interactive diagram -->
+  <div class="hero-diagram" id="heroDiagram">
+    <div class="hd-label">Market snapshot</div>
+    <div class="hd-row"><span class="hd-row-label">Competition</span><div class="hd-track" style="flex:1"><div class="hd-fill" data-w="78" style="background:linear-gradient(90deg,rgba(198,255,0,.8),rgba(198,255,0,.3))"></div></div></div>
+    <div class="hd-row"><span class="hd-row-label">Demand</span><div class="hd-track" style="flex:1"><div class="hd-fill" data-w="91" style="background:linear-gradient(90deg,rgba(198,255,0,.9),rgba(198,255,0,.4))"></div></div></div>
+    <div class="hd-row"><span class="hd-row-label">Regulation</span><div class="hd-track" style="flex:1"><div class="hd-fill" data-w="54" style="background:linear-gradient(90deg,rgba(198,255,0,.6),rgba(198,255,0,.2))"></div></div></div>
+    <div class="hd-row"><span class="hd-row-label">Entry gap</span><div class="hd-track" style="flex:1"><div class="hd-fill" data-w="35" style="background:linear-gradient(90deg,rgba(198,255,0,.45),rgba(198,255,0,.15))"></div></div></div>
+    <div class="hd-divider"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
+      <div class="hd-stat"><div class="hd-stat-num">5d</div><div class="hd-stat-lbl">to insights</div></div>
+      <div class="hd-stat"><div class="hd-stat-num">30+</div><div class="hd-stat-lbl">markets</div></div>
     </div>
- 
-    <!-- 2: BARS — time to first customer -->
-    <div class="bv-panel" id="bvBarsPanel">
-      <div class="bv-panel-q">Time to first customer<br>by entry strategy</div>
-      <div class="bv-bars">
-        <div class="bvbar-row"><div class="bvbar-top"><span class="bvbar-label">Direct export</span><span class="bvbar-val">6w</span></div><div class="bvbar-track"><div class="bvbar-fill" style="--w:18%"></div></div></div>
-        <div class="bvbar-row"><div class="bvbar-top"><span class="bvbar-label">Local partner</span><span class="bvbar-val">11w</span></div><div class="bvbar-track"><div class="bvbar-fill" style="--w:36%"></div></div></div>
-        <div class="bvbar-row"><div class="bvbar-top"><span class="bvbar-label">Distributor</span><span class="bvbar-val">15w</span></div><div class="bvbar-track"><div class="bvbar-fill" style="--w:52%"></div></div></div>
-        <div class="bvbar-row"><div class="bvbar-top"><span class="bvbar-label">Joint venture</span><span class="bvbar-val">20w</span></div><div class="bvbar-track"><div class="bvbar-fill" style="--w:68%"></div></div></div>
-        <div class="bvbar-row"><div class="bvbar-top"><span class="bvbar-label">Own subsidiary</span><span class="bvbar-val">28w</span></div><div class="bvbar-track"><div class="bvbar-fill" style="--w:100%;background:linear-gradient(90deg,rgba(198,255,0,.3),rgba(198,255,0,.15));"></div></div></div>
-      </div>
-    </div>
- 
-    <div class="bv-panel">
-      <div class="bv-panel-q">Does research make<br>a difference?</div>
-      <div class="bv-scatter">
-        <div class="scatter-canvas" id="scatterCanvas"></div>
-        <div class="scatter-labels">
-          <div class="scatter-label bad"><span>29%</span>No research</div>
-          <div class="scatter-label good"><span>82%</span>With research</div>
-        </div>
-      </div>
-    </div>
- 
   </div>
 </section>
  
-<!-- ABOUT -->
-<section class="about reveal" id="about">
-  <div class="about-grid">
-    <div class="about-left">
-      <div class="section-eyebrow">Who we are</div>
-      <h2 class="about-title">Boutique.<br><span class="stroke">Precise.</span><br>Actionable.</h2>
-      <p class="about-pull">Research that pays for itself before the first invoice.</p>
-      <div class="about-stats">
-        <div class="stat-box">
-          <div class="stat-num">5<span> days</span></div>
-          <div class="stat-label">to first actionable insights</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">30<span>+</span></div>
-          <div class="stat-label">markets covered across EU, LATAM & APAC</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">3</div>
-          <div class="stat-label">focused services, no unnecessary retainers</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">EU<span>+</span></div>
-          <div class="stat-label">global reach from a European base</div>
-        </div>
-      </div>
- 
-      <!-- Embedded chart: ROI by research depth -->
-      <div class="about-chart-embed">
-        <div class="ace-label">Research depth → ROI within 12 months</div>
-        <div class="ace-bars">
-          <div class="ace-row">
-            <div class="ace-name">Full Market Entry Pack</div>
-            <div class="ace-track"><div class="ace-fill" style="width:82%"></div></div>
-            <div class="ace-val">82%</div>
-          </div>
-          <div class="ace-row">
-            <div class="ace-name">Market Pulse only</div>
-            <div class="ace-track"><div class="ace-fill" style="width:61%"></div></div>
-            <div class="ace-val">61%</div>
-          </div>
-          <div class="ace-row">
-            <div class="ace-name">No prior research</div>
-            <div class="ace-track"><div class="ace-fill" style="width:29%"></div></div>
-            <div class="ace-val">29%</div>
-          </div>
-        </div>
-        <div class="ace-note">% of SME cross-border entries achieving positive ROI within 12 months · Edgepoint analysis, n=140</div>
-      </div>
+<!-- QUESTIONS -->
+<section class="questions reveal">
+  <div class="eyebrow">Before you invest</div>
+  <div class="q-grid">
+    <div>
+      <h2 class="sec-title">Every business should answer these questions first.</h2>
+      <p class="q-answer">Instead of relying on assumptions, we provide clear, evidence-based answers.</p>
     </div>
-    <div class="about-right">
-      <p class="about-text">Edgepoint is a <strong>boutique market intelligence and entry strategy consultancy</strong> built for European SMEs that want to grow across borders — without the cost and risk of getting it wrong.</p>
-      <p class="about-text">Most companies entering a new market rely on assumptions. We replace assumptions with <strong>primary research, competitive mapping, and operational readiness plans</strong> — so your first move in a new market is also your best move.</p>
-      <p class="about-text">We work with a small number of clients at a time. This is intentional: every engagement gets our full attention, not a template.</p>
-      <a href="#contact" class="about-cta-inline">Start a conversation →</a>
-    </div>
+    <ul class="q-list">
+      <li>Is there real demand for our product or service?</li>
+      <li>Who are the main competitors?</li>
+      <li>How do customers buy in this market?</li>
+      <li>What legal or regulatory requirements should we expect?</li>
+      <li>Which market entry strategy gives us the highest chance of success?</li>
+    </ul>
   </div>
 </section>
  
 <!-- SERVICES -->
 <section class="services reveal" id="services">
-  <div class="services-head">
-    <div>
-      <div class="section-eyebrow" style="color:rgba(255,255,255,.3)">What we deliver</div>
-      <h2 class="services-title">Three services.<br><span>No bloat.</span></h2>
-    </div>
-    <p class="services-note">No retainers until you've seen what we can do.</p>
-  </div>
-  <div class="services-grid">
+  <div class="eyebrow" style="color:var(--mid)">What we do</div>
+  <h2 class="sec-title dark">Three ways<br>we help.</h2>
+  <div class="svc-grid">
  
-    <div class="svc">
+    <div class="svc-card">
       <div class="svc-num">01</div>
-      <div class="svc-tag">Entry Point</div>
-      <div class="svc-name">Market Pulse</div>
-      <p class="svc-desc">A rapid 5-day intelligence report on your target market. Know the landscape before you commit capital.</p>
-      <ul class="svc-list">
-        <li>Regulatory & compliance landscape</li>
-        <li>Competitive mapping (key players)</li>
-        <li>Customer acquisition channels</li>
-        <li>Key risks & barriers to entry</li>
-        <li>Go / no-go recommendation</li>
+      <!-- Mini donut -->
+      <div class="svc-icon">
+        <svg width="36" height="36" viewBox="0 0 36 36">
+          <circle cx="18" cy="18" r="13" fill="none" stroke="rgba(158,203,0,.15)" stroke-width="5"/>
+          <circle cx="18" cy="18" r="13" fill="none" stroke="var(--lime-d)" stroke-width="5" stroke-dasharray="57 24" stroke-dashoffset="20" style="transform:rotate(-90deg);transform-origin:18px 18px"/>
+        </svg>
+      </div>
+      <div class="svc-name">Market Research</div>
+      <p class="svc-desc">We analyse your target market to help you understand where the opportunities and risks are.</p>
+      <ul class="svc-items">
+        <li>Market size and demand</li>
+        <li>Competitor analysis</li>
+        <li>Customer behaviour</li>
+        <li>Regulations and compliance</li>
       </ul>
     </div>
  
-    <div class="svc svc-featured">
+    <div class="svc-card" style="border-top:3px solid var(--lime-d);">
       <div class="svc-num">02</div>
-      <div class="svc-tag">Most Comprehensive</div>
-      <div class="svc-name">Market Entry Pack</div>
-      <p class="svc-desc">Full research plus a complete go-to-market strategy and operational readiness plan. Everything you need to launch right.</p>
-      <ul class="svc-list">
-        <li>Full Market Pulse report</li>
-        <li>GTM strategy & market positioning</li>
-        <li>Channel prioritisation framework</li>
-        <li>Operational readiness assessment</li>
-        <li>90-day execution roadmap</li>
-        <li>Kick-off presentation & Q&A session</li>
+      <div class="svc-icon">
+        <svg width="36" height="36" viewBox="0 0 36 36">
+          <rect x="2" y="22" width="5" height="12" rx="2" fill="rgba(158,203,0,.2)"/>
+          <rect x="10" y="14" width="5" height="20" rx="2" fill="rgba(158,203,0,.45)"/>
+          <rect x="18" y="8" width="5" height="26" rx="2" fill="rgba(158,203,0,.7)"/>
+          <rect x="26" y="18" width="5" height="16" rx="2" fill="rgba(158,203,0,.35)"/>
+        </svg>
+      </div>
+      <div class="svc-name">Market Entry Strategy</div>
+      <p class="svc-desc">Once we understand the market, we create a practical plan for entering it.</p>
+      <ul class="svc-items">
+        <li>Go-to-market strategy</li>
+        <li>Pricing recommendations</li>
+        <li>Sales and distribution channels</li>
+        <li>Step-by-step entry roadmap</li>
       </ul>
     </div>
  
-    <div class="svc">
+    <div class="svc-card">
       <div class="svc-num">03</div>
-      <div class="svc-tag">Ongoing</div>
-      <div class="svc-name">Growth Partnership</div>
-      <p class="svc-desc">An embedded expansion team that becomes part of yours. We see the market entry through from strategy to execution.</p>
-      <ul class="svc-list">
-        <li>Fractional Growth strategist</li>
-        <li>Fractional Operations director</li>
-        <li>Weekly syncs + async support</li>
-        <li>Team structure & hiring guidance</li>
-        <li>Ongoing market monitoring</li>
+      <div class="svc-icon">
+        <svg width="36" height="36" viewBox="0 0 36 36">
+          <circle cx="18" cy="18" r="13" fill="none" stroke="rgba(158,203,0,.1)" stroke-width="5"/>
+          <circle cx="18" cy="18" r="13" fill="none" stroke="rgba(158,203,0,.5)" stroke-width="5" stroke-dasharray="40 41" stroke-dashoffset="20" style="transform:rotate(-90deg);transform-origin:18px 18px"/>
+          <circle cx="18" cy="18" r="13" fill="none" stroke="rgba(158,203,0,.25)" stroke-width="5" stroke-dasharray="20 61" stroke-dashoffset="-22" style="transform:rotate(-90deg);transform-origin:18px 18px"/>
+        </svg>
+      </div>
+      <div class="svc-name">Growth Support</div>
+      <p class="svc-desc">Expansion does not end with research. We continue supporting your business during execution.</p>
+      <ul class="svc-items">
+        <li>Ongoing market intelligence</li>
+        <li>Strategy refinement</li>
+        <li>Business development support</li>
+        <li>Growth advisory</li>
       </ul>
     </div>
  
@@ -552,95 +315,111 @@ footer{background:var(--ink);padding:40px 52px;display:flex;align-items:center;j
  
 <!-- HOW -->
 <section class="how reveal" id="how">
-  <div class="how-head">
-    <div class="section-eyebrow">Our Process</div>
-    <h2 class="how-title">Four steps to market.</h2>
-  </div>
-  <div class="steps">
- 
+  <div class="eyebrow">How we work</div>
+  <h2 class="sec-title">Four steps.</h2>
+  <div class="steps-row" id="stepsRow">
     <div class="step">
-      <div class="step-n">1</div>
-      <div class="step-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="var(--lime)" stroke="var(--lime)"/></svg></div>
-      <div class="step-title">Discovery Call</div>
-      <p class="step-desc">30 minutes. We map your situation, target market, and what a successful entry actually looks like for your business.</p>
-      <span class="step-time">30 minutes</span>
+      <div class="step-n">01</div>
+      <div class="step-name">Discovery Call</div>
+      <p class="step-desc">We begin with a conversation to understand your business, your goals, and the market you want to enter.</p>
+      <div class="step-bar"><div class="step-bar-fill" style="transition-delay:.1s"></div></div>
     </div>
- 
     <div class="step">
-      <div class="step-n">2</div>
-      <div class="step-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg></div>
-      <div class="step-title">Deep Research</div>
-      <p class="step-desc">We go deep on the market — regulatory, competitive, operational. Primary sources, not recycled data.</p>
-      <span class="step-time">Week 1–2</span>
+      <div class="step-n">02</div>
+      <div class="step-name">Market Research</div>
+      <p class="step-desc">We conduct detailed research using reliable sources to analyse the market, competitors, customers, and regulatory environment.</p>
+      <div class="step-bar"><div class="step-bar-fill" style="transition-delay:.35s"></div></div>
     </div>
- 
     <div class="step">
-      <div class="step-n">3</div>
-      <div class="step-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="rgba(198,255,0,0.12)" stroke="var(--lime)"/></svg></div>
-      <div class="step-title">Strategy & Plan</div>
-      <p class="step-desc">A clear GTM strategy and operational roadmap built for your specific situation. Actionable from day one.</p>
-      <span class="step-time">Week 2–3</span>
+      <div class="step-n">03</div>
+      <div class="step-name">Strategy Development</div>
+      <p class="step-desc">Based on our findings, we prepare a practical market entry strategy tailored to your business.</p>
+      <div class="step-bar"><div class="step-bar-fill" style="transition-delay:.6s"></div></div>
     </div>
- 
     <div class="step">
-      <div class="step-n">4</div>
-      <div class="step-icon"><svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
-      <div class="step-title">Execution Support</div>
-      <p class="step-desc">We present findings, answer every question and remain available as you execute — or join you as Growth Partner.</p>
-      <span class="step-time">Week 4+</span>
+      <div class="step-n">04</div>
+      <div class="step-name">Execution Support</div>
+      <p class="step-desc">If needed, we continue working with your team during implementation, helping you adapt as the market evolves.</p>
+      <div class="step-bar"><div class="step-bar-fill" style="transition-delay:.85s"></div></div>
     </div>
- 
   </div>
 </section>
  
 <!-- WHY -->
 <section class="why reveal">
+  <div class="eyebrow">Why choose Edgepoint</div>
   <div class="why-grid">
     <div>
-      <div class="section-eyebrow" style="color:rgba(255,255,255,.25)">Why Edgepoint</div>
-      <h2 class="why-title">Why<br><span>Edgepoint?</span></h2>
-      <p class="why-pull">The difference between a failed market entry and a successful one is rarely strategy — it's intelligence.</p>
-      <p class="why-text">Most SMEs enter new markets with incomplete information. They rely on reports written for other industries, advisors who don't know the local landscape, or assumptions that made sense at headquarters but not on the ground.</p>
-      <p class="why-text">We close that gap. <strong>Precise, primary-source research</strong> tailored to your market, your sector, and your stage of growth.</p>
+      <h2 class="sec-title">Research that<br>works for you.</h2>
+      <ul class="why-points">
+        <li>Research focused on your business, not generic reports</li>
+        <li>Practical recommendations you can implement immediately</li>
+        <li>Fast delivery of actionable insights — in 5 days</li>
+        <li>Experience across Europe, LATAM, APAC, and other international markets</li>
+        <li>A boutique consultancy that works closely with every client</li>
+      </ul>
     </div>
-    <div></div>
+    <div class="why-visual">
+      <!-- Mini ring diagrams showing key metrics -->
+      <div class="ring-row">
+        <svg class="mini-ring" width="52" height="52" viewBox="0 0 52 52">
+          <circle cx="26" cy="26" r="20" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="6"/>
+          <circle cx="26" cy="26" r="20" fill="none" stroke="var(--lime)" stroke-width="6" stroke-dasharray="101 25" stroke-dashoffset="31" style="transform:rotate(-90deg);transform-origin:26px 26px"/>
+          <text x="26" y="31" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="14" fill="rgba(198,255,0,.9)">82%</text>
+        </svg>
+        <div class="ring-label">of clients with prior research achieve ROI within 12 months</div>
+      </div>
+      <div class="ring-row">
+        <svg class="mini-ring" width="52" height="52" viewBox="0 0 52 52">
+          <circle cx="26" cy="26" r="20" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="6"/>
+          <circle cx="26" cy="26" r="20" fill="none" stroke="rgba(198,255,0,.6)" stroke-width="6" stroke-dasharray="31 95" stroke-dashoffset="31" style="transform:rotate(-90deg);transform-origin:26px 26px"/>
+          <text x="26" y="31" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="14" fill="rgba(198,255,0,.7)">29%</text>
+        </svg>
+        <div class="ring-label">without prior research achieve the same result</div>
+      </div>
+      <div class="ring-row">
+        <svg class="mini-ring" width="52" height="52" viewBox="0 0 52 52">
+          <circle cx="26" cy="26" r="20" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="6"/>
+          <circle cx="26" cy="26" r="20" fill="none" stroke="rgba(198,255,0,.4)" stroke-width="6" stroke-dasharray="8 118" stroke-dashoffset="31" style="transform:rotate(-90deg);transform-origin:26px 26px"/>
+          <text x="26" y="31" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="12" fill="rgba(198,255,0,.6)">5d</text>
+        </svg>
+        <div class="ring-label">to first actionable market insights</div>
+      </div>
+      <div style="font-size:10px;color:rgba(255,255,255,.2);font-family:var(--mono);margin-top:6px;line-height:1.6;">Analysis based on 140 EU SME cross-border expansion cases, 2022–2025. Edgepoint internal research.</div>
+    </div>
   </div>
 </section>
  
 <!-- MARKETS -->
 <section class="markets reveal" id="markets">
-  <div class="markets-head">
-    <div>
-      <div class="section-eyebrow">Market Coverage</div>
-      <h2 class="markets-title">Where we<br>operate</h2>
+  <div class="eyebrow" style="color:var(--mid)">Markets we cover</div>
+  <h2 class="sec-title dark">Where we<br>operate.</h2>
+  <div class="markets-body">
+    <div class="markets-map-wrap">
+      <svg id="mmap"></svg>
     </div>
-    <p class="markets-sub">Primary research in key regions — not recycled data from secondary sources.</p>
-  </div>
-  <div class="markets-map-wrap">
-    <svg id="marketsMap"></svg>
-  </div>
-  <div class="coverage-chips">
-    <span class="coverage-chip">Western Europe</span>
-    <span class="coverage-chip">CEE / Eastern Europe</span>
-    <span class="coverage-chip">LATAM</span>
-    <span class="coverage-chip">MENA</span>
-    <span class="coverage-chip">APAC</span>
-    <span class="coverage-chip">North America</span>
+    <div class="markets-chips">
+      <span class="markets-chip">Western Europe</span>
+      <span class="markets-chip">Central & Eastern Europe</span>
+      <span class="markets-chip">Latin America</span>
+      <span class="markets-chip">MENA</span>
+      <span class="markets-chip">Asia Pacific</span>
+      <span class="markets-chip">North America</span>
+    </div>
   </div>
 </section>
  
-<!-- PLATFORM TEASER -->
-<section class="platform-teaser reveal">
-  <div class="pt-inner">
+<!-- AI PLATFORM TEASER -->
+<section class="ai-teaser reveal">
+  <div class="ai-inner">
     <div>
-      <div class="pt-eyebrow">Coming Soon</div>
-      <h2 class="pt-title">Scale with<br><span>AI intelligence</span></h2>
-      <p class="pt-pull">Your market research, running 24/7.</p>
-      <p class="pt-desc">The Edgepoint Platform lets you deploy AI research agents across multiple markets simultaneously — generating reports, tracking competitors, and surfacing opportunities without waiting for a consultant.</p>
-      <div class="pt-cta">
-        <a href="platform.html" class="btn-lime">Explore the platform →</a>
-        <a href="#contact" class="btn-ghost">Join waitlist</a>
-      </div>
+      <div class="ai-badge">Coming Soon</div>
+      <h2 class="sec-title">AI Platform.</h2>
+      <p class="ai-text">We are building the Edgepoint Platform — an AI-powered market intelligence tool that monitors competitors, tracks market shifts, and surfaces new opportunities continuously. Market intelligence, available whenever you need it.</p>
+      <a href="platform.html" class="ai-link">Explore the platform ↗</a>
+    </div>
+    <div class="ai-visual">
+      <svg id="aiSvg" viewBox="0 0 320 200"></svg>
     </div>
   </div>
 </section>
@@ -648,257 +427,159 @@ footer{background:var(--ink);padding:40px 52px;display:flex;align-items:center;j
 <!-- CTA -->
 <section class="cta-section reveal" id="contact">
   <div class="cta-inner">
-    <div>
-      <div class="section-eyebrow">Get started</div>
-      <h2 class="cta-title">Ready to find<br>your <span>edge?</span></h2>
-      <p class="cta-pull">Every expansion starts with a conversation.</p>
-    </div>
-    <div class="cta-right">
-      <p class="cta-desc">Start with a 30-minute discovery call. We'll map your target market, identify the biggest unknowns, and recommend the right starting point — with no commitment required.</p>
-      <a href="mailto:talent@edgepnt.com" class="btn-lime">Book Discovery Call →</a>
-      <p class="cta-contact">Or write to us directly: <a href="mailto:talent@edgepnt.com">talent@edgepnt.com</a></p>
-    </div>
+    <div class="eyebrow" style="color:var(--mid)">Ready to expand?</div>
+    <h2 class="cta-title">Every expansion starts with<br>understanding the <span>market first.</span></h2>
+    <p class="cta-body">Book a free discovery call and we'll discuss your goals, identify the biggest opportunities and risks, and recommend the best next steps for your business.</p>
+    <a href="mailto:talent@edgepnt.com?subject=Discovery Call Request" class="btn-lime">Book a free discovery call →</a>
+    <p class="cta-contact">Or write to us: <a href="mailto:talent@edgepnt.com">talent@edgepnt.com</a></p>
   </div>
 </section>
  
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">Edge<span>point</span></div>
+  <a href="/" class="logo" style="font-family:var(--syne);font-size:14px;font-weight:800;color:var(--white);text-decoration:none;">Edge<span style="color:var(--lime)">point</span></a>
   <div class="footer-links">
     <a href="#services">Services</a>
-    <a href="#how">Process</a>
-    <a href="#markets">Markets</a>
     <a href="platform.html">Platform</a>
+    <a href="#markets">Markets</a>
     <a href="mailto:talent@edgepnt.com">Contact</a>
   </div>
-  <div class="footer-copy">© 2025 Edgepoint. Market Intelligence & Entry Strategy.</div>
+  <div class="footer-copy">© 2026 Edgepoint. Market Research & Entry Strategy.</div>
 </footer>
  
 <script>
-// Cursor
-const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
-animRing();
- 
-// Nav scroll
-window.addEventListener('scroll',()=>{
-  const n=document.getElementById('nav');
-  if(window.scrollY>80){n.style.background='rgba(9,9,15,.96)';n.style.backdropFilter='blur(14px)';}
-  else{n.style.background='transparent';n.style.backdropFilter='none';}
-});
- 
 // Mobile menu
 function toggleMenu(){
   document.getElementById('mobileMenu').classList.toggle('open');
   document.getElementById('burger').classList.toggle('open');
 }
  
-// Reveal
-const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.1});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+// Nav scroll
+window.addEventListener('scroll',()=>{
+  document.querySelector('nav').style.borderBottomColor=window.scrollY>60?'rgba(255,255,255,.07)':'transparent';
+});
  
-// Animate about chart bars on scroll into view
-const aceObs=new IntersectionObserver(entries=>{
+// Reveal on scroll
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+ 
+// Step bars
+const stepsObs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
-      e.target.querySelectorAll('.ace-fill').forEach((bar,i)=>{
-        setTimeout(()=>bar.classList.add('anim'),i*180+100);
-      });
-      aceObs.unobserve(e.target);
+      e.target.querySelectorAll('.step-bar-fill').forEach(b=>b.classList.add('anim'));
+      stepsObs.unobserve(e.target);
     }
   });
 },{threshold:.3});
-document.querySelectorAll('.about-chart-embed').forEach(el=>aceObs.observe(el));
-// ── BAR CHART ANIMATION ──
-const bvObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.querySelectorAll('.bvbar-fill').forEach((bar, i) => {
-        setTimeout(() => {
-          bar.style.transform = 'scaleX(1)';
-        }, i * 160 + 100);
-      });
-      bvObs.unobserve(e.target);
-    }
-  });
-}, {threshold: .3});
-document.querySelectorAll('#bvBarsPanel').forEach(el => bvObs.observe(el));
+if(document.getElementById('stepsRow')) stepsObs.observe(document.getElementById('stepsRow'));
  
-// ── SCATTER CHART ──
-(function buildScatter() {
-  const canvas = document.getElementById('scatterCanvas');
-  if (!canvas) return;
-  const W = canvas.offsetWidth || 280;
-  const H = 210;
- 
-  // Generate dots: left half = bad (gray), right = good (lime)
-  // bad: 29% above midline (few), rest below
-  // good: 82% above midline (most), few below
-  const dots = [];
- 
-  function makeDot(x, y, isGood) {
-    const el = document.createElement('div');
-    el.className = 'sdot';
-    el.style.cssText = `
-      left:${x}px; top:${y}px;
-      background:${isGood ? 'rgba(198,255,0,0.8)' : 'rgba(255,255,255,0.25)'};
-      box-shadow:${isGood ? '0 0 6px rgba(198,255,0,.4)' : 'none'};
-    `;
-    el.dataset.ox = x;
-    el.dataset.oy = y;
-    canvas.appendChild(el);
-    dots.push(el);
-  }
- 
-  // Left cluster (no research) — 30 dots, only ~9 above midline (29%)
-  const leftX = W * 0.25;
-  for (let i = 0; i < 30; i++) {
-    const above = i < 9;
-    const y = above
-      ? 20 + Math.random() * 70   // top = success
-      : 110 + Math.random() * 80; // bottom = failure
-    const x = leftX - 40 + Math.random() * 80;
-    makeDot(Math.max(4, Math.min(W/2 - 14, x)), y, false);
-  }
- 
-  // Right cluster (with research) — 30 dots, ~25 above midline (82%)
-  const rightX = W * 0.75;
-  for (let i = 0; i < 30; i++) {
-    const above = i < 25;
-    const y = above
-      ? 15 + Math.random() * 75
-      : 120 + Math.random() * 75;
-    const x = rightX - 40 + Math.random() * 80;
-    makeDot(Math.max(W/2 + 4, Math.min(W - 14, x)), y, true);
-  }
- 
-  // Midline
-  const line = document.createElement('div');
-  line.style.cssText = `position:absolute;left:0;right:0;top:105px;height:1px;background:rgba(255,255,255,.1);`;
-  const lineLabel = document.createElement('div');
-  lineLabel.style.cssText = `position:absolute;right:0;top:92px;font-size:9px;font-family:'DM Mono',monospace;color:rgba(255,255,255,.2);`;
-  lineLabel.textContent = 'ROI achieved →';
-  canvas.appendChild(line);
-  canvas.appendChild(lineLabel);
- 
-  // Repulsion on mousemove
-  canvas.addEventListener('mousemove', e => {
-    const rect = canvas.getBoundingClientRect();
-    const mx = e.clientX - rect.left;
-    const my = e.clientY - rect.top;
-    dots.forEach(dot => {
-      const ox = parseFloat(dot.dataset.ox) + 5;
-      const oy = parseFloat(dot.dataset.oy) + 5;
-      const dx = ox - mx;
-      const dy = oy - my;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const radius = 70;
-      if (dist < radius) {
-        const force = (radius - dist) / radius;
-        const angle = Math.atan2(dy, dx);
-        const pushX = Math.cos(angle) * force * 45;
-        const pushY = Math.sin(angle) * force * 45;
-        dot.style.transform = `translate(${pushX}px, ${pushY}px)`;
-      } else {
-        dot.style.transform = '';
-      }
+// Hero diagram bars
+(function(){
+  const diag=document.getElementById('heroDiagram');
+  if(!diag) return;
+  setTimeout(()=>{
+    diag.querySelectorAll('.hd-fill').forEach((f,i)=>{
+      setTimeout(()=>{f.style.transform='scaleX(1)';},i*120+300);
     });
-  });
- 
-  canvas.addEventListener('mouseleave', () => {
-    dots.forEach(dot => { dot.style.transform = ''; });
-  });
+  },400);
 })();
  
-// ── MARKETS MAP ──
-(function buildMarketsMap(){
+// Markets map — Europe centered, stretched horizontal
+(function(){
   if(typeof d3==='undefined') return;
-  const el=document.getElementById('marketsMap');
+  const el=document.getElementById('mmap');
   if(!el) return;
-  const W=el.parentElement.offsetWidth||900, H=420;
+  const W=el.parentElement.offsetWidth||900, H=400;
   el.setAttribute('viewBox',`0 0 ${W} ${H}`);
   el.style.height=H+'px';
-  const svg=d3.select('#marketsMap');
- 
+  const svg=d3.select('#mmap');
   svg.append('rect').attr('width',W).attr('height',H).attr('fill','#0b0b16');
  
-  // Natural Earth — flat, good proportions
-  // Stretch horizontally ×1.18, shift down to clip Arctic & Antarctica
-  const proj=d3.geoNaturalEarth1()
-    .scale(W*0.175)
-    .translate([W/2, H/2+55]); // shift down → clips Arctic at top
- 
+  // Azimuthal Equal Area centered on Europe — makes EU large and prominent
+  const proj=d3.geoAzimuthalEqualArea()
+    .rotate([-13,-48]).scale(W*0.28)
+    .translate([W*0.44,H*0.52]).clipAngle(180);
   const path=d3.geoPath().projection(proj);
  
-  // Clip to SVG bounds (crops top Arctic and bottom Antarctica)
-  svg.append('clipPath').attr('id','mapClip')
-    .append('rect').attr('width',W).attr('height',H);
+  svg.append('path').datum({type:'Sphere'}).attr('fill','#0b0b16').attr('d',path);
+  svg.append('path').datum(d3.geoGraticule()()).attr('fill','none').attr('stroke','rgba(255,255,255,.03)').attr('stroke-width','.4').attr('d',path);
  
   const EU=new Set([8,20,40,56,70,100,112,191,196,203,208,233,246,250,276,300,336,348,352,372,380,428,438,440,442,470,492,498,528,578,616,620,642,703,705,724,752,756,804,826]);
-  const NORTHAM=new Set([840,124]);
   const LATAM=new Set([32,68,76,152,170,188,218,320,340,388,484,558,600,604,858,862]);
-  const MENA=new Set([12,48,368,400,414,434,504,634,682,784,792,818,887]);
   const APAC=new Set([36,50,104,144,356,392,410,458,608,702,704,764]);
- 
-  function getFill(id){
-    if(EU.has(id))    return 'rgba(198,255,0,0.38)';
-    if(NORTHAM.has(id))return 'rgba(198,255,0,0.16)';
-    if(LATAM.has(id)) return 'rgba(198,255,0,0.14)';
-    if(MENA.has(id))  return 'rgba(198,255,0,0.12)';
-    if(APAC.has(id))  return 'rgba(198,255,0,0.10)';
-    return '#111122';
+  const MENA=new Set([12,48,368,400,414,434,504,634,682,784,792,818,887]);
+  const NORTHAM=new Set([840,124]);
+  function fill(id){
+    if(EU.has(id))return'rgba(198,255,0,.45)';
+    if(LATAM.has(id)||NORTHAM.has(id))return'rgba(198,255,0,.17)';
+    if(APAC.has(id)||MENA.has(id))return'rgba(198,255,0,.11)';
+    return'#111122';
+  }
+  function stroke(id){
+    if(EU.has(id))return'rgba(198,255,0,.22)';
+    return'rgba(255,255,255,.07)';
   }
  
   fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
     .then(r=>r.json()).then(world=>{
-      // Group with horizontal stretch applied
-      const g=svg.append('g')
-        .attr('clip-path','url(#mapClip)')
-        .attr('transform',`translate(${-W*0.085},0) scale(1.17,1)`);
- 
       const features=topojson.feature(world,world.objects.countries).features;
- 
-      // Country fills
-      g.selectAll('path.country')
-        .data(features).join('path')
-        .attr('class','country')
-        .attr('d',path)
-        .attr('fill',d=>getFill(+d.id))
-        .attr('stroke','none');
- 
-      // All borders — single thin contour
-      g.append('path')
-        .datum(topojson.mesh(world,world.objects.countries))
-        .attr('fill','none')
-        .attr('stroke','rgba(255,255,255,0.13)')
-        .attr('stroke-width','0.5')
-        .attr('d',path);
- 
-      // Slightly brighter outer coast on highlighted regions
-      g.selectAll('path.highlight')
-        .data(features.filter(d=>[...EU,...NORTHAM,...LATAM,...MENA,...APAC].includes(+d.id)))
-        .join('path')
-        .attr('class','highlight')
-        .attr('d',path)
-        .attr('fill','none')
-        .attr('stroke','rgba(198,255,0,0.22)')
-        .attr('stroke-width','0.7');
- 
+      svg.append('g').selectAll('path').data(features).join('path')
+        .attr('d',path).attr('fill',d=>fill(+d.id))
+        .attr('stroke',d=>stroke(+d.id)).attr('stroke-width','.5');
     }).catch(()=>{});
 })();
  
-// ── HERO BARS ANIMATION ──
+// AI network visual
 (function(){
-  const fills = document.querySelectorAll('.hbar-fill');
-  fills.forEach((fill, i) => {
-    const w = fill.dataset.w || 50;
-    setTimeout(() => {
-      fill.style.width = w + '%';
-      fill.style.transform = 'scaleX(1)';
-    }, 200 + i * 120);
+  const svgEl=document.getElementById('aiSvg');
+  if(!svgEl||typeof d3==='undefined') return;
+  const svg=d3.select('#aiSvg');
+  const W=320,H=200;
+  const nodes=[
+    {x:160,y:100,r:8,main:true},
+    {x:60,y:50,r:5},{x:270,y:55,r:5},
+    {x:40,y:145,r:4},{x:290,y:150,r:4},
+    {x:130,y:30,r:4},{x:220,y:165,r:4},
+    {x:95,y:170,r:3},{x:248,y:30,r:3},
+  ];
+  const links=[[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[1,7],[2,8],[1,5],[2,6]];
+ 
+  // Lines
+  links.forEach(([a,b])=>{
+    svg.append('line')
+      .attr('x1',nodes[a].x).attr('y1',nodes[a].y)
+      .attr('x2',nodes[b].x).attr('y2',nodes[b].y)
+      .attr('stroke','rgba(198,255,0,.15)').attr('stroke-width','1')
+      .attr('stroke-dasharray','3 4');
   });
+ 
+  // Nodes
+  nodes.forEach((n,i)=>{
+    const g=svg.append('g');
+    if(i===0){
+      // Pulse on main node
+      const ring=g.append('circle').attr('cx',n.x).attr('cy',n.y).attr('r',n.r).attr('fill','none').attr('stroke','rgba(198,255,0,.4)').attr('stroke-width','1');
+      function pulse(){ring.attr('r',n.r).attr('opacity',.6).transition().duration(1800).ease(d3.easeLinear).attr('r',n.r*3).attr('opacity',0).on('end',()=>setTimeout(pulse,600));}
+      pulse();
+    }
+    g.append('circle').attr('cx',n.x).attr('cy',n.y).attr('r',n.r)
+      .attr('fill',n.main?'rgba(198,255,0,.9)':'rgba(198,255,0,.4)')
+      .attr('stroke',n.main?'rgba(198,255,0,.3)':'none').attr('stroke-width','2');
+  });
+ 
+  // Labels on nodes
+  [['Market data',60,38],['Competitors',270,43],['Regulations',40,133],['Pricing',290,138]]
+    .forEach(([t,x,y])=>{
+      svg.append('text').attr('x',x).attr('y',y).attr('text-anchor','middle')
+        .attr('font-family','DM Mono,monospace').attr('font-size','8')
+        .attr('fill','rgba(255,255,255,.25)').text(t);
+    });
+  svg.append('text').attr('x',160).attr('y',120).attr('text-anchor','middle')
+    .attr('font-family','DM Mono,monospace').attr('font-size','9')
+    .attr('fill','rgba(198,255,0,.5)').text('Edgepoint AI');
 })();
 </script>
 </body>
