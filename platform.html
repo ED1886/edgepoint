@@ -43,6 +43,11 @@ textarea{resize:none}
       <a href="index.html" style="color:#6f6b60">Main site</a>
       <a href="#sources" style="color:#6f6b60">Sources</a>
       <a href="mailto:talent@edgepnt.com?subject=Platform early access" style="color:#171611;border-bottom:1px solid #8f3a1c;padding-bottom:2px">Early access</a>
+      <div style="display:flex;align-items:baseline;gap:7px;font-size:12px;letter-spacing:.08em">
+        <span data-lang-btn="en" style="cursor:pointer;color:#171611">EN</span>
+        <span style="color:#d9d5ca">/</span>
+        <span data-lang-btn="fr" style="cursor:pointer;color:#b6b1a5">FR</span>
+      </div>
     </div>
   </div>
 
@@ -152,6 +157,8 @@ textarea{resize:none}
 
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440}}">
+window.EP_FR = {"__title":"Edgepoint Platform","Main site":"Site principal","Sources":"Sources","Early access":"Accès anticipé","Edgepoint Platform &middot; Early access":"Edgepoint Platform · Accès anticipé","Edgepoint Platform · Early access":"Edgepoint Platform · Accès anticipé","A country study,":"Une étude pays,","kept current":"tenue à jour","We are":"Nous sommes",", we make":", nous produisons",", and we want to":", et nous voulons","enter a market":"entrer sur un marché","or":"ou","defend one we hold":"défendre un marché acquis","company":"société","product or service":"produit ou service","Countries under consideration, nearest competitors, decision date":"Pays envisagés, concurrents les plus proches, échéance de décision","Scope notes &mdash; optional":"Précisions — facultatif","Scope notes — optional":"Précisions — facultatif","Open the study":"Lancer l'étude","Complete the sentence above to continue.":"Complétez la phrase ci-dessus pour continuer.","Runtime follows the country list — minutes for one market.":"La durée suit la liste de pays — quelques minutes pour un marché.","Amend the brief":"Modifier le brief","Report ready":"Rapport prêt","Collecting":"Collecte en cours","The document is in your dashboard, sources cited line by line.":"Le document est dans votre tableau de bord, sources citées ligne par ligne.","Reading trade and customs data":"Lecture des données douanières et commerciales","Mapping incumbents":"Cartographie des acteurs en place","Checking certification and tariffs":"Vérification des certifications et des droits de douane","Costing routes to market":"Chiffrage des circuits de distribution","Market sizing":"Dimensionnement du marché","Import volumes and customs records reconciled against segment demand and the prices actually paid.":"Volumes d'importation et registres douaniers rapprochés de la demande par segment et des prix réellement payés.","Competitors":"Concurrents","Named incumbents with filed accounts, distribution agreements and capacity announcements.":"Acteurs nommés, avec comptes publiés, accords de distribution et annonces de capacité.","Regulation":"Réglementation","Certification routes, labelling rules and duty rates, each with lead time and cost attached.":"Voies de certification, règles d'étiquetage et taux de droits, chacun avec délai et coût.","Entry economics":"Économie de l'entrée","Distributor, agent and direct sale compared on capital required, time to first invoice and margin.":"Distributeur, agent et vente directe comparés : capital requis, délai avant première facture et marge.","Public sources, carefully followed.":"Sources publiques, suivies avec rigueur.","Research agents read":"Des agents de recherche lisent","trade and customs records":"les registres douaniers et commerciaux",", the":", les","accounts and price lists of incumbents":"comptes et tarifs des acteurs en place","certification and tariff schedules":"référentiels de certification et de droits de douane","that govern your product, and what each":"applicables à votre produit, et ce que coûte chaque","route to market costs":"circuit de distribution","One agent per workstream, each re-running its own sources as they publish.":"Un agent par volet, chacun relançant ses propres sources à mesure des publications.","A sourced report the same day,":"Un rapport sourcé le jour même,","then standing watch":"puis une veille continue","Minutes for one market":"Quelques minutes pour un marché","Up to thirty for a shortlist":"Jusqu'à trente pour une liste restreinte","Tariff and entrant alerts thereafter":"Alertes tarifs et nouveaux entrants ensuite","Joining":"Rejoindre l'","early access":"accès anticipé","We take on a few firms at a time, alongside live mandates, so platform output is checked against analyst work before it is relied on.":"Nous accueillons quelques entreprises à la fois, en parallèle de missions en cours, afin que les résultats de la plateforme soient contrôlés par nos analystes avant d'être utilisés.","Request access":"Demander un accès","Practice":"Missions","Contact":"Contact"};
+
 const TOPICS = {
   sizing: ['Market sizing', 'Import volumes and customs records reconciled against segment demand and the prices actually paid.'],
   competitors: ['Competitors', 'Named incumbents with filed accounts, distribution agreements and capacity announcements.'],
@@ -163,12 +170,14 @@ const STAGES = ['Reading trade and customs data', 'Mapping incumbents', 'Checkin
 class Component extends DCLogic {
   state = {
     company: '', sector: '', objective: '', notes: '',
-    scopeOpen: false, topic: 'sizing',
+    scopeOpen: false, topic: 'sizing', lang: 'en',
     running: false, touched: false, elapsed: 0, done: 0
   };
 
   componentDidMount() {
     const root = document.body;
+    this.setLangState = l => this.setState({ lang: l });
+    this._langInit();
     root.querySelectorAll('[data-topic]').forEach(el => {
       const pick = () => this.setState({ topic: el.getAttribute('data-topic') });
       el.addEventListener('mouseenter', pick);
@@ -187,7 +196,58 @@ class Component extends DCLogic {
     blocks.forEach(b => io.observe(b));
   }
 
-  componentDidUpdate() { this._bindFields(); }
+  componentDidUpdate() { this._bindFields(); this._translate(this._lang || 'en'); }
+
+  tr(s) { return (this._lang === 'fr' && window.EP_FR && window.EP_FR[s]) ? window.EP_FR[s] : s; }
+
+  _langInit() {
+    let saved = null;
+    try { saved = localStorage.getItem('ep-lang'); } catch (e) {}
+    const lang = saved === 'fr' ? 'fr' : 'en';
+    document.body.querySelectorAll('[data-lang-btn]').forEach(b => {
+      b.addEventListener('click', () => this._setLang(b.getAttribute('data-lang-btn')));
+    });
+    this._setLang(lang);
+  }
+
+  _setLang(lang) {
+    this._lang = lang;
+    try { localStorage.setItem('ep-lang', lang); } catch (e) {}
+    document.documentElement.setAttribute('lang', lang);
+    document.body.querySelectorAll('[data-lang-btn]').forEach(b => {
+      b.style.color = b.getAttribute('data-lang-btn') === lang ? '#171611' : '#b6b1a5';
+    });
+    this._translate(lang);
+    if (this.setLangState) this.setLangState(lang);
+  }
+
+  _translate(lang) {
+    const dict = window.EP_FR || {};
+    const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode: n => {
+        const p = n.parentNode;
+        if (!p || p.nodeName === 'SCRIPT' || p.nodeName === 'STYLE') return NodeFilter.FILTER_REJECT;
+        return n.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+    const nodes = [];
+    while (walk.nextNode()) nodes.push(walk.currentNode);
+    nodes.forEach(n => {
+      if (n.__en === undefined) n.__en = n.nodeValue;
+      const key = n.__en.trim();
+      if (lang === 'fr' && dict[key]) n.nodeValue = n.__en.replace(key, dict[key]);
+      else n.nodeValue = n.__en;
+    });
+    document.body.querySelectorAll('[placeholder]').forEach(f => {
+      if (f.__enPh === undefined) f.__enPh = f.getAttribute('placeholder');
+      const fr = dict[f.__enPh];
+      f.setAttribute('placeholder', (lang === 'fr' && fr) ? fr : f.__enPh);
+    });
+    const t = dict['__title'];
+    if (lang === 'fr' && t) { if (!this.__enTitle) this.__enTitle = document.title; document.title = t; }
+    else if (this.__enTitle) document.title = this.__enTitle;
+  }
+
 
   _bindFields() {
     document.body.querySelectorAll('input, textarea').forEach(f => {
@@ -226,7 +286,7 @@ class Component extends DCLogic {
     const ss = String(s.elapsed % 60).padStart(2, '0');
     const allDone = s.done >= STAGES.length;
     return {
-      topicLabel: t[0], topicBody: t[1],
+      topicLabel: this.tr(t[0]), topicBody: this.tr(t[1]),
       company: s.company, sector: s.sector, notes: s.notes,
       companyWidth: w(s.company, 'company'), sectorWidth: w(s.sector, 'product or service'),
       onCompany: this.set('company'), onSector: this.set('sector'), onNotes: this.set('notes'),
@@ -244,16 +304,19 @@ class Component extends DCLogic {
       showForm: !s.running, showRun: s.running,
       btnBg: ok ? '#171611' : '#e2ded3',
       btnFg: ok ? '#ffffff' : '#8a857a',
-      hint: (!ok && s.touched) ? 'Complete the sentence above to continue.' : 'Runtime follows the country list — minutes for one market.',
+      hint: this.tr((!ok && s.touched) ? 'Complete the sentence above to continue.' : 'Runtime follows the country list — minutes for one market.'),
       hintColor: (!ok && s.touched) ? '#8f3a1c' : '#8a857a',
       clock: mm + ':' + ss,
       pct: Math.round((s.done / STAGES.length) * 100) + '%',
-      stage: allDone ? 'Report ready' : 'Collecting',
-      runLine: 'Studying ' + (s.sector.trim() || 'your product') + ' for ' + (s.company.trim() || 'your company')
-        + (s.objective === 'hold' ? ', in a market you hold.' : ', in a market you do not yet sell into.'),
+      stage: this.tr(allDone ? 'Report ready' : 'Collecting'),
+      runLine: this._lang === 'fr'
+        ? 'Étude de ' + (s.sector.trim() || 'votre produit') + ' pour ' + (s.company.trim() || 'votre société')
+          + (s.objective === 'hold' ? ', sur un marché que vous détenez.' : ", sur un marché où vous n'êtes pas encore présent.")
+        : 'Studying ' + (s.sector.trim() || 'your product') + ' for ' + (s.company.trim() || 'your company')
+          + (s.objective === 'hold' ? ', in a market you hold.' : ', in a market you do not yet sell into.'),
       runNote: allDone
-        ? 'The document is in your dashboard, sources cited line by line.'
-        : STAGES[Math.min(s.done, STAGES.length - 1)] + '. You can close this window.'
+        ? this.tr('The document is in your dashboard, sources cited line by line.')
+        : this.tr(STAGES[Math.min(s.done, STAGES.length - 1)]) + (this._lang === 'fr' ? '. Vous pouvez fermer cette fenêtre.' : '. You can close this window.')
     };
   }
 }
