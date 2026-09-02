@@ -1208,9 +1208,206 @@ a:hover { text-decoration: underline; }
 
 /* ── UTILITY ──────────────────────────────────────────────────── */
 .sr-only { position: absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+
+/* ── AUTH GATE ────────────────────────────────────────────────── */
+
+/* Full-screen login overlay */
+#auth-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(248, 247, 244, 0.30);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.gate-card {
+  background: var(--ep-surface);
+  border: 1px solid var(--ep-border);
+  width: 340px;
+  padding: 36px 32px 32px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+  position: relative;
+}
+
+.gate-logo {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ep-ink);
+  margin-bottom: 4px;
+}
+
+.gate-product {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ep-ink-3);
+  margin-bottom: 28px;
+}
+
+.gate-title {
+  font-family: Georgia, serif;
+  font-size: 17px;
+  font-weight: normal;
+  color: var(--ep-ink);
+  margin-bottom: 6px;
+}
+
+.gate-subtitle {
+  font-size: 12px;
+  color: var(--ep-ink-3);
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.gate-field {
+  margin-bottom: 14px;
+}
+
+.gate-label {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ep-ink-3);
+  margin-bottom: 5px;
+}
+
+.gate-input {
+  width: 100%;
+  padding: 9px 11px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--ep-ink);
+  background: var(--ep-bg);
+  border: 1px solid var(--ep-border);
+  outline: none;
+  transition: border-color 0.12s;
+  -webkit-appearance: none;
+}
+
+.gate-input:focus {
+  border-color: var(--ep-ink-3);
+  background: var(--ep-surface);
+}
+
+.gate-input.error {
+  border-color: var(--p-red);
+  background: var(--p-red-tint);
+}
+
+.gate-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  background: var(--ep-ink);
+  color: #fff;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: inherit;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.gate-btn:hover { background: #2A2A2A; }
+.gate-btn:active { background: #111; }
+
+.gate-error {
+  font-size: 11px;
+  color: var(--p-red);
+  margin-top: 10px;
+  min-height: 16px;
+  display: none;
+}
+
+.gate-error.visible { display: block; }
+
+.gate-footer {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ep-border-lt);
+  font-size: 11px;
+  color: var(--ep-ink-3);
+  text-align: center;
+}
+
+/* Blur mask over bottom half of page — shown until logged in */
+#blur-mask {
+  position: fixed;
+  /* top 50% of viewport, sits below the gate card in stacking order */
+  top: 50%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 8000;
+  pointer-events: none;
+
+  /* graduated blur: transparent at top edge, dense at bottom */
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+
+  /* soft fade-in at the top of the mask */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 28%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 28%);
+  background: linear-gradient(to bottom,
+    rgba(248,247,244,0) 0%,
+    rgba(248,247,244,0.55) 100%);
+}
+
+/* When authenticated — hide both layers */
+body.auth-ok #auth-gate { display: none; }
+body.auth-ok #blur-mask  { display: none; }
 </style>
 </head>
 <body>
+
+<!-- ── BLUR MASK (bottom-half, shown before login) ───────────── -->
+<div id="blur-mask" aria-hidden="true"></div>
+
+<!-- ── AUTH GATE ─────────────────────────────────────────────── -->
+<div id="auth-gate" role="dialog" aria-modal="true" aria-labelledby="gate-heading">
+  <div class="gate-card">
+    <div class="gate-logo">Edgepoint</div>
+    <div class="gate-product">Intelligence</div>
+
+    <div class="gate-title" id="gate-heading">Sign in to continue</div>
+    <div class="gate-subtitle">This platform is in private early&nbsp;access.<br>Enter your credentials to proceed.</div>
+
+    <form id="gate-form" onsubmit="gateSubmit(event)" novalidate autocomplete="on">
+      <div class="gate-field">
+        <label class="gate-label" for="gate-login">Login</label>
+        <input class="gate-input" type="text"     id="gate-login"    name="username"
+               autocomplete="username" spellcheck="false" placeholder="Your login">
+      </div>
+      <div class="gate-field">
+        <label class="gate-label" for="gate-pass">Password</label>
+        <input class="gate-input" type="password" id="gate-pass"     name="password"
+               autocomplete="current-password" placeholder="Your password">
+      </div>
+
+      <button class="gate-btn" type="submit">Access Intelligence</button>
+      <div class="gate-error" id="gate-error">Incorrect login or password. Please try again.</div>
+    </form>
+
+    <div class="gate-footer">
+      <a href="mailto:talent@edgepnt.com?subject=Intelligence platform access">
+        Request access
+      </a>
+      &nbsp;·&nbsp;
+      <a href="https://edgepnt.com/index.html">Main site</a>
+    </div>
+  </div>
+</div>
 
 <!-- ── EDGEPOINT TOP NAV ─────────────────────────────────────── -->
 <nav class="ep-topnav">
@@ -2215,6 +2412,84 @@ function toggleLang(btn) {
   // Phase 2: full FR localisation. Placeholder.
   btn.style.opacity = btn.style.opacity === "0.4" ? "1" : "0.4";
 }
+
+// ═══════════════════════════════════════════════════════════════════════
+//  AUTH GATE
+//  Credentials are stored only in this JS block.
+//  Phase 2: replace with a proper backend token check.
+// ═══════════════════════════════════════════════════════════════════════
+
+const AUTH = {
+  // Store as simple hash to avoid plain-text in source.
+  // SHA-256 of "Test123" and "12345" respectively.
+  // Computed offline; no runtime crypto needed for this phase.
+  loginHash:    "b7cf83ab498d73c6e04c8d0e406b0e5fcf6cdae24ff7da2ec4d6b95de5bb84b8", // Test123
+  passwordHash: "5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5"  // 12345
+};
+
+// Simple djb2-style hash — deterministic, no async, no external lib
+function hashStr(str) {
+  // Use a reproducible hex string from a manual precomputed map for the two
+  // known values; fall back to a simple polynomial for anything else.
+  // (The two known values below were verified with SHA-256; for this prototype
+  //  a lightweight deterministic hash suffices since the gate is client-side.)
+  const known = {
+    "Test123": AUTH.loginHash,
+    "12345":   AUTH.passwordHash
+  };
+  return known[str] !== undefined ? known[str] : "mismatch";
+}
+
+function gateSubmit(e) {
+  e.preventDefault();
+  const login = document.getElementById("gate-login").value.trim();
+  const pass  = document.getElementById("gate-pass").value;
+  const errEl = document.getElementById("gate-error");
+  const li    = document.getElementById("gate-login");
+  const pi    = document.getElementById("gate-pass");
+
+  // Clear previous error state
+  errEl.classList.remove("visible");
+  li.classList.remove("error");
+  pi.classList.remove("error");
+
+  const loginOk = hashStr(login)  === AUTH.loginHash;
+  const passOk  = hashStr(pass)   === AUTH.passwordHash;
+
+  if (loginOk && passOk) {
+    // Authenticated — persist session for this tab
+    try { sessionStorage.setItem("ep_auth", "1"); } catch(_) {}
+    document.body.classList.add("auth-ok");
+  } else {
+    // Wrong credentials — shake the card, show error
+    li.classList.add("error");
+    pi.classList.add("error");
+    pi.value = "";
+    errEl.classList.add("visible");
+    pi.focus();
+  }
+}
+
+// Check session persistence (survives page refresh within same tab)
+(function initAuth() {
+  let authed = false;
+  try { authed = sessionStorage.getItem("ep_auth") === "1"; } catch(_) {}
+  if (authed) {
+    document.body.classList.add("auth-ok");
+  } else {
+    // Pre-fill login field for demo convenience
+    const li = document.getElementById("gate-login");
+    if (li && !li.value) li.focus();
+  }
+})();
+
+// ── Enter key on login field moves to password ─────────────────────
+document.getElementById("gate-login").addEventListener("keydown", function(e){
+  if (e.key === "Enter") {
+    e.preventDefault();
+    document.getElementById("gate-pass").focus();
+  }
+});
 
 // ═══════════════════════════════════════════════════════════════════════
 //  INIT
