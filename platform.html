@@ -1383,16 +1383,19 @@ body.auth-ok #blur-mask  { display: none; }
     <div class="gate-title" id="gate-heading">Sign in to continue</div>
     <div class="gate-subtitle">This platform is in private early&nbsp;access.<br>Enter your credentials to proceed.</div>
 
-    <form id="gate-form" onsubmit="gateSubmit(event)" novalidate autocomplete="on">
+    <form id="gate-form" onsubmit="gateSubmit(event)" novalidate autocomplete="on"
+          action="#" method="post">
       <div class="gate-field">
         <label class="gate-label" for="gate-login">Login</label>
-        <input class="gate-input" type="text"     id="gate-login"    name="username"
-               autocomplete="username" spellcheck="false" placeholder="Your login">
+        <input class="gate-input" type="text" id="gate-login" name="username"
+               autocomplete="username" spellcheck="false"
+               placeholder="Your login">
       </div>
       <div class="gate-field">
         <label class="gate-label" for="gate-pass">Password</label>
-        <input class="gate-input" type="password" id="gate-pass"     name="password"
-               autocomplete="current-password" placeholder="Your password">
+        <input class="gate-input" type="password" id="gate-pass" name="password"
+               autocomplete="current-password"
+               placeholder="Your password">
       </div>
 
       <button class="gate-btn" type="submit">Access Intelligence</button>
@@ -2434,7 +2437,7 @@ function gateSubmit(e) {
 
   if (login === "Test123" && pass === "12345") {
     // ── Correct credentials ──────────────────────────────────────
-    try { sessionStorage.setItem("ep_auth", "1"); } catch(_) {}
+    try { localStorage.setItem("ep_auth", "1"); } catch(_) {}
 
     // Hide gate and blur mask directly — belt-and-suspenders
     var gate = document.getElementById("auth-gate");
@@ -2453,10 +2456,10 @@ function gateSubmit(e) {
   }
 }
 
-// Restore session after page refresh
+// Restore session after page refresh / browser restart
 (function initAuth() {
   var authed = false;
-  try { authed = sessionStorage.getItem("ep_auth") === "1"; } catch(_) {}
+  try { authed = localStorage.getItem("ep_auth") === "1"; } catch(_) {}
   if (authed) {
     var gate = document.getElementById("auth-gate");
     var mask = document.getElementById("blur-mask");
